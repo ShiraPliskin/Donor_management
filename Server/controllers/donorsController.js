@@ -1,27 +1,42 @@
 import { DonorsService } from '../service/donorsService.js'
 
 export class DonorsController {
+
+    async getDonors(req, res, next) {
+        try {
+            const donorsService = new DonorsService();
+            const resultDonorss = await donorsService.getDonors(req.params);
+            return res.status(200).json(resultDonorss);
+        }
+        catch (ex) {
+            const err = {}
+            err.statusCode = 500;
+            err.message = ex;
+            next(err)
+        }
+
+    }
     
-    async getDonors(req, res) {
+    async getDonorById(req, res, next) {
         try {
             const donorsService = new DonorsService();
-            const queryParams = req.query;
-            const resultItems = await donorsService.get(queryParams, getDonorByConditionQuery);
+            const resultItems = await donorsService.getDonorById(req.params.id);
+            return res.status(200).json({ status: 200, data: resultItems });
+        }
+        catch (ex) {
+            const err = {}
+            err.statusCode = 500;
+            err.message = ex;
+            next(err)
+        }
+    }
+
+    async updateDonor(req, res, next) {
+        try {
+
+            const donorsService = new DonorsService();
+            const resultItems = await donorsService.updateDonor(req.body);
             return res.status(200).json(resultItems);
-        } 
-        catch (ex) {
-            const err = {}
-            err.statusCode = 500;
-            err.message = ex;
-            next(err)
-        }
-    }
-
-    async getDonorById(req, res) {
-        try {
-            const donorsService = new DonorsService();
-            const resultItem = await donorsService.getById(req.params.id, getCommentByIdQuery);
-            res.status(200).json({ status: 200, data: resultItem });
         }
         catch (ex) {
             const err = {}
@@ -30,12 +45,24 @@ export class DonorsController {
             next(err)
         }
     }
-
-    async addDonor(req, res) {
+    async deleteDonor(req, res, next) {
         try {
             const donorsService = new DonorsService();
-            const resultItem = await donorsService.add(req.body, addCommentQuery);
-            res.status(200).json({ status: 200, data: resultItem });
+            await donorsService.deleteDonor("id",req.params.id);
+            return res.status(200).json({ status: 200, data: req.params.id });
+        }
+        catch (ex) {
+            const err = {}
+            err.statusCode = 500;
+            err.message = ex;
+            next(err)
+        }
+    }
+    async addDonor(req, res, next) {
+        try {
+            const donorsService = new DonorsService();
+            const resultItem = await donorsService.addDonor(req.body);
+            res.status(200).json({ insertId: resultItem.insertId });
         }
         catch (ex) {
             const err = {}
@@ -45,31 +72,6 @@ export class DonorsController {
         }
     }
 
-    async deleteDonor(req, res) {
-        try {
-            const donorsService = new DonorsService();
-            await donorsService.delete(req.params.id, deleteCommentQuery);
-            res.status(200).json({ status: 200, data: req.params.id });
-        }
-        catch (ex) {
-            const err = {}
-            err.statusCode = 500;
-            err.message = ex;
-            next(err)
-        }
-    }
 
-    async updateDonor(req, res) {
-        try {
-            const donorsService = new DonorsService();
-            await donorsService.update(req.body, req.params.id, updateCommentQuery);
-            res.status(200).json({ status: 200, data: req.params.id });
-        }
-        catch (ex) {
-            const err = {}
-            err.statusCode = 500;
-            err.message = ex;
-            next(err)
-        }
-    }
+
 }

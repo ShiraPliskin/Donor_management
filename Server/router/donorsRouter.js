@@ -4,7 +4,7 @@ const donorsRouter = express.Router();
 
 const donorscontroller = new DonorsController();
 
-donorsRouter.get('/', donorscontroller.getDodors)
+donorsRouter.get('/', donorscontroller.getDonors)
 donorsRouter.get("/:id", donorscontroller.getDonorById)
 donorsRouter.post("/", donorscontroller.addDonor)
 donorsRouter.delete("/:id", donorscontroller.deleteDonor)
