@@ -13,8 +13,7 @@ function getByConditionQuery(tableName, queryParams){
         for (const key in queryParams) {
             conditions.push(`${key} = ?`);
         }
-        query += conditions.join
-    }
+        query += conditions.join(' AND ');    }
     return query;
 }
 

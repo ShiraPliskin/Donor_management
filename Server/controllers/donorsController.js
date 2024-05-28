@@ -5,8 +5,8 @@ export class DonorsController {
     async getDonors(req, res, next) {
         try {
             const donorsService = new DonorsService();
-            const resultDonorss = await donorsService.getDonors(req.params);
-            return res.status(200).json(resultDonorss);
+            const resultItems = await donorsService.getDonors(req.query);
+            return res.status(200).json(resultItems);
         }
         catch (ex) {
             const err = {}
