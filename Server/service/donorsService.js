@@ -23,10 +23,11 @@ export class DonorsService {
         return result;
     }
 
-    async updateDonor(updatedItem) {
-        const query = updateQuery("donors",updatedItem,"id");
+    async updateDonor(updatedItem, id) {
+        console.log(updatedItem);
+        const query = updateQuery("donors", updatedItem, "id");
         const values = Object.values(updatedItem);
-        values.push(updatedItem.id);
+        values.push(id);
         const result = await executeQuery(query, values);
         return result;
     }

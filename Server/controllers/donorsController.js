@@ -33,9 +33,8 @@ export class DonorsController {
 
     async updateDonor(req, res, next) {
         try {
-
             const donorsService = new DonorsService();
-            const resultItems = await donorsService.updateDonor(req.body);
+            const resultItems = await donorsService.updateDonor(req.body, req.params.id);
             return res.status(200).json(resultItems);
         }
         catch (ex) {

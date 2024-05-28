@@ -42,14 +42,15 @@ function deleteQuery(table_name,idKey){
 //     return query;
 // }
 
-function updateQuery(table_name,queryParams,idKey) {
+function updateQuery(table_name, queryParams, idKey) {
     let query = `UPDATE ${db}.${table_name} SET `;
     const conditions = [];
     for (const key in queryParams) {
         conditions.push(`${key} = ?`);
     }
     query += conditions.join(' AND ');
-    query +=  `WHERE ${idKey} = ?`
+    query +=  ` WHERE ${idKey} = ?`
+    console.log(query)
     return query;
 }
 
