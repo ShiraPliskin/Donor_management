@@ -17,30 +17,15 @@ function getByConditionQuery(tableName, queryParams){
     return query;
 }
 
-// function getQuery(table_name,limit,start,sort,whereIsActive = "") {
-//     console.log("in get query sort: "+ sort);
-//     const query = `SELECT * FROM ${db}.${table_name} ${whereIsActive} ORDER BY ${sort} LIMIT ${limit} OFFSET ${start}`;
-//     return query
-// }
-
-
 function getByIdQuery(tableName) {
     const query = `SELECT * FROM ${db}.${tableName}  where id = ?`;
     return query
 }
 
-// function getByIdQuery(table_name,idParameter,limit,start,sort) {
-//     const query = `SELECT * FROM ${db}.${table_name}  where ${idParameter} = ? ORDER BY ${sort} LIMIT ${limit} OFFSET ${start}`;
-//     return query
-// }
 function deleteQuery(table_name,idKey){
     const query=`DELETE FROM ${db}.${table_name} WHERE  ${idKey} = ?`;
     return query;
 }
-// function updateQuery(table_name,values,idParameter){
-//     const query=`UPDATE ${db}.${table_name} SET ${values}  WHERE ${idParameter}=?`;
-//     return query;
-// }
 
 function updateQuery(table_name, queryParams, idKey) {
     let query = `UPDATE ${db}.${table_name} SET `;

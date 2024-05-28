@@ -44,6 +44,7 @@ export class DonorsController {
             next(err)
         }
     }
+
     async deleteDonor(req, res, next) {
         try {
             const donorsService = new DonorsService();
@@ -70,7 +71,4 @@ export class DonorsController {
             next(err)
         }
     }
-
-
-
 }
