@@ -53,12 +53,25 @@ function updateQuery(table_name,queryParams,idKey) {
     return query;
 }
 
-function addQuery(table_name,newDonor){
-    const query=`INSERT INTO ${db}.${table_name} (${values}) VALUES (${columnsNum})`;
-    console.log("query:  "+ query);
+function addQuery(table_name, newDonor){
+    let query=`INSERT INTO ${db}.${table_name}`
+    let keys = [];
+    let values = [];
+    for (const key in newDonor) {
+        keys.push(`${key}`);
+        values.push("?")
+    }
+    query += "(" + keys.join(', ') + ")";
+    query += "VALUES";
+    query += "(" + values.join(', ') + ")";
     return query;
 }
 
 export{
-    getByConditionQuery,getByIdQuery,deleteQuery,updateQuery,addQuery,getByConditionQuery
+    getByConditionQuery,
+    getByIdQuery,
+    deleteQuery,
+    updateQuery,
+    addQuery,
+    getByConditionQuery
 }

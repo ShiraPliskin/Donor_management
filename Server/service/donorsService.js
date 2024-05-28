@@ -1,8 +1,7 @@
 import { executeQuery } from '../db.js'
-import {addQuery,updateQuery,getByIdQuery,getByConditionQuery,deleteQuery} from './querys.js'
+import {addQuery, updateQuery, getByIdQuery, getByConditionQuery, deleteQuery} from './querys.js'
 
 export class DonorsService {
-
 
     async getDonors(queryParams) {
         const query = getByConditionQuery("donors",queryParams);
@@ -31,7 +30,6 @@ export class DonorsService {
         const result = await executeQuery(query, values);
         return result;
     }
-    
 
     async addDonor(newDonor) {
         const values = Object.values(newDonor);
@@ -39,36 +37,4 @@ export class DonorsService {
         const result =  await executeQuery(queryUser, values);
         return result;
     }
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
