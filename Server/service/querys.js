@@ -1,7 +1,7 @@
 import 'dotenv/config'
 const db = process.env.DB_NAME;
 
-function getByConditionQuery(tableName,queryParams){
+function getByConditionQuery(tableName, queryParams){
     let query = `SELECT * FROM ${db}.${tableName}`;
     if (Object.keys(queryParams).length == 1 && Object.keys(queryParams)[0] == "_limit") { 
         query += ' LIMIT ? ';
@@ -15,6 +15,7 @@ function getByConditionQuery(tableName,queryParams){
         }
         query += conditions.join
     }
+    return query;
 }
 
 // function getQuery(table_name,limit,start,sort,whereIsActive = "") {
