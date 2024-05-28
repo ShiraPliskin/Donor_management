@@ -72,6 +72,5 @@ export{
     getByIdQuery,
     deleteQuery,
     updateQuery,
-    addQuery,
-    getByConditionQuery
+    addQuery
 }

@@ -1,4 +1,4 @@
-import { executeQuery } from '../db.js'
+import { executeQuery } from './db.js'
 import {addQuery, updateQuery, getByIdQuery, getByConditionQuery, deleteQuery} from './querys.js'
 
 export class DonorsService {
