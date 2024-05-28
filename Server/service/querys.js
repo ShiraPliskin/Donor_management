@@ -48,7 +48,7 @@ function updateQuery(table_name, queryParams, idKey) {
     for (const key in queryParams) {
         conditions.push(`${key} = ?`);
     }
-    query += conditions.join(' AND ');
+    query += conditions.join(', ');
     query +=  ` WHERE ${idKey} = ?`
     console.log(query)
     return query;

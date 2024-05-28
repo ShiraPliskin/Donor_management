@@ -28,6 +28,7 @@ export class DonorsService {
         const query = updateQuery("donors", updatedItem, "id");
         const values = Object.values(updatedItem);
         values.push(id);
+        console.log(values);
         const result = await executeQuery(query, values);
         return result;
     }
