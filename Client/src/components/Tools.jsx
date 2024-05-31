@@ -27,7 +27,6 @@
     const url = `http://${config.SERVERPORT}/${table}${conditions ? `${conditions}` : ''}`;
     console.log(url)
     try {
-      console.log("in get request");
       const response = await fetch(url);
       
       if (!response.ok) {
