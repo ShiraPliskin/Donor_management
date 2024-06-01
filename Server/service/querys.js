@@ -17,8 +17,8 @@ function getByConditionQuery(tableName, queryParams){
     return query;
 }
 
-function getByIdQuery(tableName) {
-    const query = `SELECT * FROM ${db}.${tableName}  where id = ?`;
+function getByIdQuery(tableName,idKey="id") {
+    const query = `SELECT * FROM ${db}.${tableName}  where ${idKey} = ?`;
     return query
 }
 
@@ -39,11 +39,11 @@ function updateQuery(table_name, queryParams, idKey) {
     return query;
 }
 
-function addQuery(table_name, newDonor){
+function addQuery(table_name, newObj){
     let query=`INSERT INTO ${db}.${table_name}`
     let keys = [];
     let values = [];
-    for (const key in newDonor) {
+    for (const key in newObj) {
         keys.push(`${key}`);
         values.push("?")
     }
