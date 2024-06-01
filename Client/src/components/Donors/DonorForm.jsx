@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const DonorAddForm = ({ initialFields, onSubmit }) => {
+const DonorForm = ({ initialFields, onSubmit }) => {
     const [donorDetails, setDonorDetails] = useState(initialFields);
 
     const handleSubmit = (e) => {
@@ -50,4 +50,4 @@ const DonorAddForm = ({ initialFields, onSubmit }) => {
     );
 };
 
-export default DonorAddForm;
+export default DonorForm;
