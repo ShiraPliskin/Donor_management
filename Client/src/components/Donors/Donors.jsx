@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { GetRequest } from '../Tools'
+import { getRequest } from '../Tools'
 import DonorAdd from "./DonorAdd";
 const Donors = () => {
 
@@ -37,7 +37,7 @@ const Donors = () => {
             }
         }
         const queryString = conditions.length > 0 ? `?${conditions.join('&')}` : '';
-        GetRequest("donors", queryString, setDonorsToDisplay, setCommentArea);
+        getRequest("donors", queryString, setDonorsToDisplay, setCommentArea);
     };
 
     const handleChange = (e) => {
