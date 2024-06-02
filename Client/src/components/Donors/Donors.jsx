@@ -1,6 +1,9 @@
 import { useState, useEffect } from "react";
-import { getRequest } from '../Tools'
+import { getRequest } from '../Tools';
 import DonorAdd from "./DonorAdd";
+import { Button, TextField, Box } from '@mui/material';
+import SearchIcon from '@mui/icons-material/Search';
+
 const Donors = () => {
 
     const fields = {
@@ -16,7 +19,7 @@ const Donors = () => {
         introduction_description: '',
         contact_id: '',
         remarks: '',
-    }
+    };
 
     const [donorDetails, setDonorDetails] = useState(fields);
     const [donorsToDisplay, setDonorsToDisplay] = useState([]);
@@ -25,11 +28,11 @@ const Donors = () => {
 
     useEffect(() => {
         setCommentArea("");
-        console.log(donorsToDisplay)
-    }, [donorsToDisplay])
+    }, [donorsToDisplay]);
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        setDonorsToDisplay([]);
         let conditions = [];
         for (const [key, value] of Object.entries(donorDetails)) {
             if (value) {
@@ -42,62 +45,105 @@ const Donors = () => {
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        if (name === "minDonationAmount" )
+        if (name === "minDonationAmount")
             setMinDonationAmount(value);
-        else 
+        else
             setDonorDetails((prevData) => ({ ...prevData, [name]: value }));
-    }
+    };
 
     return (
         <>
-            <DonorAdd fields={fields}/>
+            <DonorAdd fields={fields} />
             <h3>חיפוש מתקדם</h3>
             <form onSubmit={handleSubmit}>
-                <label>
-                    <input type="text" name="f_name" value={donorDetails.f_name} onChange={handleChange} placeholder="שם פרטי" noValidate />
-                </label>
-                <label>
-                    <input type="text" name="l_name" value={donorDetails.l_name} onChange={handleChange} placeholder="שם משפחה" noValidate />
-                </label>
-                <label>
-                    <input type="text" name="phone" value={donorDetails.phone} onChange={handleChange} placeholder="טלפון" noValidate />
-                </label>
-                <label>
-                    <input type="email" name="email" value={donorDetails.email} onChange={handleChange} placeholder="כתובת מייל" noValidate />
-                </label>
-                <label>
-                    <input type="text" name="address" value={donorDetails.address} onChange={handleChange} placeholder="כתובת" noValidate />
-                </label>
-                <label>
-                    <input type="text" name="minDonationAmount" value={minDonationAmount} onChange={handleChange} placeholder="גובה תרומה מינימלי" noValidate />
-                </label>
-
-                <button type="submit">חפש</button>
-
+                <Box display="flex" alignItems="center" flexWrap="wrap" gap={2}>
+                    <TextField
+                        style={{ width: '150px' }}
+                        label="שם פרטי"
+                        variant="outlined"
+                        name="f_name"
+                        value={donorDetails.f_name}
+                        onChange={handleChange}
+                        size="small"
+                        margin="dense"
+                    />
+                    <TextField
+                        style={{ width: '150px' }}
+                        label="שם משפחה"
+                        variant="outlined"
+                        name="l_name"
+                        value={donorDetails.l_name}
+                        onChange={handleChange}
+                        size="small"
+                        margin="dense"
+                    />
+                    <TextField
+                        style={{ width: '150px' }}
+                        label="טלפון"
+                        variant="outlined"
+                        name="phone"
+                        value={donorDetails.phone}
+                        onChange={handleChange}
+                        size="small"
+                        margin="dense"
+                    />
+                    <TextField
+                        style={{ width: '150px' }}
+                        label="כתובת מייל"
+                        variant="outlined"
+                        name="email"
+                        type="email"
+                        value={donorDetails.email}
+                        onChange={handleChange}
+                        size="small"
+                        margin="dense"
+                    />
+                    <TextField
+                        style={{ width: '150px' }}
+                        label="כתובת"
+                        variant="outlined"
+                        name="address"
+                        value={donorDetails.address}
+                        onChange={handleChange}
+                        size="small"
+                        margin="dense"
+                    />
+                    <TextField
+                        style={{ width: '150px' }}
+                        label="גובה תרומה מינימלי"
+                        variant="outlined"
+                        name="minDonationAmount"
+                        value={minDonationAmount}
+                        onChange={handleChange}
+                        size="small"
+                        margin="dense"
+                    />
+                    <Button variant="contained" color="primary" type="submit" endIcon={<SearchIcon />}>
+                        חפש
+                    </Button>
+                </Box>
                 {<p>{commentArea}</p>}
             </form>
 
-            {/* {renderTable()} */}
-
             {donorsToDisplay.length > 0 && (
-                <table>
+                <table style={{ border: "1px solid black", width: "100%", marginTop: "20px" }}>
                     <thead>
                         <tr>
-                            <th>שם פרטי</th>
-                            <th>שם משפחה</th>
-                            <th>כתובת מייל</th>
-                            <th>טלפון</th>
-                            <th>כתובת</th>
+                            <th style={{ border: "1px solid black" }}>שם פרטי</th>
+                            <th style={{ border: "1px solid black" }}>שם משפחה</th>
+                            <th style={{ border: "1px solid black" }}>כתובת מייל</th>
+                            <th style={{ border: "1px solid black" }}>טלפון</th>
+                            <th style={{ border: "1px solid black" }}>כתובת</th>
                         </tr>
                     </thead>
                     <tbody>
                         {donorsToDisplay.map((donor, index) => (
                             <tr key={index}>
-                                <td>{donor.f_name}</td>
-                                <td>{donor.l_name}</td>
-                                <td>{donor.email}</td>
-                                <td>{donor.phone}</td>
-                                <td>{donor.address}</td>
+                                <td style={{ border: "1px solid black" }}>{donor.f_name}</td>
+                                <td style={{ border: "1px solid black" }}>{donor.l_name}</td>
+                                <td style={{ border: "1px solid black" }}>{donor.email}</td>
+                                <td style={{ border: "1px solid black" }}>{donor.phone}</td>
+                                <td style={{ border: "1px solid black" }}>{donor.address}</td>
                             </tr>
                         ))}
                     </tbody>
@@ -106,4 +152,5 @@ const Donors = () => {
         </>
     );
 };
+
 export default Donors;

@@ -20,16 +20,21 @@ const DonorAdd = ({ fields }) => {
         setOpen(false);
     };
 
-    const addDonorRequest = () => {
-        console.log(donorDetails);
-        // postRequest("donors", donorDetails, setCommentArea);
-        handleClose();
+    const filterEmptyValues = (obj) => {
+        return Object.keys(obj)
+            .filter(key => obj[key] !== null && obj[key] !== undefined && obj[key] !== '')
+            .reduce((filteredObj, key) => {
+                filteredObj[key] = obj[key];
+                return filteredObj;
+            }, {});
     };
 
-    // const handleChange = (e) => {
-    //     const { name, value } = e.target;
-    //     setDonorDetails((prevData) => ({ ...prevData, [name]: value }));
-    // };
+    const addDonorRequest = () => {
+        console.log(donorDetails);
+        const newDonor = filterEmptyValues(donorDetails);
+        postRequest("donors", newDonor, setCommentArea);
+        handleClose();
+    };
 
     return (
         <>

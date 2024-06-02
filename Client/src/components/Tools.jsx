@@ -167,7 +167,7 @@ export const DeleteRequest = async (state, comment, id, table) => {
 
 export const postRequest = async ( table, newItem, comment) => {
     try {
-        const response = await fetch(`http://${config.SERVERPORT}/${table}/${newItem.email}`, {
+        const response = await fetch(`http://${config.SERVERPORT}/${table}`, {
             headers: { 'Content-Type': 'application/json' },
             method: 'POST',
             body: JSON.stringify(newItem)
