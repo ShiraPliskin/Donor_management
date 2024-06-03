@@ -43,7 +43,7 @@ const DonorSearch = ({ fields, donorsToDisplay, setDonorsToDisplay }) => {
             <form onSubmit={handleSubmit}>
                 <Box display="flex" alignItems="center" flexWrap="wrap" gap={2}>
                     <TextField
-                        style={{ width: '100px' }}
+                        style={{ width: '100px'}}
                         label="מס' תורם"
                         variant="outlined"
                         name="id"

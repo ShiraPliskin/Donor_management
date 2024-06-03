@@ -219,17 +219,17 @@ const DonorDisplay = ({ donor, index }) => {
                                     <Grid item xs={12} sm={4}>
                                         <ListItem>
                                             <ListItemIcon>
-                                                <EmailIcon />
+                                                <PhoneIcon />
                                             </ListItemIcon>
-                                            <ListItemText primary="כתובת מייל" secondary={currentDonor.email} sx={{ textAlign: 'right' }} />
+                                            <ListItemText primary="טלפון" secondary={currentDonor.phone} sx={{ textAlign: 'right' }} />
                                         </ListItem>
                                     </Grid>
                                     <Grid item xs={12} sm={4}>
                                         <ListItem>
                                             <ListItemIcon>
-                                                <PhoneIcon />
+                                                <EmailIcon />
                                             </ListItemIcon>
-                                            <ListItemText primary="טלפון" secondary={currentDonor.phone} sx={{ textAlign: 'right' }} />
+                                            <ListItemText primary="כתובת מייל" secondary={currentDonor.email} sx={{ textAlign: 'right' }} />
                                         </ListItem>
                                     </Grid>
                                     <Grid item xs={12} sm={4}>
@@ -269,10 +269,10 @@ const DonorDisplay = ({ donor, index }) => {
                                             <ListItemIcon>
                                                 <PeopleIcon />
                                             </ListItemIcon>
-                                            <ListItemText primary="מספר איש קשר" secondary={currentDonor.contact_id} sx={{ textAlign: 'right' }} />
+                                            <ListItemText primary="פרטי איש קשר" secondary={currentDonor.contact_id} sx={{ textAlign: 'right' }} />
                                         </ListItem>
                                     </Grid>
-                                    <Grid item xs={12} sm={4}>
+                                    <Grid item xs={12} sm={6}>
                                         <ListItem>
                                             <ListItemIcon>
                                                 <DescriptionIcon />
@@ -280,7 +280,7 @@ const DonorDisplay = ({ donor, index }) => {
                                             <ListItemText primary="תיאור הכרות" secondary={currentDonor.Introduction_description} sx={{ textAlign: 'right' }} />
                                         </ListItem>
                                     </Grid>
-                                    <Grid item xs={12} sm={4}>
+                                    <Grid item xs={12} sm={6}>
                                         <ListItem>
                                             <ListItemIcon>
                                                 <NoteIcon />
