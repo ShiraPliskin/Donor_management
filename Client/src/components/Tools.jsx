@@ -1,31 +1,8 @@
-// export const displayObject = (obj, parentKey = '') => {
-//     return Object.entries(obj).map(([key, value]) => {
-//       const currentKey = parentKey ? `${parentKey}.${key}` : key;
-//       if (typeof value === 'object' && value !== null) {
-//         return (
-//           <li key={currentKey} style={{ listStyle: 'none' }}>
-//             <strong>{key}:</strong>
-//             <ul>{displayObject(value, currentKey)}</ul>
-//           </li>
-//         );
-//       } else {
-//         if (typeof value !== 'boolean') {
-//           return (
-//             <li key={currentKey} style={{ listStyle: 'none' }}>
-//               <strong>{key}: </strong>{value}
-//             </li>
-//           );
-//         }
-//       }
-//     });
-//   };
-
-
 import { React, useState } from "react";
 import { config } from "./config.jsx";
+
 export const getRequest = async (table, conditions, state, comment) => {
     const url = `http://${config.SERVERPORT}/${table}${conditions ? `${conditions}` : ''}`;
-    console.log(url)
     try {
         const response = await fetch(url);
 
@@ -49,6 +26,30 @@ export const getRequest = async (table, conditions, state, comment) => {
     }
 };
 
+export const getByIdRequest = async (table, id, state, comment) => {
+    const url = `http://${config.SERVERPORT}/${table}/${id}}`;
+    try {
+        const response = await fetch(url);
+
+        if (!response.ok) {
+            throw new Error(`Request failed with status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        
+        if (Object.keys(data).length === 0) {
+            comment(`לא נמצא תורם`);
+            return false;
+        } else {
+            state(data["data"][0]);
+            return true;
+        }
+    } catch (error) {
+        console.error("Error in GetRequest:", error);
+        comment(`שגיאת שרת`);
+        return false;
+    }
+};
 // export const GetRequest= async (id, state, comment, table)=>
 //  {
 //   console.log("in get reqest")
@@ -76,28 +77,6 @@ export const getRequest = async (table, conditions, state, comment) => {
 //             comment(`Server error:${error}`)
 //         });
 // }
-
-//   export const GetAllRequest = async(state, comment, table) => {
-//     fetch(`http://${config.SERVERPORT}/${table}`)
-//         .then(response => {
-//             if (!response.ok) {
-//                 throw new Error(`Request failed with status: ${response.status}`);
-//             }
-//             return response.json();
-//         })
-//         .then(data => {
-//             if (Object.keys(data).length === 0) {
-//                 comment(`there is no ${table}s.`)
-//             }
-//             else {
-//                 state(data);
-//             }
-//         })
-//         .catch(error => {
-//             console.error(error);
-//             comment(`Server error: ${error}.`)
-//         });
-//   }
 
 export const UpdateRequest = async (state, comment, updatedObject, table) => {
     fetch(`http://${config.SERVERPORT}/${table}/${updatedObject.id}`, {
@@ -145,25 +124,6 @@ export const DeleteRequest = async (state, comment, id, table) => {
             comment(`Server error:${error}.`)
         });
 }
-// export const CreateRequest = async (comment, table, newMember) => {
-//   fetch(`http://${config.SERVERPORT}/${table}`, {
-//       headers: { 'Content-Type': 'application/json' },
-//       method: 'POST',
-//       body: JSON.stringify(newMember)
-//   })
-//       .then(response => {
-//           if (!response.ok) {      
-//               throw new Error(`Request failed with status: ${response.status}`);
-//           }
-//           console.log(" response.json() : "+response.status);
-//           return true;
-//       })
-//       .catch(error => {
-//           comment('An error occurred while creating');
-//           return false;
-
-//       });
-// }
 
 export const postRequest = async ( table, newItem, comment) => {
     try {

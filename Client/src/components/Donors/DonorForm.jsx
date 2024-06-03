@@ -78,12 +78,12 @@ const DonorForm = ({ donorDetails, setDonorDetails, addDonor, open, handleClose 
                                     <TextField
                                         size="small"
                                         margin="dense"
-                                        name="f_name"
-                                        label="שם פרטי"
+                                        name="l_name"
+                                        label="שם משפחה"
                                         type="text"
                                         fullWidth
                                         required
-                                        value={donorDetails.f_name || ""}
+                                        value={donorDetails.l_name || ""}
                                         onChange={handleChange}
                                         InputProps={{
                                             startAdornment: (
@@ -98,12 +98,12 @@ const DonorForm = ({ donorDetails, setDonorDetails, addDonor, open, handleClose 
                                     <TextField
                                         size="small"
                                         margin="dense"
-                                        name="l_name"
-                                        label="שם משפחה"
+                                        name="f_name"
+                                        label="שם פרטי"
                                         type="text"
                                         fullWidth
                                         required
-                                        value={donorDetails.l_name || ""}
+                                        value={donorDetails.f_name || ""}
                                         onChange={handleChange}
                                         InputProps={{
                                             startAdornment: (
