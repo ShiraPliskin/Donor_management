@@ -1,20 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { getByIdRequest } from '../Tools';
-import {
-    Dialog,
-    DialogTitle,
-    DialogContent,
-    DialogActions,
-    Button,
-    List,
-    ListItem,
-    ListItemIcon,
-    ListItemText,
-    TableCell,
-    TableRow,
-    IconButton,
-    Grid
-} from '@mui/material';
+import { Dialog, DialogTitle, DialogContent, DialogActions, Button, List, ListItem, ListItemIcon, ListItemText, TableCell, TableRow, IconButton, Grid} from '@mui/material';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import EmailIcon from '@mui/icons-material/Email';
@@ -61,7 +47,7 @@ const DonorDisplay = ({ donor, index }) => {
             </TableRow>
             {open && (
                 <Dialog open={open} onClose={handleClose} aria-labelledby="donor-details-dialog" maxWidth="md">
-                    <DialogTitle id="donor-details-dialog">פרטי תורם מספר {currentDonor.id}</DialogTitle>
+                    <DialogTitle id="donor-details-dialog">תורם מספר {currentDonor.id}</DialogTitle>
                     <DialogContent>
                         {currentDonor && (
                             <List>
@@ -138,7 +124,7 @@ const DonorDisplay = ({ donor, index }) => {
                                             <ListItemText primary="פרטי איש קשר" secondary={currentDonor.contact_id} sx={{ textAlign: 'right' }} />
                                         </ListItem>
                                     </Grid>
-                                    <Grid item xs={12} sm={6}>
+                                    <Grid item xs={12} sm={4}>
                                         <ListItem>
                                             <ListItemIcon>
                                                 <DescriptionIcon />

@@ -1,16 +1,8 @@
 import { React, useState } from 'react';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, IconButton } from '@mui/material';
-import VisibilityIcon from '@mui/icons-material/Visibility';
 import DonorDisplay from './DonorDisplay';
 
 const DonorsDisplay = ({ donorsToDisplay }) => {
-
-    // const [show, setShow] = useState(false);
-
-    // const handleClick = (donor) => {
-    //     console.log(donor)
-    //     setShow(true)
-    // }
 
     return (
         <>
