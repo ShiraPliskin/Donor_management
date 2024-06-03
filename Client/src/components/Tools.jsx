@@ -13,7 +13,6 @@ export const getRequest = async (table, conditions, state, comment) => {
         const data = await response.json();
 
         if (Object.keys(data).length === 0) {
-            comment(`לא נמצא תורם`);
             return false;
         } else {
             state(data);
@@ -36,9 +35,8 @@ export const getByIdRequest = async (table, id, state, comment) => {
         }
 
         const data = await response.json();
-        
+
         if (Object.keys(data).length === 0) {
-            comment(`לא נמצא תורם`);
             return false;
         } else {
             state(data["data"][0]);
@@ -50,33 +48,6 @@ export const getByIdRequest = async (table, id, state, comment) => {
         return false;
     }
 };
-// export const GetRequest= async (id, state, comment, table)=>
-//  {
-//   console.log("in get reqest")
-//     fetch(`http://${config.SERVERPORT}/${table}/${id}`)
-//         .then(response => {
-//           console.log("after fetch response "+response)
-//             if (!response.status===200) {
-//               console.log("response.status "+response.status)
-//                 throw new Error(`Request failed with status: ${response.status}`);
-//             }
-//             console.log("in get request response.json(): "+response);
-//             return response;
-//         })
-//         .then(data => {
-//           console.log("after json: "+ data)
-//             if (Object.keys(data).length === 0) {
-//                 comment(`there is no ${table} with such id.`)
-//             }
-//             else {
-//               console.log("in get users by id "+data[0]);
-//                 state(data[0]);
-//             }
-//         })
-//         .catch(error => {
-//             comment(`Server error:${error}`)
-//         });
-// }
 
 export const UpdateRequest = async (state, comment, updatedObject, table) => {
     fetch(`http://${config.SERVERPORT}/${table}/${updatedObject.id}`, {
@@ -137,12 +108,11 @@ export const postRequest = async ( table, newItem, comment) => {
             throw new Error(`Request failed with status: ${response.status}`);
         }
         console.log(" response.json() : " + response.status);
-        comment('תורם נוסף בהצלחה');
-        return true; // Return true if the request is successful
+        return true; 
     } catch (error) {
         console.error("Error creating request:", error);
-        comment('הוספת תורם נכשלה');
-        return false; // Return false if an error occurs
+        comment('שגיאת שרת');
+        return false;
     }
 };
 
