@@ -153,5 +153,6 @@ const isValidUsername = (inputString) => {
     isValidUsername,
     isValidPassword,
     isValidEmail,
-    isValidString
+    isValidString,
+    isValidNumber
  }
