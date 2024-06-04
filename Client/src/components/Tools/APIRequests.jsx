@@ -108,10 +108,11 @@ export const postRequest = async ( table, newItem, comment) => {
             throw new Error(`Request failed with status: ${response.status}`);
         }
         console.log(" response.json() : " + response.status);
+        comment("success");
         return true; 
     } catch (error) {
         console.error("Error creating request:", error);
-        comment('שגיאת שרת');
+        comment("error");
         return false;
     }
 };

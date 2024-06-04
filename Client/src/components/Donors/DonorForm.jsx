@@ -70,7 +70,7 @@ const DonorForm = ({ donorDetails, setDonorDetails, sendRequest, open, handleClo
         const isValid = checkValidation(donorDetails, setError, setHelperText);
         if (isValid) {
             sendRequest();
-            setFormType("display");
+            // setFormType("display");
             setCurrentDonor(donorDetails);
         }
     };
