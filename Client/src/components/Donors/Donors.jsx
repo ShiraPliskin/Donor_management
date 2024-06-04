@@ -26,7 +26,7 @@ const Donors = () => {
         <>
             <DonorAdd fields={fields} />
             <DonorSearch fields={fields} donorsToDisplay={donorsToDisplay} setDonorsToDisplay={setDonorsToDisplay}/>
-            <DonorsDisplay donorsToDisplay={donorsToDisplay}/>
+            <DonorsDisplay donorsToDisplay={donorsToDisplay} setDonorsToDisplay={setDonorsToDisplay}/>
         </>
     );
 };

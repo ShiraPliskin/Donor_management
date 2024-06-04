@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Button } from "@mui/material";
 import DonorForm from "./DonorForm";
-import { postRequest } from "../Tools";
+import { postRequest, filterEmptyValues } from "../Tools";
 
 const DonorAdd = ({ fields }) => {
     const [donorDetails, setDonorDetails] = useState({});
@@ -20,17 +20,7 @@ const DonorAdd = ({ fields }) => {
         setOpen(false);
     };
 
-    const filterEmptyValues = (obj) => {
-        return Object.keys(obj)
-            .filter(key => obj[key] !== null && obj[key] !== undefined && obj[key] !== '')
-            .reduce((filteredObj, key) => {
-                filteredObj[key] = obj[key];
-                return filteredObj;
-            }, {});
-    };
-
     const addDonorRequest = () => {
-        console.log(donorDetails);
         const newDonor = filterEmptyValues(donorDetails);
         postRequest("donors", newDonor, setCommentArea);
         handleClose();
@@ -41,7 +31,7 @@ const DonorAdd = ({ fields }) => {
             <Button variant="outlined" onClick={handleClickOpen}>
                 הוספת תורם
             </Button>
-            <DonorForm donorDetails={donorDetails} setDonorDetails={setDonorDetails} addDonor={addDonorRequest} open={open} handleClose={handleClose} />
+            <DonorForm donorDetails={donorDetails} setDonorDetails={setDonorDetails} sendRequest={addDonorRequest} open={open} handleClose={handleClose} type="add"/>
            
             {commentArea && <p>{commentArea}</p>}
         </>

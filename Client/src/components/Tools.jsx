@@ -49,7 +49,7 @@ export const getByIdRequest = async (table, id, state, comment) => {
     }
 };
 
-export const UpdateRequest = async (state, comment, updatedObject, table) => {
+export const putRequest = async (table, updatedObject, comment) => {
     fetch(`http://${config.SERVERPORT}/${table}/${updatedObject.id}`, {
         headers: { 'Content-Type': 'application/json' },
         method: 'PUT',
@@ -63,12 +63,12 @@ export const UpdateRequest = async (state, comment, updatedObject, table) => {
         })
         .then(data => {
             if (Object.keys(data).length === 0) {
-                comment(`there is no ${table} with such id.`)
+                return false;
             }
         })
         .catch(error => {
             console.error(error);
-            comment(`Server error:${error}.`)
+            comment(`שגיאת שרת`)
         });
 }
 
@@ -116,3 +116,42 @@ export const postRequest = async ( table, newItem, comment) => {
     }
 };
 
+export const filterEmptyValues = (obj) => {
+    return Object.keys(obj)
+        .filter(key => obj[key] !== null && obj[key] !== undefined && obj[key] !== '')
+        .reduce((filteredObj, key) => {
+            filteredObj[key] = obj[key];
+            return filteredObj;
+        }, {});
+};
+
+const isValidUsername = (inputString) => {
+    const regex = /^[a-zA-Z0-9]+$/;
+    return regex.test(inputString);
+  };
+
+  const isValidPassword = (inputString) => {
+    const regex = /^[a-z]*[a-z]\.[a-z]+$/;
+    return regex.test(inputString);
+  };
+
+  const isValidEmail = (email) => {
+    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+    return emailRegex.test(email);
+  };
+
+  const isValidString = (inputString) => {
+    const regex = /^[a-zA-Z\s-]{1,30}$/;
+    return regex.test(inputString);
+  };
+
+  const isValidNumber = (inputString) => {
+    const regex = /^[-0-9]+$/;
+    return regex.test(inputString);
+  };
+ export {
+    isValidUsername,
+    isValidPassword,
+    isValidEmail,
+    isValidString
+ }

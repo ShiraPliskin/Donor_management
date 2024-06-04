@@ -2,7 +2,7 @@ import { React, useState } from 'react';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, IconButton } from '@mui/material';
 import DonorDisplay from './DonorDisplay';
 
-const DonorsDisplay = ({ donorsToDisplay }) => {
+const DonorsDisplay = ({ donorsToDisplay, setDonorsToDisplay }) => {
 
     return (
         <>
@@ -22,7 +22,7 @@ const DonorsDisplay = ({ donorsToDisplay }) => {
                         </TableHead>
                         <TableBody>
                             {donorsToDisplay.map((donor, index) => (
-                                <DonorDisplay donor={donor} index={index}/>
+                                <DonorDisplay donor={donor} index={index} setDonorsToDisplay={setDonorsToDisplay}/>
                             ))}
                         </TableBody>
                     </Table>
