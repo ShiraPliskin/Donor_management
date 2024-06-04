@@ -1,30 +1,51 @@
 
-export const checkValidation = (donorDetails, setCommentArea) => {
-    const requiredFields = ["f_name", "l_name", "address"];
-    for (const field of requiredFields) {
-        if (!donorDetails[field]) {
-            setCommentArea("נא מלא את כל שדות החובה המסומנים ב - *");
-            return false;
+import { isValidEmail, isValidNumber, isValidString } from '../Tools/Validation'
+
+export const checkValidation = (donorDetails, error, helperText) => {
+
+    let isValid = true;
+    const requiredFields = ["l_name", "f_name", "address"];
+
+    const checkRequieredFields = () => {
+        for (const field of requiredFields) {
+            if (!donorDetails[field]) {
+                error(prevError => ({ ...prevError, [field]: true }));
+                helperText(prevHelperText => ({ ...prevHelperText, [field]: ("זהו שדה חובה.") }));
+                isValid = false;
+            }
+        }
+        if (!isValid) return false;
+        checkValues();
+    }
+
+    const checkValues = () => {
+        Object.keys(donorDetails).forEach(key => {
+            switch (key) {
+                case "f_name":
+                case "l_name":
+                case "spouse_name":
+                    checkValidate(key, isValidString, "מלא אותיות בלבד.");
+                    break;
+                case "email":
+                    checkValidate(key, isValidEmail,  "כתובת המייל אינה תקינה.");
+                    break;
+                case "phone":
+                    checkValidate(key, isValidNumber,  "מספר הטלפון אינו תקין.");
+                    break;
+                default:  break;
+            }
+        });
+    }
+
+    const checkValidate = (key, validateFunc, message) => {
+        if (donorDetails[key].trim() !== '' && !validateFunc(donorDetails[key])) {
+            error(prevError => ({ ...prevError, [key]: true }));
+            helperText(prevHelperText => ({ ...prevHelperText, [key]: message }));
+            isValid = false;
         }
     }
-    if (donorDetails["email"] && !isValidEmail(donorDetails["email"])) {
-        setCommentArea("כתובת המייל אינה תקינה.");
-        return false;
-    }
-    if (donorDetails["phone"] && !isValidNumber(donorDetails["phone"])) {
-        setCommentArea("מספר הטלפון אינו תקין.");
-        return false;
-    }
-    return true;
+
+    checkRequieredFields();
+    return isValid;
+
 }
-
-
-const isValidEmail = (email) => {
-    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-    return emailRegex.test(email);
-};
-
-const isValidNumber = (inputString) => {
-    const regex = /^[-0-9]+$/;
-    return regex.test(inputString);
-};

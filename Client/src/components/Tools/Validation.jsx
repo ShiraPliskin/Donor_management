@@ -32,6 +32,7 @@ const isValidUsername = (inputString) => {
     const regex = /^[-0-9]+$/;
     return regex.test(inputString);
   };
+
  export {
     isValidUsername,
     isValidPassword,

@@ -14,33 +14,72 @@ import _isEqual from 'lodash/isEqual';
 const DonorForm = ({ donorDetails, setDonorDetails, sendRequest, open, handleClose, type }) => {
 
     const [commentArea, setCommentArea] = useState("");
+
     const [formType, setFormType] = useState(type);
-    const [currentDonor, setCurrentDonor] = useState(donorDetails); 
+    const [currentDonor, setCurrentDonor] = useState(donorDetails);
     const [donorChanged, setDonorChanged] = useState(false);
+
+    const errorObject = {
+        f_name: false,
+        l_name: false,
+        email: false,
+        phone: false,
+        address: false,
+        num_of_children: false,
+        spouse_name: false,
+        address_at_work: false,
+        introduction_description: false,
+        contact_id: false,
+        remarks: false,
+    };
+    const helperTextObject = {
+        f_name: '',
+        l_name: '',
+        email: '',
+        phone: '',
+        address: '',
+        num_of_children: '',
+        spouse_name: '',
+        address_at_work: '',
+        introduction_description: '',
+        contact_id: '',
+        remarks: '',
+    };
+
+    const [error, setError] = useState(errorObject);
+    const [helperText, setHelperText] = useState(helperTextObject);
 
     useEffect(() => {
         setCommentArea("");
-        setCurrentDonor(donorDetails);
         setDonorChanged(false);
+        setError(errorObject);
+        setHelperText(helperTextObject);
     }, [open, formType]);
 
     useEffect(() => {
         setDonorChanged(!_isEqual(donorDetails, currentDonor));
     }, [donorDetails]);
 
+    const undoEdit = () =>{
+        setFormType("display");
+        // setDonorDetails(currentDonor);
+    }
+
     const handleSubmit = (e) => {
         e.preventDefault();
-        setFormType("display");
-        const isValid = (checkValidation(donorDetails, setCommentArea));
-        if (!isValid) {
-            return;
+        const isValid = checkValidation(donorDetails, setError, setHelperText);
+        if (isValid) {
+            sendRequest();
+            setFormType("display");
+            setCurrentDonor(donorDetails);
         }
-        sendRequest();
     };
 
     const handleChange = (e) => {
         const { name, value } = e.target;
         setDonorDetails((prevData) => ({ ...prevData, [name]: value }));
+        setError((prevData) => ({ ...prevData, [name]: false }));
+        setHelperText((prevData) => ({ ...prevData, [name]: '' }));
     };
 
     return (
@@ -62,8 +101,13 @@ const DonorForm = ({ donorDetails, setDonorDetails, sendRequest, open, handleClo
                                     type="text"
                                     fullWidth
                                     required={formType !== "display"}
+                                    error={error.l_name}
+                                    helperText={helperText.l_name}
                                     value={donorDetails.l_name || ""}
                                     onChange={handleChange}
+                                    inputProps={{
+                                        maxLength: 20,
+                                    }}
                                     InputProps={{
                                         startAdornment: (
                                             <InputAdornment position="start">
@@ -83,8 +127,13 @@ const DonorForm = ({ donorDetails, setDonorDetails, sendRequest, open, handleClo
                                     type="text"
                                     fullWidth
                                     required={formType !== "display"}
+                                    error={error.f_name}
+                                    helperText={helperText.f_name}
                                     value={donorDetails.f_name || ""}
                                     onChange={handleChange}
+                                    inputProps={{
+                                        maxLength: 20,
+                                    }}
                                     InputProps={{
                                         startAdornment: (
                                             <InputAdornment position="start">
@@ -104,7 +153,12 @@ const DonorForm = ({ donorDetails, setDonorDetails, sendRequest, open, handleClo
                                     type="text"
                                     fullWidth
                                     value={donorDetails.phone || ""}
+                                    error={error.phone}
+                                    helperText={helperText.phone}
                                     onChange={handleChange}
+                                    inputProps={{
+                                        maxLength: 20,
+                                    }}
                                     InputProps={{
                                         startAdornment: (
                                             <InputAdornment position="start">
@@ -124,7 +178,12 @@ const DonorForm = ({ donorDetails, setDonorDetails, sendRequest, open, handleClo
                                     type="email"
                                     fullWidth
                                     value={donorDetails.email || ""}
+                                    error={error.email}
+                                    helperText={helperText.email}
                                     onChange={handleChange}
+                                    inputProps={{
+                                        maxLength: 40,
+                                    }}
                                     InputProps={{
                                         startAdornment: (
                                             <InputAdornment position="start">
@@ -145,7 +204,12 @@ const DonorForm = ({ donorDetails, setDonorDetails, sendRequest, open, handleClo
                                     fullWidth
                                     required={formType !== "display"}
                                     value={donorDetails.address || ""}
+                                    error={error.address}
+                                    helperText={helperText.address}
                                     onChange={handleChange}
+                                    inputProps={{
+                                        maxLength: 200,
+                                    }}
                                     InputProps={{
                                         startAdornment: (
                                             <InputAdornment position="start">
@@ -165,7 +229,12 @@ const DonorForm = ({ donorDetails, setDonorDetails, sendRequest, open, handleClo
                                     type="text"
                                     fullWidth
                                     value={donorDetails.spouse_name || ""}
+                                    error={error.spouse_name}
+                                    helperText={helperText.spouse_name}
                                     onChange={handleChange}
+                                    inputProps={{
+                                        maxLength: 20,
+                                    }}
                                     InputProps={{
                                         startAdornment: (
                                             <InputAdornment position="start">
@@ -185,6 +254,8 @@ const DonorForm = ({ donorDetails, setDonorDetails, sendRequest, open, handleClo
                                     type="number"
                                     fullWidth
                                     value={donorDetails.num_of_children || ""}
+                                    error={error.num_of_children}
+                                    helperText={helperText.num_of_children}
                                     onChange={handleChange}
                                     InputProps={{
                                         startAdornment: (
@@ -205,7 +276,12 @@ const DonorForm = ({ donorDetails, setDonorDetails, sendRequest, open, handleClo
                                     type="text"
                                     fullWidth
                                     value={donorDetails.address_at_work || ""}
+                                    error={error.address_at_work}
+                                    helperText={helperText.address_at_work}
                                     onChange={handleChange}
+                                    inputProps={{
+                                        maxLength: 200,
+                                    }}
                                     InputProps={{
                                         startAdornment: (
                                             <InputAdornment position="start">
@@ -225,7 +301,12 @@ const DonorForm = ({ donorDetails, setDonorDetails, sendRequest, open, handleClo
                                     type="text"
                                     fullWidth
                                     value={donorDetails.introduction_description || ""}
+                                    error={error.introduction_description}
+                                    helperText={helperText.introduction_description}
                                     onChange={handleChange}
+                                    inputProps={{
+                                        maxLength: 255,
+                                    }}
                                     InputProps={{
                                         startAdornment: (
                                             <InputAdornment position="start">
@@ -245,7 +326,12 @@ const DonorForm = ({ donorDetails, setDonorDetails, sendRequest, open, handleClo
                                     type="text"
                                     fullWidth
                                     value={donorDetails.remarks || ""}
+                                    error={error.remarks}
+                                    helperText={helperText.remarks}
                                     onChange={handleChange}
+                                    inputProps={{
+                                        maxLength: 255,
+                                    }}
                                     InputProps={{
                                         startAdornment: (
                                             <InputAdornment position="start">
@@ -267,7 +353,7 @@ const DonorForm = ({ donorDetails, setDonorDetails, sendRequest, open, handleClo
                         </>}
                     {formType === "edit" &&
                         <>
-                            <Button onClick={()=> setFormType("display") } color="primary">ביטול</Button>
+                            <Button onClick={() => undoEdit()} color="primary">ביטול</Button>
                             <Button disabled={!donorChanged} onClick={handleSubmit} color="primary">עדכן</Button>
                         </>}
                     {formType === "add" &&
@@ -275,7 +361,6 @@ const DonorForm = ({ donorDetails, setDonorDetails, sendRequest, open, handleClo
                             <Button onClick={handleClose} color="primary">ביטול</Button>
                             <Button onClick={handleSubmit} color="primary">הוסף</Button>
                         </>}
-
                 </DialogActions>
             </Dialog>
 

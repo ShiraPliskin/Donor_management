@@ -3,7 +3,8 @@ import { getByIdRequest } from '../Tools/APIRequests';
 import { TableCell, TableRow, IconButton} from '@mui/material';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import DonorForm from './DonorForm';
-import { putRequest, filterEmptyValues} from '../Tools/APIRequests'
+import { putRequest } from '../Tools/APIRequests'
+import {filterEmptyValues} from "../Tools/Validation"
 
 const DonorDisplay = ({ donor, index , setDonorsToDisplay}) => {
     const [currentDonor, setCurrentDonor] = useState("");

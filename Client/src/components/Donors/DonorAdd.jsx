@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Button } from "@mui/material";
 import DonorForm from "./DonorForm";
-import { postRequest, filterEmptyValues } from "../Tools/APIRequests";
+import { postRequest } from "../Tools/APIRequests";
+import {filterEmptyValues} from "../Tools/Validation"
 
 const DonorAdd = ({ fields }) => {
     const [donorDetails, setDonorDetails] = useState({});
@@ -32,7 +33,6 @@ const DonorAdd = ({ fields }) => {
                 הוספת תורם
             </Button>
             <DonorForm donorDetails={donorDetails} setDonorDetails={setDonorDetails} sendRequest={addDonorRequest} open={open} handleClose={handleClose} type="add"/>
-           
             {commentArea && <p>{commentArea}</p>}
         </>
     );
