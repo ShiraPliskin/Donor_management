@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Button } from "@mui/material";
 import DonorForm from "./DonorForm";
-import { postRequest, filterEmptyValues } from "../Tools";
+import { postRequest, filterEmptyValues } from "../Tools/APIRequests";
 
 const DonorAdd = ({ fields }) => {
     const [donorDetails, setDonorDetails] = useState({});

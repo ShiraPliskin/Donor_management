@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { getRequest } from "../Tools";
+import { getRequest } from "../Tools/APIRequests";
 import { Button, TextField, Box } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 

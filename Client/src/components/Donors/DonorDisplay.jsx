@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { getByIdRequest } from '../Tools';
+import { getByIdRequest } from '../Tools/APIRequests';
 import { TableCell, TableRow, IconButton} from '@mui/material';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import DonorForm from './DonorForm';
-import { putRequest, filterEmptyValues} from '../Tools'
+import { putRequest, filterEmptyValues} from '../Tools/APIRequests'
 
 const DonorDisplay = ({ donor, index , setDonorsToDisplay}) => {
     const [currentDonor, setCurrentDonor] = useState("");

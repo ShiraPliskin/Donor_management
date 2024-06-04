@@ -1,18 +1,26 @@
 import { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { userContext } from "../../App";
+import { getRequest } from "../Tools/APIRequests";
+
 import style from "./Register.module.css"
 const Register = () => {
   const [PW, setPW] = useState({ "password": "", "verifyPW": "" })
   const [isPwVerified, setIsPwVerified] = useState(false);
   const [errMessage, setErrMessage] = useState("");
   const [registerStep, setRgisterStep] = useState(1);
+  const [isUserExists,setIsUserExist] = useState("")
   const { setCurrentUser } = useContext(userContext);
+
   const navigate = useNavigate();
   const user = {
     "username": "",
-    "email": "",
-    "password": ""
+    "email": ""
+  }
+
+  const register={
+    "user_id":"",
+    "password":""
   }
 
   function handleNextBtn(event) {
@@ -33,23 +41,18 @@ const Register = () => {
   async function handleSubmit(event) {
     event.preventDefault();
     setErrMessage("");
-    user.id = await getNextId() ?? alert("sorry, try later");
-    user.name = event.target.name.value;
+    user.username = event.target.username.value;
     user.email = event.target.email.value;
-    user.address.street = event.target.street.value;
-    user.address.suite = event.target.suite.value;
-    user.address.city = event.target.city.value;
-    user.address.zipcode = event.target.zipcode.value;
-    user.address.geo.lat = event.target.lat.value;
-    user.address.geo.lng = event.target.lng.value;
-    user.phone = event.target.phone.value;
-    user.company.name = event.target.companyName.value;
-    user.company.catchPhrase = event.target.catchPhrase.value;
-    user.company.bs = event.target.bs.value;
-    addUser();
+    register.password = event.target.password.value;
+    chackDetails();
   }
 
   
+  function chackDetails()
+  {
+     getRequest("users", `filter=username=${user.username}`, setIsUserExist,setErrMessagerrMessage);
+  }
+
   function addUser() {
     fetch("http://localhost:3000/users", {
       method: 'POST',
@@ -78,15 +81,6 @@ const Register = () => {
       })
   }
 
-  async function getNextId() {
-    const id = await fetch("http://localhost:3000/config/1")
-    //http://${config.SERVERPORT}/${table}/${id}}
-      .then(result => result.json())
-      .then(json => json.userId)
-      .catch(error => console.error(error));
-    return id.toString();
-  }
-
   useEffect(() => {
     setIsPwVerified(!PW.password == "" && PW.password === PW.verifyPW);
   }, [PW.password, PW.verifyPW])
@@ -95,7 +89,7 @@ const Register = () => {
     <>
       <div className={style.wrapper}>
         <h1>Please sign up</h1>
-        <form onSubmit={(event) => handleNextBtn(event)} className={style.inputBox}>
+        <form onSubmit={handleSubmit} className={style.inputBox}>
           <input name="username" type="text" placeholder="usernane" required />
           <input name="email" type="text" placeholder="email" required />
           <input placeholder="password" onChange={(e) => setPW(prev => ({ ...prev, password: e.target.value }))} name="password" type="password" />
