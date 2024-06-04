@@ -1,18 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { getByIdRequest } from '../Tools';
-import { Dialog, DialogTitle, DialogContent, DialogActions, Button, List, ListItem, ListItemIcon, ListItemText, TableCell, TableRow, IconButton, Grid} from '@mui/material';
+import { TableCell, TableRow, IconButton} from '@mui/material';
 import VisibilityIcon from '@mui/icons-material/Visibility';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import EmailIcon from '@mui/icons-material/Email';
-import PhoneIcon from '@mui/icons-material/Phone';
-import HomeIcon from '@mui/icons-material/Home';
-import PersonIcon from '@mui/icons-material/Person';
-import PeopleIcon from '@mui/icons-material/People';
-import WorkIcon from '@mui/icons-material/Work';
-import DescriptionIcon from '@mui/icons-material/Description';
-import NoteIcon from '@mui/icons-material/Note';
+import DonorForm from './DonorForm';
+import { putRequest, filterEmptyValues} from '../Tools'
 
-const DonorDisplay = ({ donor, index }) => {
+const DonorDisplay = ({ donor, index , setDonorsToDisplay}) => {
     const [currentDonor, setCurrentDonor] = useState("");
     const [commentArea, setCommentArea] = useState("");
     const [open, setOpen] = useState(false);
@@ -28,6 +21,17 @@ const DonorDisplay = ({ donor, index }) => {
 
     const handleClose = () => {
         setOpen(false);
+    };
+
+    const updateDonorRequest = () => {
+        const updatedDonor = filterEmptyValues(currentDonor);
+        putRequest("donors", updatedDonor, setCommentArea);
+        setDonorsToDisplay((prevDonors) => {
+            return prevDonors.map(donor => 
+                donor.id === updatedDonor.id ? updatedDonor : donor
+            );
+        });
+        // handleClose();
     };
 
     return (
@@ -46,100 +50,7 @@ const DonorDisplay = ({ donor, index }) => {
                 </TableCell>
             </TableRow>
             {open && (
-                <Dialog open={open} onClose={handleClose} aria-labelledby="donor-details-dialog" maxWidth="sm">
-                    <DialogTitle id="donor-details-dialog">תורם מספר {currentDonor.id}</DialogTitle>
-                    <DialogContent>
-                        {currentDonor && (
-                            <List>
-                                <Grid container spacing={1}>
-                                    <Grid item xs={12} sm={4}>
-                                        <ListItem>
-                                            <ListItemIcon>
-                                                <AccountCircleIcon />
-                                            </ListItemIcon>
-                                            <ListItemText primary="שם התורם" secondary={currentDonor.l_name + " " + currentDonor.f_name} sx={{ textAlign: 'right' }} />
-                                        </ListItem>
-                                    </Grid>
-                                    <Grid item xs={12} sm={4}>
-                                        <ListItem>
-                                            <ListItemIcon>
-                                                <PhoneIcon />
-                                            </ListItemIcon>
-                                            <ListItemText primary="טלפון" secondary={currentDonor.phone} sx={{ textAlign: 'right' }} />
-                                        </ListItem>
-                                    </Grid>
-                                    <Grid item xs={12} sm={4}>
-                                        <ListItem>
-                                            <ListItemIcon>
-                                                <EmailIcon />
-                                            </ListItemIcon>
-                                            <ListItemText primary="כתובת מייל" secondary={currentDonor.email} sx={{ textAlign: 'right' }} />
-                                        </ListItem>
-                                    </Grid>
-                                    <Grid item xs={12} sm={4}>
-                                        <ListItem>
-                                            <ListItemIcon>
-                                                <HomeIcon />
-                                            </ListItemIcon>
-                                            <ListItemText primary="כתובת" secondary={currentDonor.address} sx={{ textAlign: 'right' }} />
-                                        </ListItem>
-                                    </Grid>
-                                    <Grid item xs={12} sm={4}>
-                                        <ListItem>
-                                            <ListItemIcon>
-                                                <PersonIcon />
-                                            </ListItemIcon>
-                                            <ListItemText primary="שם בן הזוג" secondary={currentDonor.spouse_name} sx={{ textAlign: 'right' }} />
-                                        </ListItem>
-                                    </Grid>
-                                    <Grid item xs={12} sm={4}>
-                                        <ListItem>
-                                            <ListItemIcon>
-                                                <PeopleIcon />
-                                            </ListItemIcon>
-                                            <ListItemText primary="מספר ילדים" secondary={currentDonor.num_of_children} sx={{ textAlign: 'right' }} />
-                                        </ListItem>
-                                    </Grid>
-                                    <Grid item xs={12} sm={4}>
-                                        <ListItem>
-                                            <ListItemIcon>
-                                                <WorkIcon />
-                                            </ListItemIcon>
-                                            <ListItemText primary="כתובת בעבודה" secondary={currentDonor.address_at_work} sx={{ textAlign: 'right' }} />
-                                        </ListItem>
-                                    </Grid>
-                                    <Grid item xs={12} sm={8}>
-                                        <ListItem>
-                                            <ListItemIcon>
-                                                <PeopleIcon />
-                                            </ListItemIcon>
-                                            <ListItemText primary="פרטי איש קשר" secondary={currentDonor.contact_id} sx={{ textAlign: 'right' }} />
-                                        </ListItem>
-                                    </Grid>
-                                    <Grid item xs={12} sm={6}>
-                                        <ListItem>
-                                            <ListItemIcon>
-                                                <DescriptionIcon />
-                                            </ListItemIcon>
-                                            <ListItemText primary="תיאור הכרות" secondary={currentDonor.Introduction_description} sx={{ textAlign: 'right' }} />
-                                        </ListItem>
-                                    </Grid>
-                                    <Grid item xs={12} sm={6}>
-                                        <ListItem>
-                                            <ListItemIcon>
-                                                <NoteIcon />
-                                            </ListItemIcon>
-                                            <ListItemText primary="הערות" secondary={currentDonor.Remarks} sx={{ textAlign: 'right' }} />
-                                        </ListItem>
-                                    </Grid>
-                                </Grid>
-                            </List>
-                        )}
-                    </DialogContent>
-                    <DialogActions>
-                        <Button onClick={handleClose} color="primary">סגור</Button>
-                    </DialogActions>
-                </Dialog>
+                <DonorForm donorDetails={currentDonor} setDonorDetails={setCurrentDonor} sendRequest={updateDonorRequest} open={open} handleClose={handleClose} type="display"/>
             )}
             <p>{commentArea}</p>
         </>
