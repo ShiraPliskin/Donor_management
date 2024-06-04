@@ -12,13 +12,13 @@ export class RegisterService {
         return result;
     }
 
-    async getRegister(register) {
+    async getRegister(passwordRegister,id) {
         const queryRegister = getByIdQuery("register","user_id");
-        const result =  await executeQuery(queryRegister, [register.user_id]);
+        const result =  await executeQuery(queryRegister, [id]);
         if(result[0])
         {
             let algorithm = "sha256";
-            let key = register.password;
+            let key = passwordRegister;
             let digest= crypto.createHash(algorithm).update(key).digest("base64");
             if(result[0].password===digest)
             {

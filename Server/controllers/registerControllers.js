@@ -39,14 +39,13 @@ export class RegisterController {
 
     async getRegister(req, res, next) {
         try {
-            console.log("get");
             const registerService = new RegisterService();
-            const {type, statusCode, result} = await registerService.getRegister(req.body);
+            const {type, statusCode, result} = await registerService.getRegister(req.body.password,req.params.id);
             if (type === 'Error'){
                 return res.status(statusCode).json({status: statusCode});
               }
             else 
-                res.status(200).json({ status: 200, data:result });
+                res.status(200).json({ status: 200 });
 
         }
         catch (ex) {

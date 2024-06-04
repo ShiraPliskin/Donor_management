@@ -36,7 +36,6 @@ export class UsersService {
 
     async addUser(newUser) {
         const values = Object.values(newUser);
-        await registerService.addRegister(newUser);
         const queryUser = addQuery("users",newUser);
         const result =  await executeQuery(queryUser, values);
         return result;
