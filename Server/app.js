@@ -4,7 +4,7 @@ import cors from 'cors';
 // import { passwordRouter } from './router/passwordRouter.js'
 import { donorsRouter } from './router/donorsRouter.js'
 import { registerRouter } from './router/registerRouter.js'
-
+import { usersRouter } from './router/usersRouter.js';
 // import {logErrors} from './middleware/logError.js'
 const app = express();
 app.use(cors());
@@ -14,6 +14,7 @@ app.use(express.json());
 // app.use('/passwords', passwordRouter);
 app.use('/donors', donorsRouter);
 app.use('/register', registerRouter);
+app.use('/users', usersRouter);
 
 // app.use(logErrors);
 
