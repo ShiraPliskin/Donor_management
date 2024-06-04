@@ -25,8 +25,10 @@ const DonorSearch = ({ fields, donorsToDisplay, setDonorsToDisplay }) => {
                 conditions.push(`${key}=${value}`);
             }
         }
-        const queryString = conditions.length > 0 ? `?${conditions.join('&')}` : '';
-        getRequest("donors", queryString, setDonorsToDisplay, setCommentArea);
+        const fields = "id, l_name, f_name, email, phone, address";
+        const queryString = conditions.length > 0 ? `?fields=${fields}&filter=${conditions.join(',')}` :"";
+        if(queryString)
+            getRequest("donors", queryString, setDonorsToDisplay, setCommentArea);
     };
 
     const handleChange = (e) => {

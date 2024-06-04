@@ -21,6 +21,7 @@ const DonorForm = ({ donorDetails, setDonorDetails, sendRequest, open, handleClo
     useEffect(() => {
         setCommentArea("");
         setCurrentDonor(donorDetails);
+        setDonorChanged(false);
     }, [open, formType]);
 
     useEffect(() => {
