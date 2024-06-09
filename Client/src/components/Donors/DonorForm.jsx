@@ -10,13 +10,14 @@ import DescriptionIcon from '@mui/icons-material/Description';
 import NoteIcon from '@mui/icons-material/Note';
 import { checkValidation } from './DonorValidation'
 import _isEqual from 'lodash/isEqual';
+import _ from 'lodash';
 
 const DonorForm = ({ donorDetails, setDonorDetails, sendRequest, open, handleClose, type }) => {
 
     const [commentArea, setCommentArea] = useState("");
 
     const [formType, setFormType] = useState(type);
-    const [currentDonor, setCurrentDonor] = useState(donorDetails);
+    const [updatedDonor, setUpdatedDonor] = useState(donorDetails);
     const [donorChanged, setDonorChanged] = useState(false);
 
     const errorObject = {
@@ -57,27 +58,38 @@ const DonorForm = ({ donorDetails, setDonorDetails, sendRequest, open, handleClo
     }, [open, formType]);
 
     useEffect(() => {
-        setDonorChanged(!_isEqual(donorDetails, currentDonor));
+        if (donorChanged) {
+            console.log("donorDetails updated: ", donorDetails);
+            sendRequest();
+            setFormType("display");
+        }
     }, [donorDetails]);
+
+    const trimObjectStrings = (obj) => {
+        return _.mapValues(obj, value => _.isString(value) ? value.trim() : value);
+    };
+
+    useEffect(() => {
+        setDonorChanged(!_isEqual(trimObjectStrings(donorDetails), trimObjectStrings(updatedDonor)));
+    }, [updatedDonor]);
 
     const undoEdit = () =>{
         setFormType("display");
-        // setDonorDetails(currentDonor);
+        setUpdatedDonor(donorDetails);
     }
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        const isValid = checkValidation(donorDetails, setError, setHelperText);
+        const isValid = checkValidation(updatedDonor, setError, setHelperText);
         if (isValid) {
-            sendRequest();
-            // setFormType("display");
-            setCurrentDonor(donorDetails);
+            setDonorDetails(updatedDonor);
+            console.log("updatedDonor ", updatedDonor);
         }
     };
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setDonorDetails((prevData) => ({ ...prevData, [name]: value }));
+        setUpdatedDonor((prevData) => ({ ...prevData, [name]: value }));
         setError((prevData) => ({ ...prevData, [name]: false }));
         setHelperText((prevData) => ({ ...prevData, [name]: '' }));
     };
@@ -103,7 +115,7 @@ const DonorForm = ({ donorDetails, setDonorDetails, sendRequest, open, handleClo
                                     required={formType !== "display"}
                                     error={error.l_name}
                                     helperText={helperText.l_name}
-                                    value={donorDetails.l_name || ""}
+                                    value={updatedDonor.l_name || ""}
                                     onChange={handleChange}
                                     inputProps={{
                                         maxLength: 20,
@@ -129,7 +141,7 @@ const DonorForm = ({ donorDetails, setDonorDetails, sendRequest, open, handleClo
                                     required={formType !== "display"}
                                     error={error.f_name}
                                     helperText={helperText.f_name}
-                                    value={donorDetails.f_name || ""}
+                                    value={updatedDonor.f_name || ""}
                                     onChange={handleChange}
                                     inputProps={{
                                         maxLength: 20,
@@ -152,7 +164,7 @@ const DonorForm = ({ donorDetails, setDonorDetails, sendRequest, open, handleClo
                                     label="טלפון"
                                     type="text"
                                     fullWidth
-                                    value={donorDetails.phone || ""}
+                                    value={updatedDonor.phone || ""}
                                     error={error.phone}
                                     helperText={helperText.phone}
                                     onChange={handleChange}
@@ -177,7 +189,7 @@ const DonorForm = ({ donorDetails, setDonorDetails, sendRequest, open, handleClo
                                     label="כתובת מייל"
                                     type="email"
                                     fullWidth
-                                    value={donorDetails.email || ""}
+                                    value={updatedDonor.email || ""}
                                     error={error.email}
                                     helperText={helperText.email}
                                     onChange={handleChange}
@@ -203,7 +215,7 @@ const DonorForm = ({ donorDetails, setDonorDetails, sendRequest, open, handleClo
                                     type="text"
                                     fullWidth
                                     required={formType !== "display"}
-                                    value={donorDetails.address || ""}
+                                    value={updatedDonor.address || ""}
                                     error={error.address}
                                     helperText={helperText.address}
                                     onChange={handleChange}
@@ -228,7 +240,7 @@ const DonorForm = ({ donorDetails, setDonorDetails, sendRequest, open, handleClo
                                     label="שם בן הזוג"
                                     type="text"
                                     fullWidth
-                                    value={donorDetails.spouse_name || ""}
+                                    value={updatedDonor.spouse_name || ""}
                                     error={error.spouse_name}
                                     helperText={helperText.spouse_name}
                                     onChange={handleChange}
@@ -253,7 +265,7 @@ const DonorForm = ({ donorDetails, setDonorDetails, sendRequest, open, handleClo
                                     label="מספר ילדים"
                                     type="number"
                                     fullWidth
-                                    value={donorDetails.num_of_children || ""}
+                                    value={updatedDonor.num_of_children || ""}
                                     error={error.num_of_children}
                                     helperText={helperText.num_of_children}
                                     onChange={handleChange}
@@ -275,7 +287,7 @@ const DonorForm = ({ donorDetails, setDonorDetails, sendRequest, open, handleClo
                                     label="כתובת בעבודה"
                                     type="text"
                                     fullWidth
-                                    value={donorDetails.address_at_work || ""}
+                                    value={updatedDonor.address_at_work || ""}
                                     error={error.address_at_work}
                                     helperText={helperText.address_at_work}
                                     onChange={handleChange}
@@ -300,7 +312,7 @@ const DonorForm = ({ donorDetails, setDonorDetails, sendRequest, open, handleClo
                                     label="תיאור הכרות"
                                     type="text"
                                     fullWidth
-                                    value={donorDetails.introduction_description || ""}
+                                    value={updatedDonor.introduction_description || ""}
                                     error={error.introduction_description}
                                     helperText={helperText.introduction_description}
                                     onChange={handleChange}
@@ -325,7 +337,7 @@ const DonorForm = ({ donorDetails, setDonorDetails, sendRequest, open, handleClo
                                     label="הערות"
                                     type="text"
                                     fullWidth
-                                    value={donorDetails.remarks || ""}
+                                    value={updatedDonor.remarks || ""}
                                     error={error.remarks}
                                     helperText={helperText.remarks}
                                     onChange={handleChange}

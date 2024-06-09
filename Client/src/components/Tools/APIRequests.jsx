@@ -50,50 +50,51 @@ export const getByIdRequest = async (table, id, state, comment) => {
 };
 
 export const putRequest = async (table, updatedObject, comment) => {
-    fetch(`http://${config.SERVERPORT}/${table}/${updatedObject.id}`, {
-        headers: { 'Content-Type': 'application/json' },
-        method: 'PUT',
-        body: JSON.stringify(updatedObject)
-    })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`Request failed with status: ${response.status}`);
-            }
-            return response.json();
-        })
-        .then(data => {
-            if (Object.keys(data).length === 0) {
-                return false;
-            }
-        })
-        .catch(error => {
-            console.error(error);
-            comment(`שגיאת שרת`)
+    try {
+        const response = await fetch(`http://${config.SERVERPORT}/${table}/${updatedObject.id}`, {
+            headers: { 'Content-Type': 'application/json' },
+            method: 'PUT',
+            body: JSON.stringify(updatedObject)
         });
+
+        if (!response.ok) {
+            throw new Error(`Request failed with status: ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        if (Object.keys(data).length === 0) {
+            return false;
+        }
+        return true; 
+    } catch (error) {
+        console.error(error);
+        comment(`שגיאת שרת`);
+        return false; 
+    }
 }
 
 export const DeleteRequest = async (state, comment, id, table) => {
-    fetch(`http://${config.SERVERPORT}/${table}/${id}`, {
-        headers: { 'Content-Type': 'application/json' },
-        method: 'DELETE',
-    })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`Request failed with status: ${response.status}`);
-            }
-            return response.json();
-        })
-        .then(data => {
-            if (Object.keys(data).length === 0) {
-                comment(`can't delete`);
-            }
-            else {
-                state(data);
-            }
-        })
-        .catch(error => {
-            comment(`Server error:${error}.`)
+    try {
+        const response = await fetch(`http://${config.SERVERPORT}/${table}/${id}`, {
+            headers: { 'Content-Type': 'application/json' },
+            method: 'DELETE',
         });
+
+        if (!response.ok) {
+            throw new Error(`Request failed with status: ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        if (Object.keys(data).length === 0) {
+            comment(`can't delete`);
+        } else {
+            state(data);
+        }
+    } catch (error) {
+        comment(`Server error: ${error}`);
+    }
 }
 
 export const postRequest = async ( table, newItem, comment) => {
@@ -116,7 +117,6 @@ export const postRequest = async ( table, newItem, comment) => {
         return false;
     }
 };
-
 
 export const getByPostRequest = async ( table, newItem, comment) => {
     try {

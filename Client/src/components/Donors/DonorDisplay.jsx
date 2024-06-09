@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { getByIdRequest } from '../Tools/APIRequests';
+import { getByIdRequest, putRequest } from '../Tools/APIRequests';
 import { TableCell, TableRow, IconButton} from '@mui/material';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import DonorForm from './DonorForm';
-import { putRequest } from '../Tools/APIRequests'
 import {filterEmptyValues} from "../Tools/Validation"
 
 const DonorDisplay = ({ donor, index , setDonorsToDisplay}) => {
@@ -15,9 +14,9 @@ const DonorDisplay = ({ donor, index , setDonorsToDisplay}) => {
         await getByIdRequest("donors", donor.id, setCurrentDonor, setCommentArea);
     };
 
-    const handleClickOpen = () => {
+    const handleClickOpen = async () => {
+        await getDonorDetails();
         setOpen(true);
-        getDonorDetails();
     };
 
     const handleClose = () => {
@@ -25,6 +24,7 @@ const DonorDisplay = ({ donor, index , setDonorsToDisplay}) => {
     };
 
     const updateDonorRequest = () => {
+        console.log(currentDonor)
         const updatedDonor = filterEmptyValues(currentDonor);
         putRequest("donors", updatedDonor, setCommentArea);
         setDonorsToDisplay((prevDonors) => {
@@ -32,7 +32,6 @@ const DonorDisplay = ({ donor, index , setDonorsToDisplay}) => {
                 donor.id === updatedDonor.id ? updatedDonor : donor
             );
         });
-        // handleClose();
     };
 
     return (
