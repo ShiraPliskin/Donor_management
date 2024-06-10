@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { Button } from "@mui/material";
 import DonorForm from "./DonorForm";
-import { postRequest, filterEmptyValues } from "../Tools/APIRequests";
+import { postRequest } from "../Tools/APIRequests";
+import {filterEmptyValues} from "../Tools/Validation"
+import GenericMessage from "../Tools/GenericMessage";
 
 const DonorAdd = ({ fields }) => {
     const [donorDetails, setDonorDetails] = useState({});
     const [open, setOpen] = useState(false);
-    const [commentArea, setCommentArea] = useState("");
+    const [isSucceed, setIsSucceed] = useState('');
 
     useEffect(() => {
         setDonorDetails(fields);
@@ -21,19 +23,18 @@ const DonorAdd = ({ fields }) => {
     };
 
     const addDonorRequest = () => {
+        setIsSucceed("");
         const newDonor = filterEmptyValues(donorDetails);
-        postRequest("donors", newDonor, setCommentArea);
+        postRequest("donors", newDonor, setIsSucceed);
         handleClose();
     };
 
     return (
         <>
-            <Button variant="outlined" onClick={handleClickOpen}>
-                הוספת תורם
-            </Button>
+            <Button variant="outlined" onClick={handleClickOpen}>הוספת תורם</Button>
+            {isSucceed==="success" && <GenericMessage message="תורם נוסף בהצלחה" type="success"/>}
+            {isSucceed==="error" && <GenericMessage message="הוספת תורם נכשלה" type="error"/>}
             <DonorForm donorDetails={donorDetails} setDonorDetails={setDonorDetails} sendRequest={addDonorRequest} open={open} handleClose={handleClose} type="add"/>
-           
-            {commentArea && <p>{commentArea}</p>}
         </>
     );
 };

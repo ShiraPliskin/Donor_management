@@ -24,7 +24,7 @@ const isValidUsername = (inputString) => {
   };
 
   const isValidString = (inputString) => {
-    const regex = /^[a-zA-Z\s-]{1,30}$/;
+    const regex = /^[A-Za-z\u0590-\u05FF\s]+$/;
     return regex.test(inputString);
   };
 
@@ -32,6 +32,7 @@ const isValidUsername = (inputString) => {
     const regex = /^[-0-9]+$/;
     return regex.test(inputString);
   };
+
  export {
     isValidUsername,
     isValidPassword,
