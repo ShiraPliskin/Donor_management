@@ -50,7 +50,8 @@ const Register = () => {
   
   function chackDetails()
   {
-     getRequest("users", `filter=username=${user.username}`, setIsUserExist,setErrMessagerrMessage);
+     getRequest("users", `filter=username=${user.username}`, setIsUserExist,setErrMessage);
+     return isUserExists[0].username?setErrMessage("this username already exist"):true;
   }
 
   function addUser() {
