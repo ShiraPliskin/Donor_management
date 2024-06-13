@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Snackbar, Alert } from '@mui/material';
 
-const GenericMessage = ({ message, type }) => {
+const GenericMessage = ({ message, type }) => {  //type can be success or error
   const [open, setOpen] = useState(true);
 
   const handleClose = (event, reason) => {

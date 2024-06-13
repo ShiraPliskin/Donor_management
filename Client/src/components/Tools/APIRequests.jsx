@@ -1,7 +1,7 @@
 import { React, useState } from "react";
 import { config } from "../config.jsx";
 
-export const getRequest = async (table, conditions, state, comment) => {
+export const getRequest = async (table, conditions, state, comment, object ="") => {
     const url = `http://${config.SERVERPORT}/${table}${conditions ? `${conditions}` : ''}`;
     try {
         const response = await fetch(url);
@@ -13,7 +13,7 @@ export const getRequest = async (table, conditions, state, comment) => {
         const data = await response.json();
 
         if (Object.keys(data).length === 0) {
-            return false;
+            return comment(`לא נמצא ${object}`);
         } else {
             state(data);
             return true;

@@ -5,15 +5,15 @@ import SearchIcon from '@mui/icons-material/Search';
 
 const DonorSearch = ({ fields, donorsToDisplay, setDonorsToDisplay }) => {
     const [donorDetails, setDonorDetails] = useState({});
-    const [commentArea, setCommentArea] = useState("");
     const [minDonationAmount, setMinDonationAmount] = useState("");
+    const [commentArea, setCommentArea] = useState("");
 
     useEffect(() => {
         setDonorDetails(fields);
     }, []);
 
     useEffect(() => {
-        setCommentArea("");
+            setCommentArea("");
     }, [donorsToDisplay]);
 
     const handleSubmit = (e) => {
@@ -26,9 +26,10 @@ const DonorSearch = ({ fields, donorsToDisplay, setDonorsToDisplay }) => {
             }
         }
         const fields = "id, l_name, f_name, email, phone, address";
-        const queryString = conditions.length > 0 ? `?fields=${fields}&filter=${conditions.join(',')}` :"";
-        if(queryString)
-            getRequest("donors", queryString, setDonorsToDisplay, setCommentArea);
+        const queryString = conditions.length > 0 ? `?fields=${fields}&filter=${conditions.join(',')}` : "";
+        if (queryString) {
+            getRequest("donors", queryString, setDonorsToDisplay, setCommentArea, "תורם");
+        }
     };
 
     const handleChange = (e) => {
@@ -45,7 +46,7 @@ const DonorSearch = ({ fields, donorsToDisplay, setDonorsToDisplay }) => {
             <form onSubmit={handleSubmit}>
                 <Box display="flex" alignItems="center" flexWrap="wrap" gap={2}>
                     <TextField
-                        style={{ width: '100px'}}
+                        style={{ width: '100px' }}
                         label="מס' תורם"
                         variant="outlined"
                         name="id"

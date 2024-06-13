@@ -12,7 +12,7 @@ import { checkValidation } from './DonorValidation'
 import _isEqual from 'lodash/isEqual';
 import _ from 'lodash';
 
-const DonorForm = ({ donorDetails, setDonorDetails, sendRequest, open, handleClose, type }) => {
+const DonorForm = ({ fields, donorDetails, setDonorDetails, sendRequest, open, handleClose, type }) => {
 
     const [commentArea, setCommentArea] = useState("");
     const [formType, setFormType] = useState(type);
@@ -50,22 +50,12 @@ const DonorForm = ({ donorDetails, setDonorDetails, sendRequest, open, handleClo
     const [helperText, setHelperText] = useState(helperTextObject);
 
     useEffect(() => {
-        console.log("type ", type);
-        console.log("donorDetails ", donorDetails);
-        console.log("updatedDonor ", updatedDonor);
+        console.log(type)
         setCommentArea("");
         setDonorChanged(false);
         setError(errorObject);
         setHelperText(helperTextObject);
     }, [open, formType]);
-
-    useEffect(() => {
-        if (donorChanged) {
-            console.log("donorDetails updated: ", donorDetails);
-            sendRequest();
-            setFormType("display");
-        }
-    }, [donorDetails]);
 
     const trimObjectStrings = (obj) => {
         return _.mapValues(obj, value => _.isString(value) ? value.trim() : value);
@@ -80,12 +70,26 @@ const DonorForm = ({ donorDetails, setDonorDetails, sendRequest, open, handleClo
         setUpdatedDonor(donorDetails);
     }
 
+    useEffect(() => {
+        if (donorChanged) {
+            console.log("donorDetails updated: ", donorDetails);
+            sendRequest();
+            setDonorChanged(false);
+            if (type === "add")
+                setUpdatedDonor(fields);
+        }
+    }, [donorDetails]);
+
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         const isValid = checkValidation(updatedDonor, setError, setHelperText);
         if (isValid) {
+            console.log("type ", type)
             setDonorDetails(updatedDonor);
-            console.log("updatedDonor ", updatedDonor);
+            if (type !== "add") {
+                setFormType("display");
+            }
         }
     };
 
