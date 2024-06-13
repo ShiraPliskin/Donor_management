@@ -24,7 +24,6 @@ const DonorDisplay = ({ donor, index , setDonorsToDisplay}) => {
     };
 
     const updateDonorRequest = () => {
-        console.log(currentDonor)
         const updatedDonor = filterEmptyValues(currentDonor);
         putRequest("donors", updatedDonor, setCommentArea);
         setDonorsToDisplay((prevDonors) => {
