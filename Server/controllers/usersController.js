@@ -5,7 +5,6 @@ export class UsersController {
     async getUsers(req, res, next) {
         try {
             const userService = new UsersService();
-            console.log("maki")
             const resultItems = await userService.getUsers(req.query);
             return res.status(200).json(resultItems);
         }

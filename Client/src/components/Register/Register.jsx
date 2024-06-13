@@ -2,47 +2,56 @@ import { useState, useContext, useEffect } from "react";
 //import { useNavigate } from "react-router-dom";
 //import { userContext } from "../../App";
 import { getRequest,postRequest } from "../Tools/APIRequests";
-
+import GenericMessage from '../Tools/GenericMessage'
 import style from "./Register.module.css"
 const Register = () => {
   const [PW, setPW] = useState({ "password": "", "verifyPW": "" })
   const [isPwVerified, setIsPwVerified] = useState(false);
   const [comment, setComment] = useState("");
-  const [isUserExists,setIsUserExist] = useState("")
+  const [isUserExists,setIsUserExist] = useState("");
+  const [newUserId,setNewUserId] = useState(0);
+  const [success,setSuccess] = useState(false);
+
   //const { setCurrentUser } = useContext(userContext);
 
   //const navigate = useNavigate();
-  const user = {
-    "username": "",
-    "email": ""
-  }
 
   const register={
-    "user_id":"",
+    "username": "",
+    "email": "",
     "password":""
   }
+
+  useEffect(() => {
+    if (comment === "success") {
+      setSuccess(true);
+    }
+  }, [comment]);
+  
 
   async function handleSubmit(event) {
     event.preventDefault();
     setComment("");
-    user.username = event.target.username.value;
-    user.email = event.target.email.value;
+    register.username = event.target.username.value;
+    register.email = event.target.email.value;
     register.password = event.target.password.value;
     let isNew = chackisUserExist();
     if(isNew==true)
-      addUser();
+      addRegister();
   }
-
   
   function chackisUserExist()
   {
-     getRequest("users", `?filter=username=${user.username}`, setIsUserExist,setComment);
-     return isUserExists?setComment("this username already exist"):true;
+     getRequest("users", `?filter=username=${register.username}`, setIsUserExist,setComment);
+     return isUserExists?setComment("שם משתמש קיים"):true;
   }
 
-  function addUser() {
-    postRequest("users",user,setComment);
-    postRequest("register",register,setComment);
+  function addRegister()
+  {
+    postRequest("users",register,setComment,setNewUserId);
+    if(comment==="success")
+       setSuccess(true);
+      
     // localStorage.setItem("currentUser", JSON.stringify(user));
     // setCurrentUser(user);
     //navigate("/home", { replace: true });
@@ -65,6 +74,7 @@ const Register = () => {
         </form>
       </div>
       <p>{comment}</p>
+      {success&&<GenericMessage message="You have successfully registered!!!" comment={comment}/>}
     </>
   )
 }

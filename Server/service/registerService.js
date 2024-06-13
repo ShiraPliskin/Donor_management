@@ -40,14 +40,10 @@ export class RegisterService {
     async addRegister(register) {
         let algorithm = "sha256"                
         let key = register.password;
-        let digest2 = crypto.createHash(algorithm).update(key).digest("base64")
-        const newRegister = {
-            user_id:register.user_id,
-            password: digest2
-        };
-        const queryRegister = addQuery("register",newRegister);
-        console.log("qqqqqq "+queryRegister)
-        const values = Object.values(newRegister);
+        let encoded = crypto.createHash(algorithm).update(key).digest("base64");
+        register.password = encoded;
+        const queryRegister = addQuery("register",register);
+        const values = Object.values(register);
         const result =  await executeQuery(queryRegister, values);
         return result;
     }
