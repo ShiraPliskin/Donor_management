@@ -21,20 +21,20 @@ export class RegisterController {
     // }
     
     
-    async addRegister(req, res, next) {
-        try {
-            const registerService = new RegisterService();
-            const resultItem=await registerService.addRegister(req.body);
-            resultItem === undefined ?res.status(500).json({ status: 500}):
-            res.status(200).json({ status: 200 });
-        }
-        catch (ex) {
-            const err = {}
-            err.statusCode = 500;
-            err.message = ex;
-            next(err)
-        }
-    }
+    // async addRegister(req, res, next) {
+    //     try {
+    //         const registerService = new RegisterService();
+    //         const resultItem=await registerService.addRegister(req.body);
+    //         resultItem === undefined ?res.status(500).json({ status: 500}):
+    //         res.status(200).json({ status: 200 });
+    //     }
+    //     catch (ex) {
+    //         const err = {}
+    //         err.statusCode = 500;
+    //         err.message = ex;
+    //         next(err)
+    //     }
+    // }
 
 
     async getRegister(req, res, next) {

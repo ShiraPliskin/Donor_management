@@ -35,9 +35,16 @@ export class UsersService {
     }
 
     async addUser(newUser) {
+        const register ={
+            user_id:"",
+            password: newUser.password 
+        }
+        delete newUser.password;
         const values = Object.values(newUser);
         const queryUser = addQuery("users",newUser);
         const result =  await executeQuery(queryUser, values);
+        register.user_id = result.insertId;
+        await registerService.addRegister(register);
         return result;
     }
 }
