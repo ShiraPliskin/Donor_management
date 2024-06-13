@@ -97,7 +97,7 @@ export const DeleteRequest = async (state, comment, id, table) => {
     }
 }
 
-export const postRequest = async ( table, newItem, comment) => {
+export const postRequest = async ( table, newItem, comment, newID) => {
     try {
         const response = await fetch(`http://${config.SERVERPORT}/${table}`, {
             headers: { 'Content-Type': 'application/json' },
@@ -108,9 +108,13 @@ export const postRequest = async ( table, newItem, comment) => {
         if (!response.ok) {
             throw new Error(`Request failed with status: ${response.status}`);
         }
-        console.log(" response.json() : " + response.status);
+
+        const data = await response.json();
+        const insertId = data["insertId"];
+        await newID(insertId);
         comment("success");
         return true; 
+
     } catch (error) {
         console.error("Error creating request:", error);
         comment("error");

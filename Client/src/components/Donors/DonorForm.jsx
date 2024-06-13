@@ -15,7 +15,6 @@ import _ from 'lodash';
 const DonorForm = ({ donorDetails, setDonorDetails, sendRequest, open, handleClose, type }) => {
 
     const [commentArea, setCommentArea] = useState("");
-
     const [formType, setFormType] = useState(type);
     const [updatedDonor, setUpdatedDonor] = useState(donorDetails);
     const [donorChanged, setDonorChanged] = useState(false);
@@ -51,6 +50,9 @@ const DonorForm = ({ donorDetails, setDonorDetails, sendRequest, open, handleClo
     const [helperText, setHelperText] = useState(helperTextObject);
 
     useEffect(() => {
+        console.log("type ", type);
+        console.log("donorDetails ", donorDetails);
+        console.log("updatedDonor ", updatedDonor);
         setCommentArea("");
         setDonorChanged(false);
         setError(errorObject);
@@ -73,7 +75,7 @@ const DonorForm = ({ donorDetails, setDonorDetails, sendRequest, open, handleClo
         setDonorChanged(!_isEqual(trimObjectStrings(donorDetails), trimObjectStrings(updatedDonor)));
     }, [updatedDonor]);
 
-    const undoEdit = () =>{
+    const undoEdit = () => {
         setFormType("display");
         setUpdatedDonor(donorDetails);
     }
