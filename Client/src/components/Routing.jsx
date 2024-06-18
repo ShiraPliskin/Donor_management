@@ -1,5 +1,9 @@
 import { BrowserRouter, Routes, Route, Navigate, Outlet } from "react-router-dom";
 import { useState, useEffect } from "react";
+import NotFound from "./NotFound"
+import Login from "./Login/Login"
+import Register from "./Register/Register"
+import Home from "./Home";
 import Donors from "./Donors/Donors";
 
 const Routing = () => {
