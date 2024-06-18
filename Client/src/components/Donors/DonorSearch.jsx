@@ -42,7 +42,7 @@ const DonorSearch = ({ fields, donorsToDisplay, setDonorsToDisplay }) => {
 
     return (
         <>
-            <h3>חיפוש מתקדם</h3>
+            <h3>חיפוש תורם</h3>
             <form onSubmit={handleSubmit}>
                 <Box display="flex" alignItems="center" flexWrap="wrap" gap={2}>
                     <TextField
@@ -116,7 +116,7 @@ const DonorSearch = ({ fields, donorsToDisplay, setDonorsToDisplay }) => {
                         size="small"
                         margin="dense"
                     />
-                    <Button variant="contained" color="primary" type="submit" endIcon={<SearchIcon />}>
+                    <Button variant="contained" color="primary" type="submit" endIcon={<SearchIcon sx={{ marginLeft: 1 }}/>}>
                         חפש
                     </Button>
                 </Box>
