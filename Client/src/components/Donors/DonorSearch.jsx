@@ -25,8 +25,8 @@ const DonorSearch = ({ fields, donorsToDisplay, setDonorsToDisplay }) => {
                 conditions.push(`${key}=${value}`);
             }
         }
-        const fields = "id, l_name, f_name, email, phone, address";
-        const queryString = conditions.length > 0 ? `?fields=${fields}&filter=${conditions.join(',')}` : "";
+        const columnsToDisplay = "id, l_name, f_name, email, phone, address";
+        const queryString = conditions.length > 0 ? `?fields=${columnsToDisplay}&filter=${conditions.join(',')}` : "";
         if (queryString) {
             getRequest("donors", queryString, setDonorsToDisplay, setCommentArea, "תורם");
         }

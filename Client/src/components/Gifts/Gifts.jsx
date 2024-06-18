@@ -1,34 +1,31 @@
 import { useState } from "react";
-import DonorAdd from "./DonorAdd";
-import DonorSearch from "./DonorSearch";
-import DonorsDisplay from "./DonorsDisplay";
+import GiftSearch from "./GiftSearch"
+import GiftsDisplay from "./GiftsDisplay"
 
-const Donors = () => {
+const Gifts = () => {
 
     const fields = {
         id: '',
-        f_name: '',
-        l_name: '',
-        email: '',
-        phone: '',
-        address: '',
-        num_of_children: '',
-        spouse_name: '',
-        address_at_work: '',
-        introduction_description: '',
-        contact_id: '',
-        remarks: '',
+        description: '',
+        img: '',
+        amount: '',
+        storage_space: '',
+        general_cost: '',
+        gift_cost: '',
+        importer_id: '',
+        success_level: '',
+        remarks: ''
     };
 
-    const [donorsToDisplay, setDonorsToDisplay] = useState([]);
+    const [giftsToDisplay, setGiftsToDisplay] = useState([]);
 
     return (
         <>
-            <DonorAdd fields={fields} />
-            <DonorSearch fields={fields} donorsToDisplay={donorsToDisplay} setDonorsToDisplay={setDonorsToDisplay}/>
-            <DonorsDisplay donorsToDisplay={donorsToDisplay} setDonorsToDisplay={setDonorsToDisplay}/>
+            {/* <DonorAdd fields={fields} /> */}
+            <GiftSearch fields={fields} giftsToDisplay={giftsToDisplay} setGiftsToDisplay={setGiftsToDisplay}/>
+            <GiftsDisplay giftsToDisplay={giftsToDisplay} setGiftsToDisplay={setGiftsToDisplay}/>
         </>
     );
 };
 
-export default Donors;
+export default Gifts;
