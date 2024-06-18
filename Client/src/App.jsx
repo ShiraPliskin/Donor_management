@@ -1,13 +1,12 @@
 import { useState } from 'react'
 import './App.css'
-import Donors from './components/Donors/Donors'
+import Routing from './components/Routing.jsx'
 
 function App() {
 
   return (
     <>
-   
-      <Donors/>
+      <Routing/>
     </>
   )
 }
