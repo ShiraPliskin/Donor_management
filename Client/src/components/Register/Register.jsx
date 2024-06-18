@@ -12,7 +12,7 @@ const Register = () => {
   const [userId,setUserId]= useState("0");
   const navigate = useNavigate();
 
-  let user={
+  const user={
     "name": "",
     "email": "",
     "password":""
@@ -23,6 +23,7 @@ const Register = () => {
     user.name = event.target.name.value;
     user.email = event.target.email.value;
     user.password = event.target.password.value;
+    console.log("email   "+user.email)
     let isNew = chackisUserExist();
     if(isNew==true)
       adduser();
@@ -30,6 +31,8 @@ const Register = () => {
   
   function chackisUserExist()
   {
+    console.log("chackisUserExist   "+user.email)
+
      getRequest("users", `?filter=email=${user.email}`, setIsUserExist,setComment);
      return isUserExists?setComment("שם משתמש קיים"):true;
   }
@@ -37,6 +40,8 @@ const Register = () => {
   useEffect(() => { 
     if (userId!=0)
       {
+        console.log("effect   "+user.email)
+
         user.id=userId;
         delete user["password"];
         user.permission = "secretary";
@@ -48,6 +53,8 @@ const Register = () => {
 
   function adduser()
   {
+    console.log("addUser   "+user.email)
+
     postRequest("users",user,setComment,setUserId);
   }
 
