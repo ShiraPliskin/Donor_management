@@ -9,17 +9,17 @@ import Gifts from "./Gifts/Gifts";
 
 const Routing = () => {
     const [currentUser, setCurrentUser] = useState(JSON.parse(localStorage.getItem("currentUser")));
-    const [currentPage, setCurrentPage] = useState(currentUser ? `/users/${currentUser.id}/home` : "/login");
+    //const [currentPage, setCurrentPage] = useState(currentUser ? `/users/${currentUser.id}/home` : "/login");
 
     useEffect(() => {
         setCurrentUser(JSON.parse(localStorage.getItem("currentUser")));
-        setCurrentPage(currentUser ? `/users/${currentUser.id}/home` : "/login");
+        //setCurrentPage(currentUser ? `/users/${currentUser.id}/home` : "/login");
     }, []);
 
     return (<>
         <BrowserRouter>
             <Routes>
-                <Route path="/" element={<Navigate to={currentPage} />} />
+                <Route path="/" element={<Navigate to={currentUser != null ? "/users/:userId/home" : "/Login"} />} />
                 <Route path="login" element={<Login />} />
                 <Route path="register" element={<Register />} />
                 <Route exact path="users/:userId/home" element={<Home />} >
