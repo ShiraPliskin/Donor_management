@@ -3,33 +3,32 @@ import { getRequest } from "../Tools/APIRequests";
 import { Button, TextField, Box } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 
-const GiftSearch = ({ fields, giftsToDisplay, setGiftsToDisplay }) => {
+const ContactSearch = ({ fields, contactsToDisplay, setContactsToDisplay }) => {
 
-    const [giftDetails, setGiftDetails] = useState({});
+    const [contactDetails, setContactDetails] = useState({});
     const [donorId, setDonorId] = useState("");
     const [commentArea, setCommentArea] = useState("");
 
     useEffect(() => {
-        setGiftDetails(fields);
+        setContactDetails(fields);
     }, []);
 
     useEffect(() => {
             setCommentArea("");
-    }, [giftsToDisplay]);
+    }, [contactsToDisplay]);
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        setGiftsToDisplay([]);
+        setContactsToDisplay([]);
         let conditions = [];
         for (const [key, value] of Object.entries(giftDetails)) {
             if (value) {
                 conditions.push(`${key}=${value}`);
             }
         }
-        const columnsToDisplay = "id, description, img";
-        const queryString = conditions.length > 0 ? `?fields=${columnsToDisplay}&filter=${conditions.join(',')}` : "";
+        const queryString = conditions.length > 0 ? `?filter=${conditions.join(',')}` : "";
         if (queryString) {
-            getRequest("gifts", queryString, setGiftsToDisplay, setCommentArea, "מתנה");
+            getRequest("contacts", queryString, setContactsToDisplay, setCommentArea, "איש קשר");
         }
     };
 
@@ -38,30 +37,51 @@ const GiftSearch = ({ fields, giftsToDisplay, setGiftsToDisplay }) => {
         if (name === "donorId")
             setDonorId(value);
         else
-            setGiftDetails((prevData) => ({ ...prevData, [name]: value }));
+            setContactDetails((prevData) => ({ ...prevData, [name]: value }));
     };
 
     return (
         <>
-            <h3>חיפוש מתנה</h3>
+            <h3>חיפוש איש קשר</h3>
             <form onSubmit={handleSubmit}>
                 <Box display="flex" alignItems="center" flexWrap="wrap" gap={2}>
                     <TextField
                         style={{ width: '100px' }}
-                        label="מס' מתנה"
+                        label="מס' איש קשר"
                         variant="outlined"
                         name="id"
-                        value={giftDetails.id}
+                        value={contactDetails.id}
                         onChange={handleChange}
                         size="small"
                         margin="dense"
                     />
                     <TextField
                         style={{ width: '200px' }}
-                        label="תיאור המתנה"
+                        label="שם"
                         variant="outlined"
-                        name="description"
-                        value={giftDetails.description}
+                        name="name"
+                        value={contactDetails.name}
+                        onChange={handleChange}
+                        size="small"
+                        margin="dense"
+                    />
+                     <TextField
+                        style={{ width: '150px' }}
+                        label="טלפון"
+                        variant="outlined"
+                        name="phone"
+                        value={contactDetails.phone}
+                        onChange={handleChange}
+                        size="small"
+                        margin="dense"
+                    />
+                    <TextField
+                        style={{ width: '220px' }}
+                        label="כתובת מייל"
+                        variant="outlined"
+                        name="email"
+                        type="email"
+                        value={contactDetails.email}
                         onChange={handleChange}
                         size="small"
                         margin="dense"
@@ -86,4 +106,4 @@ const GiftSearch = ({ fields, giftsToDisplay, setGiftsToDisplay }) => {
     );
 };
 
-export default GiftSearch;
+export default ContactSearch;
