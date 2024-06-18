@@ -7,6 +7,7 @@ export class UsersService {
 
     async getUsers(queryParams) {
         const query = getByConditionQuery("users",queryParams);
+        
         const values = Object.values(queryParams);
         const result = await executeQuery(query, values);
         return result;
