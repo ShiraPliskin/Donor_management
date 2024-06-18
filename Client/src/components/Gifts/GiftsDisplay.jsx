@@ -19,7 +19,7 @@ const GiftsDisplay = ({ giftsToDisplay, setGiftsToDisplay }) => {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {donorsToDisplay.map((gift, index) => (
+                            {giftsToDisplay.map((gift, index) => (
                                 <GiftDisplay gift={gift} index={index} setGiftsToDisplay={setGiftsToDisplay} />
                             ))}
                         </TableBody>
