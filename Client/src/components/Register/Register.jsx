@@ -7,16 +7,20 @@ const Register = () => {
   const [PW, setPW] = useState({ "password": "", "verifyPW": "" })
   const [isPwVerified, setIsPwVerified] = useState(false);
   const [comment, setComment] = useState("");
-  const [isUserExists,setIsUserExist] = useState("");
-  const [success,setSuccess] = useState(false);
-  const [userId,setUserId]= useState("0");
-  const navigate = useNavigate();
+  const [isUserExists, setIsUserExist] = useState("");
+  const [success, setSuccess] = useState(false);
+  const [userId, setUserId]= useState("0");
 
   const user={
     "name": "",
     "email": "",
     "password":""
   }  
+
+  const [currentUser, setCurrentUser] = useState(user);
+  const navigate = useNavigate();
+
+  
 
   async function handleSubmit(event) {
     event.preventDefault();
