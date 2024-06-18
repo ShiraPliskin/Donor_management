@@ -5,6 +5,7 @@ import { registerRouter } from './router/registerRouter.js'
 import { usersRouter } from './router/usersRouter.js';
 import { giftsRouter } from './router/giftsRouter.js';
 import { importersRouter } from './router/importersRouter.js';
+import { contactsRouter } from './router/contactsRouter.js';
 // import {logErrors} from './middleware/logError.js'
 
 const app = express();
@@ -16,6 +17,7 @@ app.use('/register', registerRouter);
 app.use('/users', usersRouter);
 app.use('/gifts', giftsRouter);
 app.use('/importers', importersRouter);
+app.use('/contacts', contactsRouter);
 
 // app.use(logErrors);
 

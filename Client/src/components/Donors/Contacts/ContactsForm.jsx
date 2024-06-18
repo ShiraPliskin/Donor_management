@@ -13,7 +13,7 @@ import { checkValidation } from './DonorValidation'
 import _isEqual from 'lodash/isEqual';
 import _ from 'lodash';
 
-const DonorForm = ({ fields, donorDetails, setDonorDetails, sendRequest, open, handleClose, type }) => {
+const ContactForm = ({ fields, donorDetails, setDonorDetails, sendRequest, open, handleClose, type }) => {
 
     const [commentArea, setCommentArea] = useState("");
     const [formType, setFormType] = useState(type);
