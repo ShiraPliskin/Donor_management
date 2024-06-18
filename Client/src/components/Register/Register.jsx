@@ -17,7 +17,7 @@ const Register = () => {
   //const navigate = useNavigate();
 
   const register={
-    "username": "",
+    "name": "",
     "email": "",
     "password":""
   }
@@ -32,7 +32,7 @@ const Register = () => {
   async function handleSubmit(event) {
     event.preventDefault();
     setComment("");
-    register.username = event.target.username.value;
+    register.name = event.target.name.value;
     register.email = event.target.email.value;
     register.password = event.target.password.value;
     let isNew = chackisUserExist();
@@ -42,7 +42,7 @@ const Register = () => {
   
   function chackisUserExist()
   {
-     getRequest("users", `?filter=username=${register.username}`, setIsUserExist,setComment);
+     getRequest("users", `?filter=email=${register.email}`, setIsUserExist,setComment);
      return isUserExists?setComment("שם משתמש קיים"):true;
   }
 
@@ -66,7 +66,7 @@ const Register = () => {
       <div className={style.wrapper}>
         <h1>Please sign up</h1>
         <form onSubmit={handleSubmit} className={style.inputBox}>
-          <input name="username" type="text" placeholder="שם משתמש" required />
+          <input name="name" type="text" placeholder="שם משתמש" required />
           <input name="email" type="text" placeholder="מייל" required />
           <input placeholder="סיסמה" onChange={(e) => setPW(prev => ({ ...prev, password: e.target.value }))} name="password" type="password" />
           <input placeholder="אימות סיסמה" onChange={(e) => setPW(prev => ({ ...prev, verifyPW: e.target.value }))} name="verifyPassword" type="password" />
