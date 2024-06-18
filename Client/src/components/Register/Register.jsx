@@ -1,6 +1,5 @@
 import { useState, useContext, useEffect } from "react";
-//import { useNavigate } from "react-router-dom";
-//import { userContext } from "../../App";
+import { Link,useNavigate } from "react-router-dom";
 import { getRequest,postRequest } from "../Tools/APIRequests";
 import GenericMessage from '../Tools/GenericMessage'
 import style from "./Register.module.css"
@@ -9,14 +8,11 @@ const Register = () => {
   const [isPwVerified, setIsPwVerified] = useState(false);
   const [comment, setComment] = useState("");
   const [isUserExists,setIsUserExist] = useState("");
-  const [newUserId,setNewUserId] = useState(0);
   const [success,setSuccess] = useState(false);
+  const [userId,setUserId]= useState("0");
+  const navigate = useNavigate();
 
-  //const { setCurrentUser } = useContext(userContext);
-
-  //const navigate = useNavigate();
-
-  const register={
+  let register={
     "name": "",
     "email": "",
     "password":""
@@ -46,15 +42,20 @@ const Register = () => {
      return isUserExists?setComment("שם משתמש קיים"):true;
   }
 
+  useEffect(() => { 
+    if (userId!=0)
+      {
+        register.id=userId;
+        delete register["password"];
+        localStorage.setItem("currentUser", JSON.stringify(register));
+        navigate(`users/${register.id}/home`, { replace: true });
+      }
+  },[userId])
+
+
   function addRegister()
   {
-    postRequest("users",register,setComment,setNewUserId);
-    if(comment==="success")
-       setSuccess(true);
-      
-    // localStorage.setItem("currentUser", JSON.stringify(user));
-    // setCurrentUser(user);
-    //navigate("/home", { replace: true });
+    postRequest("users",register,setComment,setUserId);
   }
 
   useEffect(() => {
@@ -74,7 +75,8 @@ const Register = () => {
         </form>
       </div>
       <p>{comment}</p>
-      {success&&<GenericMessage message="You have successfully registered!!!" comment={comment}/>}
+      {success&&<GenericMessage message="נרשמת בהצלחה!!!" comment={comment}/>}
+      <p className={style.link}>משתמש קיים?   <Link to={"/Login"}>לחץ להתחברות</Link></p>
     </>
   )
 }

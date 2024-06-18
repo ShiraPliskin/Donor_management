@@ -11,7 +11,7 @@ export const getRequest = async (table, conditions, state, comment, object ="") 
         }
 
         const data = await response.json();
-
+        console.log("get "+data);
         if (Object.keys(data).length === 0) {
             return comment(`לא נמצא ${object}`);
         } else {
@@ -97,21 +97,21 @@ export const DeleteRequest = async (state, comment, id, table) => {
     }
 }
 
-export const postRequest = async ( table, newItem, comment, newID) => {
+export const postRequest = async ( table, newItem, comment, newID=0) => {
     try {
         const response = await fetch(`http://${config.SERVERPORT}/${table}`, {
             headers: { 'Content-Type': 'application/json' },
             method: 'POST',
             body: JSON.stringify(newItem)
         });
-
         if (!response.ok) {
             throw new Error(`Request failed with status: ${response.status}`);
         }
-
         const data = await response.json();
-        const insertId = data["insertId"];
-        await newID(insertId);
+        if(newID!=0){
+            const insertId = data["insertId"];
+            await newID(insertId);
+        }
         comment("success");
         return true; 
 

@@ -1,22 +1,34 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import style from "./Login.module.css";
-import { getRequest} from "../Tools/APIRequests"; 
+import { getRequest, postRequest} from "../Tools/APIRequests"; 
 import GenericMessage from '../Tools/GenericMessage'
 
 const Login = () => {
   const [comment, setComment] = useState("");
-  const [userDetails,setUserDetails] = useState("");
+  const [userDetails,setUserDetails] = useState();
   const [errorMessage,setErrorMessage]= useState(false);
+  const [reqStatus,setReqStatus]=useState("0")
   const navigate = useNavigate();
+  let password;
 
   function handleFormSubmit(event) {
     event.preventDefault();
     const email = event.target.email.value;
-    const password = event.target.password.value;
+    password = event.target.password.value;
     getRequest("users", `?filter=email=${email}`, setUserDetails,setComment);
-    userDetails?navigateToHomePage(userDetails):setErrorMessage(true);
   }
+
+  useEffect(() => { 
+    console.log("user "+userDetails)
+    userDetails?postRequest(`register/${userDetails["id"]}`,{"password":password},setReqStatus)
+    :setErrorMessage(true);
+  },[userDetails])
+
+  useEffect(() => { 
+    if (reqStatus=="success")
+        navigateToHomePage(userDetails);
+  },[reqStatus])
 
   function navigateToHomePage(userDetails) {
     delete userDetails["password"];
