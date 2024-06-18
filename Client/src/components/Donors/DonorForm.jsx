@@ -12,6 +12,7 @@ import EventIcon from '@mui/icons-material/Event';
 import { checkValidation } from './DonorValidation'
 import _isEqual from 'lodash/isEqual';
 import _ from 'lodash';
+import ContactButton from "./Contacts/ContactButton";
 
 const DonorForm = ({ fields, donorDetails, setDonorDetails, sendRequest, open, handleClose, type }) => {
 
@@ -312,14 +313,15 @@ const DonorForm = ({ fields, donorDetails, setDonorDetails, sendRequest, open, h
                                 />
                             </Grid>
                             <Grid item xs={12} sm={6}>
-                                <Button
+                                <ContactButton/>
+                                {/* <Button
                                     fullWidth
                                     variant="outlined"
                                     color="info"
                                     startIcon={<PersonIcon sx={{ marginLeft: 1 }} />}
                                     onClick={()=>{setOpenContactForm(true)}}
                                 >איש קשר
-                                </Button>
+                                </Button> */}
                             </Grid>
                             <Grid item xs={12} sm={6}>
                                 <Button
