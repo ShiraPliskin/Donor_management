@@ -11,8 +11,7 @@ const Login = () => {
   const [reqStatus, setReqStatus] = useState("0")
   const navigate = useNavigate();
   let password;
-
-  
+    
   function handleFormSubmit(event) {
     event.preventDefault();
     const email = event.target.email.value;
@@ -21,11 +20,9 @@ const Login = () => {
   }
 
   useEffect(() => { 
-    console.log("user "+userDetails)
+    console.log("user "+userDetails);
     userDetails?postRequest(`register/${userDetails["id"]}`,{"password":password},setReqStatus)
     :setErrorMessage(true);
-    if(reqStatus==="success")
-        navigateToHomePage(userDetails)
   },[userDetails])
 
   useEffect(() => {

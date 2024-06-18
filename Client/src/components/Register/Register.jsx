@@ -16,18 +16,10 @@ const Register = () => {
     "name": "",
     "email": "",
     "password":""
-  }
-
-  useEffect(() => {
-    if (comment === "success") {
-      setSuccess(true);
-    }
-  }, [comment]);
-  
+  }  
 
   async function handleSubmit(event) {
     event.preventDefault();
-    setComment("");
     user.name = event.target.name.value;
     user.email = event.target.email.value;
     user.password = event.target.password.value;
@@ -60,13 +52,19 @@ const Register = () => {
   }
 
   useEffect(() => {
+    if (comment === "success") {
+      setSuccess(true);
+    }
+  }, [comment]);
+
+  useEffect(() => {
     setIsPwVerified(!PW.password == "" && PW.password === PW.verifyPW);
   }, [PW.password, PW.verifyPW])
 
   return (
     <>
       <div className={style.wrapper}>
-        <h1>Please sign up</h1>
+        <h1>משתמש חדש</h1>
         <form onSubmit={handleSubmit} className={style.inputBox}>
           <input name="name" type="text" placeholder="שם משתמש" required />
           <input name="email" type="text" placeholder="מייל" required />
