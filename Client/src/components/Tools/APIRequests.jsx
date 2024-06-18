@@ -11,7 +11,6 @@ export const getRequest = async (table, conditions, state, comment, object ="") 
         }
 
         const data = await response.json();
-        console.log("get "+ data);
         if (Object.keys(data).length === 0) {
             return comment(`לא נמצא ${object}`);
         } else {

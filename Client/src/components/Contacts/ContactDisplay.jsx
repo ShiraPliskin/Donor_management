@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { getByIdRequest, putRequest } from '../Tools/APIRequests';
 import { TableCell, TableRow, IconButton } from '@mui/material';
+import Checkbox from "@mui/material/Checkbox";
+
 // import DonorForm from './DonorForm';
 import { filterEmptyValues } from "../Tools/Validation"
 
@@ -56,7 +58,7 @@ const ContactDisplay = ({ contact, index, setContactsToDisplay }) => {
             {/* {open && (
                 <GiftForm giftDetails={currentGift} setGiftDetails={setCurrentGift} sendRequest={updateGiftRequest} open={open} handleClose={handleClose} type="display"/>
             )} */}
-            <p>{commentArea}</p>
+            {/* <p>{commentArea}</p> */}
         </>
     );
 };
