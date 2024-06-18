@@ -5,35 +5,44 @@ import { getRequest, postRequest } from "../Tools/APIRequests";
 import GenericMessage from '../Tools/GenericMessage'
 
 const Login = () => {
+
   const [comment, setComment] = useState("");
   const [userDetails, setUserDetails] = useState("");
   const [errorMessage, setErrorMessage] = useState(false);
   const [reqStatus, setReqStatus] = useState("0")
-  const navigate = useNavigate();
-  let password;
-    
-  function handleFormSubmit(event) {
-    event.preventDefault();
-    const email = event.target.email.value;
-    password = event.target.password.value;
-    getRequest("users", `?filter=email=${email}`, setUserDetails, setComment);
-  }
+  const [password, setPassword] = useState("");
 
-  useEffect(() => { 
-    console.log("user "+userDetails);
-    userDetails?postRequest(`register/${userDetails["id"]}`,{"password":password},setReqStatus)
-    :setErrorMessage(true);
-  },[userDetails])
+  const navigate = useNavigate();
 
   useEffect(() => {
-    if (reqStatus == "success")
+    if (userDetails) {
+      console.log("user", userDetails[0].id);
+      const passwordObject = {"password" : password};
+      console.log("password", passwordObject);
+      postRequest(`register/${userDetails[0].id}`, passwordObject, setReqStatus);
+    } else if (userDetails === null && comment) {
+      setErrorMessage(true);
+    }
+  }, [userDetails, password, comment]);
+
+  useEffect(() => {
+    console.log("reqStatus ",reqStatus)
+    if (reqStatus === "success")
       navigateToHomePage(userDetails);
-  }, [reqStatus])
+  }, [reqStatus]);
+
+  const handleFormSubmit = (event) => {
+    event.preventDefault();
+    const email = event.target.email.value;
+    const password = event.target.password.value;
+    setPassword(password);
+    getRequest("users", `?filter=email=${email}`, setUserDetails, setComment);
+  };
 
   function navigateToHomePage(userDetails) {
     delete userDetails["password"];
-    localStorage.setItem("currentUser", JSON.stringify(userDetails));
-    navigate("/users/:userId/home");
+    localStorage.setItem("currentUser", JSON.stringify(userDetails[0]));
+    navigate(`/users/${userDetails[0].id}/home`);
   }
 
   return (

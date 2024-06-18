@@ -11,7 +11,7 @@ export const getRequest = async (table, conditions, state, comment, object ="") 
         }
 
         const data = await response.json();
-        console.log("get "+data);
+        console.log("get "+ data);
         if (Object.keys(data).length === 0) {
             return comment(`לא נמצא ${object}`);
         } else {
@@ -108,7 +108,7 @@ export const postRequest = async ( table, newItem, comment, newID=0) => {
             throw new Error(`Request failed with status: ${response.status}`);
         }
         const data = await response.json();
-        if(newID!=0){
+        if(newID !== 0){
             const insertId = data["insertId"];
             await newID(insertId);
         }
