@@ -11,7 +11,7 @@ const Login = () => {
   const [reqStatus, setReqStatus] = useState("0")
   const navigate = useNavigate();
   let password;
-    
+
   function handleFormSubmit(event) {
     event.preventDefault();
     const email = event.target.email.value;
