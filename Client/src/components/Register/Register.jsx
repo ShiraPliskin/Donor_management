@@ -12,7 +12,7 @@ const Register = () => {
   const [userId,setUserId]= useState("0");
   const navigate = useNavigate();
 
-  let register={
+  let user={
     "name": "",
     "email": "",
     "password":""
@@ -28,34 +28,35 @@ const Register = () => {
   async function handleSubmit(event) {
     event.preventDefault();
     setComment("");
-    register.name = event.target.name.value;
-    register.email = event.target.email.value;
-    register.password = event.target.password.value;
+    user.name = event.target.name.value;
+    user.email = event.target.email.value;
+    user.password = event.target.password.value;
     let isNew = chackisUserExist();
     if(isNew==true)
-      addRegister();
+      adduser();
   }
   
   function chackisUserExist()
   {
-     getRequest("users", `?filter=email=${register.email}`, setIsUserExist,setComment);
+     getRequest("users", `?filter=email=${user.email}`, setIsUserExist,setComment);
      return isUserExists?setComment("שם משתמש קיים"):true;
   }
 
   useEffect(() => { 
     if (userId!=0)
       {
-        register.id=userId;
-        delete register["password"];
-        localStorage.setItem("currentUser", JSON.stringify(register));
-        navigate(`users/${register.id}/home`, { replace: true });
+        user.id=userId;
+        delete user["password"];
+        user.permission = "secretary";
+        localStorage.setItem("currentUser", JSON.stringify(user));
+        navigate(`users/${user.id}/home`, { replace: true });
       }
   },[userId])
 
 
-  function addRegister()
+  function adduser()
   {
-    postRequest("users",register,setComment,setUserId);
+    postRequest("users",user,setComment,setUserId);
   }
 
   useEffect(() => {
