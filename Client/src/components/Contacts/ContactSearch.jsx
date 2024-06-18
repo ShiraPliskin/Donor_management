@@ -21,7 +21,7 @@ const ContactSearch = ({ fields, contactsToDisplay, setContactsToDisplay }) => {
         e.preventDefault();
         setContactsToDisplay([]);
         let conditions = [];
-        for (const [key, value] of Object.entries(giftDetails)) {
+        for (const [key, value] of Object.entries(contactDetails)) {
             if (value) {
                 conditions.push(`${key}=${value}`);
             }
