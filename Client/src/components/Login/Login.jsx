@@ -11,7 +11,7 @@ const Login = () => {
   const [reqStatus, setReqStatus] = useState("0")
   const navigate = useNavigate();
   let password;
-
+    
   function handleFormSubmit(event) {
     event.preventDefault();
     const email = event.target.email.value;
@@ -19,13 +19,11 @@ const Login = () => {
     getRequest("users", `?filter=email=${email}`, setUserDetails, setComment);
   }
 
-  useEffect(() => {
-    console.log("user1 " + userDetails)
-    if(userDetails) {
-      console.log("user2 " + userDetails)
-      postRequest(`register/${userDetails["id"]}`, { "password": password }, setReqStatus)
-    }
-  }, [userDetails])
+  useEffect(() => { 
+    console.log("user "+userDetails);
+    userDetails?postRequest(`register/${userDetails["id"]}`,{"password":password},setReqStatus)
+    :setErrorMessage(true);
+  },[userDetails])
 
   useEffect(() => {
     if (reqStatus == "success")

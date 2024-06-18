@@ -12,10 +12,43 @@ const Register = () => {
   const [userId,setUserId]= useState("0");
   const navigate = useNavigate();
 
-  let register={
+  let user={
     "name": "",
     "email": "",
     "password":""
+  }  
+
+  async function handleSubmit(event) {
+    event.preventDefault();
+    user.name = event.target.name.value;
+    user.email = event.target.email.value;
+    user.password = event.target.password.value;
+    let isNew = chackisUserExist();
+    if(isNew==true)
+      adduser();
+  }
+  
+  function chackisUserExist()
+  {
+     getRequest("users", `?filter=email=${user.email}`, setIsUserExist,setComment);
+     return isUserExists?setComment("שם משתמש קיים"):true;
+  }
+
+  useEffect(() => { 
+    if (userId!=0)
+      {
+        user.id=userId;
+        delete user["password"];
+        user.permission = "secretary";
+        localStorage.setItem("currentUser", JSON.stringify(user));
+        navigate(`users/${user.id}/home`, { replace: true });
+      }
+  },[userId])
+
+
+  function adduser()
+  {
+    postRequest("users",user,setComment,setUserId);
   }
 
   useEffect(() => {
@@ -23,40 +56,6 @@ const Register = () => {
       setSuccess(true);
     }
   }, [comment]);
-  
-
-  async function handleSubmit(event) {
-    event.preventDefault();
-    setComment("");
-    register.name = event.target.name.value;
-    register.email = event.target.email.value;
-    register.password = event.target.password.value;
-    let isNew = chackisUserExist();
-    if(isNew==true)
-      addRegister();
-  }
-  
-  function chackisUserExist()
-  {
-     getRequest("users", `?filter=email=${register.email}`, setIsUserExist,setComment);
-     return isUserExists?setComment("שם משתמש קיים"):true;
-  }
-
-  useEffect(() => { 
-    if (userId!=0)
-      {
-        register.id=userId;
-        delete register["password"];
-        localStorage.setItem("currentUser", JSON.stringify(register));
-        navigate(`users/${register.id}/home`, { replace: true });
-      }
-  },[userId])
-
-
-  function addRegister()
-  {
-    postRequest("users",register,setComment,setUserId);
-  }
 
   useEffect(() => {
     setIsPwVerified(!PW.password == "" && PW.password === PW.verifyPW);
@@ -65,7 +64,7 @@ const Register = () => {
   return (
     <>
       <div className={style.wrapper}>
-        <h1>Please sign up</h1>
+        <h1>משתמש חדש</h1>
         <form onSubmit={handleSubmit} className={style.inputBox}>
           <input name="name" type="text" placeholder="שם משתמש" required />
           <input name="email" type="text" placeholder="מייל" required />
