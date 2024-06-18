@@ -17,7 +17,7 @@ const Donors = () => {
         address_at_work: '',
         introduction_description: '',
         contact_id: '',
-        remarks: '',
+        remarks: ''
     };
 
     const [donorsToDisplay, setDonorsToDisplay] = useState([]);

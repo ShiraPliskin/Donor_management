@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { getByIdRequest, putRequest } from '../Tools/APIRequests';
 import { TableCell, TableRow, IconButton} from '@mui/material';
 import VisibilityIcon from '@mui/icons-material/Visibility';
