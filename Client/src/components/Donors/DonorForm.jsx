@@ -12,7 +12,7 @@ import EventIcon from '@mui/icons-material/Event';
 import { checkValidation } from './DonorValidation'
 import _isEqual from 'lodash/isEqual';
 import _ from 'lodash';
-import ContactButton from "../Contacts/ContactButton";
+import ContactDonorForm from "../Contacts/ContactDonorForm";
 
 const DonorForm = ({ fields, donorDetails, setDonorDetails, sendRequest, open, handleClose, type }) => {
 
@@ -101,17 +101,23 @@ const DonorForm = ({ fields, donorDetails, setDonorDetails, sendRequest, open, h
         setError((prevData) => ({ ...prevData, [name]: false }));
         setHelperText((prevData) => ({ ...prevData, [name]: '' }));
     };
-
+   
     return (
         <>
-            <Dialog open={open} onClose={handleClose}>
+            <Dialog open={open}
+                onClose={(event, reason) => {
+                    if (reason !== 'backdropClick' && reason !== 'escapeKeyDown') {
+                        handleClose();
+                    }
+                }}
+                disableEscapeKeyDown
+            >
                 {formType === "display" && <DialogTitle>תורם מספר {donorDetails.id}</DialogTitle>}
                 {formType === "add" && <DialogTitle>הוספת תורם</DialogTitle>}
                 {formType === "edit" && <DialogTitle>עדכון תורם מספר {donorDetails.id}</DialogTitle>}
                 <DialogContent>
                     <form onSubmit={handleSubmit}>
                         <Grid container spacing={3}>
-                            {/* <h5>פרטים בסיסיים:</h5> */}
                             <Grid item xs={12} sm={4}>
                                 <TextField
                                     disabled={formType === "display"}
@@ -312,9 +318,9 @@ const DonorForm = ({ fields, donorDetails, setDonorDetails, sendRequest, open, h
                                     }}
                                 />
                             </Grid>
-                            <Grid item xs={12} sm={6}>
-                                <ContactButton/>
-                            </Grid>
+
+                            <ContactDonorForm setUpdatedDonor={setUpdatedDonor} updatedDonor={updatedDonor}/>
+                            
                             <Grid item xs={12} sm={6}>
                                 <Button
                                     fullWidth
