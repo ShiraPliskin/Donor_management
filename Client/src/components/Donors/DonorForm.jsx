@@ -34,29 +34,16 @@ const DonorForm = ({ fields, donorDetails, setDonorDetails, sendRequest, open, h
         contact_id: false,
         remarks: false,
     };
-    const helperTextObject = {
-        f_name: '',
-        l_name: '',
-        email: '',
-        phone: '',
-        address: '',
-        num_of_children: '',
-        spouse_name: '',
-        address_at_work: '',
-        introduction_description: '',
-        contact_id: '',
-        remarks: '',
-    };
 
     const [error, setError] = useState(errorObject);
-    const [helperText, setHelperText] = useState(helperTextObject);
+    const [helperText, setHelperText] = useState(fields);
 
     useEffect(() => {
         console.log(type)
         setCommentArea("");
         setDonorChanged(false);
         setError(errorObject);
-        setHelperText(helperTextObject);
+        setHelperText(fields);
     }, [open, formType]);
 
     const trimObjectStrings = (obj) => {
@@ -72,13 +59,19 @@ const DonorForm = ({ fields, donorDetails, setDonorDetails, sendRequest, open, h
         setUpdatedDonor(donorDetails);
     }
 
+    const undoAdd = () => {
+        setUpdatedDonor(donorDetails);
+        handleClose();
+    }
+
     useEffect(() => {
         if (donorChanged) {
             console.log("donorDetails updated: ", donorDetails);
             sendRequest();
             setDonorChanged(false);
-            if (type === "add")
+            if (type === "add"){
                 setUpdatedDonor(fields);
+            }
         }
     }, [donorDetails]);
 
@@ -326,6 +319,7 @@ const DonorForm = ({ fields, donorDetails, setDonorDetails, sendRequest, open, h
                                     fullWidth
                                     variant="outlined"
                                     color="info"
+                                    style={{ height: '40px' }}
                                     startIcon={<EventIcon sx={{ marginLeft: 1 }} />}
                                 >תאריכים מיוחדים
                                 </Button>
@@ -397,7 +391,7 @@ const DonorForm = ({ fields, donorDetails, setDonorDetails, sendRequest, open, h
                         </>}
                     {formType === "add" &&
                         <>
-                            <Button onClick={handleClose} color="primary">ביטול</Button>
+                            <Button onClick={() => undoAdd()} color="primary">ביטול</Button>
                             <Button onClick={handleSubmit} color="primary">הוסף</Button>
                         </>}
                 </DialogActions>

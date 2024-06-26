@@ -85,8 +85,11 @@ export default function Home() {
           </Typography>
           <Box sx={{ flexGrow: 1 }} />
           {/* <Button color="inherit" onClick={logout}>Logout</Button> */}
-          <Button color="inherit" component={NavLink} to="info" onClick={() => setLinkClicked(true)}>
+          <Button color="inherit" component={NavLink} to="donors" onClick={() => setLinkClicked(true)}>
             Donors
+          </Button>
+          <Button color="inherit" component={NavLink} to="contacts" onClick={() => setLinkClicked(true)}>
+            Contacts
           </Button>
         </Toolbar>
       </AppBar>

@@ -13,6 +13,7 @@ const DonorAdd = ({ fields }) => {
 
     useEffect(() => {
         setDonorDetails(fields);
+        console.log("1")
     }, [fields, open]);
 
     const handleClickOpen = () => {

@@ -17,6 +17,10 @@ const ContactDonorForm = ({ setUpdatedDonor, updatedDonor }) => {
         setOpenOptionsForm(false);
     };
 
+    useEffect(() => {
+       console.log("updatedDonor ",updatedDonor)
+    }, [updatedDonor]);
+
     return (<>
         <Grid item xs={12} sm={6}>
             {!updatedDonor.contactId ?
@@ -24,6 +28,7 @@ const ContactDonorForm = ({ setUpdatedDonor, updatedDonor }) => {
                     fullWidth
                     variant="outlined"
                     color="info"
+                    style={{ height: '40px' }}
                     startIcon={<PersonIcon sx={{ marginLeft: 1 }} />}
                     onClick={handleOpen}
                 >איש קשר

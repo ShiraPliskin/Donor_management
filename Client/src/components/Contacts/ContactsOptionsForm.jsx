@@ -3,11 +3,26 @@ import { Button, Dialog, DialogContent, Grid, Box } from "@mui/material";
 import PersonIcon from '@mui/icons-material/Person';
 import PeopleIcon from '@mui/icons-material/People';
 import Contacts from "./Contacts";
+import ContactAdd from "./ContactAdd";
 
 const ContactsOptionsForm = ({ openOptionsForm, closeOptionsForm, setUpdatedDonor }) => {
 
     const [searchFormOpen, setSearchFormOpen] = useState(false);
+    const [addFormOpen, setAddFormOpen] = useState(false);
     const [selectedContactId, setSelectedContactId] = useState(null);
+
+    const fields = {
+        id: '',
+        name: '',
+        email: '',
+        phone: '',
+        address: '',
+    };
+
+    useEffect(() => {
+        if (addFormOpen)
+            handleSave();
+    }, [selectedContactId]);
 
     const handleSave = () => {
         setUpdatedDonor((prevData) => ({ ...prevData, contactId: selectedContactId }));
@@ -40,6 +55,7 @@ const ContactsOptionsForm = ({ openOptionsForm, closeOptionsForm, setUpdatedDono
                                 variant="outlined"
                                 color="info"
                                 startIcon={<PersonIcon sx={{ marginLeft: 1 }} />}
+                                onClick={() => { setAddFormOpen(true) }}
                             >הוספת איש קשר חדש
                             </Button>
                         </Grid>
@@ -63,11 +79,18 @@ const ContactsOptionsForm = ({ openOptionsForm, closeOptionsForm, setUpdatedDono
                         setSelectedContactId={setSelectedContactId}
                     />
                     <Box sx={{ display: 'flex', justifyContent: 'flex-end', marginTop: 2 }}>
-                        <Button onClick={()=>{setSearchFormOpen(false)}}>ביטול</Button>
+                        <Button onClick={() => { setSearchFormOpen(false) }}>ביטול</Button>
                         <Button disabled={!selectedContactId} onClick={handleSave} sx={{ marginRight: 2 }}>שמירה</Button>
                     </Box>
                 </DialogContent>
             </Dialog>
+
+            {addFormOpen && <ContactAdd
+                fields={fields}
+                type="donorContact"
+                newContactID={selectedContactId}
+                setNewContactID={setSelectedContactId}
+            />}
         </>
     );
 };
