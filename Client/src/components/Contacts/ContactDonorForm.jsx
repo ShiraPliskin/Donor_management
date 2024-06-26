@@ -5,7 +5,7 @@ import IconButton from '@mui/material/IconButton';
 import EditIcon from '@mui/icons-material/Edit';
 import ContactsOptionsForm from "./ContactsOptionsForm";
 
-const ContactDonorForm = ({ setUpdatedDonor, updatedDonor }) => {
+const ContactDonorForm = ({ type, setUpdatedDonor, updatedDonor }) => {
 
     const [openOptionsForm, setOpenOptionsForm] = useState();
 
@@ -18,12 +18,12 @@ const ContactDonorForm = ({ setUpdatedDonor, updatedDonor }) => {
     };
 
     useEffect(() => {
-       console.log("updatedDonor ",updatedDonor)
+        console.log("updatedDonor ", updatedDonor)
     }, [updatedDonor]);
 
     return (<>
         <Grid item xs={12} sm={6}>
-            {!updatedDonor.contactId ?
+            {!updatedDonor.contactId && type !== "display" ?
                 <Button
                     fullWidth
                     variant="outlined"
@@ -45,11 +45,11 @@ const ContactDonorForm = ({ setUpdatedDonor, updatedDonor }) => {
                     InputProps={{
                         startAdornment: (
                             <InputAdornment position="start">
-                                <PersonIcon sx={{ marginRight: -2, marginLeft: 1 }} />
+                                <PersonIcon sx={{ marginRight: type !== "display" && -2, marginLeft: 1 }} />
                             </InputAdornment>
                         ),
                         endAdornment: (
-                            <InputAdornment position="end">
+                            type !== "display" && <InputAdornment position="end">
                                 <IconButton onClick={handleOpen}>
                                     <EditIcon />
                                 </IconButton>
@@ -59,7 +59,11 @@ const ContactDonorForm = ({ setUpdatedDonor, updatedDonor }) => {
                 />}
         </Grid>
         {openOptionsForm && (<>
-            <ContactsOptionsForm openOptionsForm={openOptionsForm} closeOptionsForm={handleClose} setUpdatedDonor={setUpdatedDonor} />
+            <ContactsOptionsForm
+                openOptionsForm={openOptionsForm}
+                closeOptionsForm={handleClose}
+                setUpdatedDonor={setUpdatedDonor}
+            />
         </>
         )}
     </>)

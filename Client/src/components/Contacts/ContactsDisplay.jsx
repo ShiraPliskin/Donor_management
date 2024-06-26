@@ -2,7 +2,7 @@ import { React, useState } from 'react';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Box, Button } from '@mui/material';
 import ContactDisplay from './ContactDisplay';
 
-const ContactsDisplay = ({ contactsToDisplay, setContactsToDisplay, selectedContactId, setSelectedContactId, type}) => {
+const ContactsDisplay = ({ fields, contactsToDisplay, setContactsToDisplay, selectedContactId, setSelectedContactId, type}) => {
 
     return (
         <>
@@ -38,6 +38,7 @@ const ContactsDisplay = ({ contactsToDisplay, setContactsToDisplay, selectedCont
                                         key={index}
                                         selectedContactId={selectedContactId}
                                         setSelectedContactId={setSelectedContactId}
+                                        setContactsToDisplay={setContactsToDisplay}
                                         type={type}
                                     />
                                 ))}

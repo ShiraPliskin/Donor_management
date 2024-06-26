@@ -1,17 +1,38 @@
-import React from 'react';
+import { React, useState } from 'react';
 import { TableCell, TableRow, IconButton } from '@mui/material';
 import Checkbox from "@mui/material/Checkbox";
 import VisibilityIcon from '@mui/icons-material/Visibility';
+import ContactForm from './ContactForm';
+import { putRequest } from '../Tools/APIRequests';
+import {filterEmptyValues} from "../Tools/Validation"
 
-const ContactDisplay = ({ contact, index, selectedContactId, setSelectedContactId, type }) => {
+const ContactDisplay = ({ fields, contact, index, setContactsToDisplay, selectedContactId, setSelectedContactId, type }) => {
+
+    const [currentContact, setCurrentContact] = useState(contact);
+    const [commentArea, setCommentArea] = useState("");
+    const [open, setOpen] = useState(false);
+
+    const updateContactRequest = () => {
+        const updatedContact = filterEmptyValues(currentContact);
+        putRequest("contacts", updatedContact, setCommentArea);
+        setContactsToDisplay((prevContacts) => {
+            return prevContacts.map(contact =>
+                contact.id === updatedContact.id ? updatedContact : contact
+            );
+        });
+    };
 
     const handleClickChoose = () => {
         setSelectedContactId((prevId) => (prevId === contact.id ? null : contact.id));
     };
 
     const handleViewContact = () => {
-
+        setOpen(true);
     }
+
+    const handleClose = () => {
+        setOpen(false);
+    };
 
     return (
         <>
@@ -38,6 +59,18 @@ const ContactDisplay = ({ contact, index, selectedContactId, setSelectedContactI
                     }
                 </TableCell>
             </TableRow>
+            {open && (
+                <ContactForm
+                    fields={fields}
+                    contactDetails={currentContact}
+                    setContactDetails={setCurrentContact}
+                    sendRequest={updateContactRequest}
+                    open={open}
+                    handleClose={handleClose}
+                    type="display"
+                />
+            )}
+            <p>{commentArea}</p>
         </>
     );
 };

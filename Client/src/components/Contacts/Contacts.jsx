@@ -29,6 +29,7 @@ const Contacts = ({ selectedContactId, setSelectedContactId, type }) => {
                 selectedContactId={selectedContactId}
                 setSelectedContactId={setSelectedContactId}
                 type={type}
+                fields={fields}
             />
         </>
     );

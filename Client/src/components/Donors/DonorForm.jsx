@@ -35,15 +35,29 @@ const DonorForm = ({ fields, donorDetails, setDonorDetails, sendRequest, open, h
         remarks: false,
     };
 
+    const helperTextObject = {
+        f_name: "",
+        l_name: "",
+        email: "",
+        phone: "",
+        address: "",
+        num_of_children: "",
+        spouse_name: "",
+        address_at_work: "",
+        introduction_description: "",
+        contact_id: "",
+        remarks: "",
+    };
+
     const [error, setError] = useState(errorObject);
-    const [helperText, setHelperText] = useState(fields);
+    const [helperText, setHelperText] = useState(helperTextObject);
 
     useEffect(() => {
         console.log(type)
         setCommentArea("");
         setDonorChanged(false);
         setError(errorObject);
-        setHelperText(fields);
+        setHelperText(helperTextObject);
     }, [open, formType]);
 
     const trimObjectStrings = (obj) => {
@@ -312,7 +326,7 @@ const DonorForm = ({ fields, donorDetails, setDonorDetails, sendRequest, open, h
                                 />
                             </Grid>
 
-                            <ContactDonorForm setUpdatedDonor={setUpdatedDonor} updatedDonor={updatedDonor}/>
+                            <ContactDonorForm type={formType} setUpdatedDonor={setUpdatedDonor} updatedDonor={updatedDonor}/>
                             
                             <Grid item xs={12} sm={6}>
                                 <Button

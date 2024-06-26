@@ -23,15 +23,22 @@ const ContactForm = ({ fields, contactDetails, setContactDetails, sendRequest, o
         address: false
     };
 
+    const helperTextObject = {
+        name: false,
+        email: false,
+        phone: false,
+        address: false
+    };
+
     const [error, setError] = useState(errorObject);
-    const [helperText, setHelperText] = useState(fields);
+    const [helperText, setHelperText] = useState(helperTextObject);
 
     useEffect(() => {
-        console.log(type)
+        console.log("helperText ", helperText)
         setCommentArea("");
         setContactChanged(false);
         setError(errorObject);
-        setHelperText(fields);
+        setHelperText(helperTextObject);
     }, [open, formType]);
 
     const trimObjectStrings = (obj) => {
