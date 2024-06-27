@@ -14,7 +14,7 @@ const isValidUsername = (inputString) => {
   };
 
   const isValidPassword = (inputString) => {
-    const regex = /^[a-z]*[a-z]\.[a-z]+$/;
+    const regex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*?&^#*]{8,}$/;
     return regex.test(inputString);
   };
 
@@ -29,7 +29,7 @@ const isValidUsername = (inputString) => {
   };
 
   const isValidNumber = (inputString) => {
-    const regex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*?&^#*]{8,}$/;
+    const regex = /^(\+?\d{1,3}[-.\s]?)?(\(?\d{3}\)?[-.\s]?)?[\d-.\s]{7,10}$/;
     return regex.test(inputString);
   };
 
