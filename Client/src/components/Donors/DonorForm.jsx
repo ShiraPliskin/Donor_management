@@ -12,7 +12,8 @@ import EventIcon from '@mui/icons-material/Event';
 import { checkValidation } from './DonorValidation'
 import _isEqual from 'lodash/isEqual';
 import _ from 'lodash';
-import ContactButton from "../Contacts/ContactButton";
+import ContactDonorForm from "../Contacts/ContactDonorForm";
+import DonorDelete from "./DonorDelete";
 
 const DonorForm = ({ fields, donorDetails, setDonorDetails, sendRequest, open, handleClose, type }) => {
 
@@ -20,6 +21,7 @@ const DonorForm = ({ fields, donorDetails, setDonorDetails, sendRequest, open, h
     const [formType, setFormType] = useState(type);
     const [updatedDonor, setUpdatedDonor] = useState(donorDetails);
     const [donorChanged, setDonorChanged] = useState(false);
+    const [openDeleteWarning, setOpenDeleteWarning] = useState(false);
 
     const errorObject = {
         f_name: false,
@@ -34,25 +36,25 @@ const DonorForm = ({ fields, donorDetails, setDonorDetails, sendRequest, open, h
         contact_id: false,
         remarks: false,
     };
+
     const helperTextObject = {
-        f_name: '',
-        l_name: '',
-        email: '',
-        phone: '',
-        address: '',
-        num_of_children: '',
-        spouse_name: '',
-        address_at_work: '',
-        introduction_description: '',
-        contact_id: '',
-        remarks: '',
+        f_name: "",
+        l_name: "",
+        email: "",
+        phone: "",
+        address: "",
+        num_of_children: "",
+        spouse_name: "",
+        address_at_work: "",
+        introduction_description: "",
+        contact_id: "",
+        remarks: "",
     };
 
     const [error, setError] = useState(errorObject);
     const [helperText, setHelperText] = useState(helperTextObject);
 
     useEffect(() => {
-        console.log(type)
         setCommentArea("");
         setDonorChanged(false);
         setError(errorObject);
@@ -72,13 +74,18 @@ const DonorForm = ({ fields, donorDetails, setDonorDetails, sendRequest, open, h
         setUpdatedDonor(donorDetails);
     }
 
+    const undoAdd = () => {
+        setUpdatedDonor(donorDetails);
+        handleClose();
+    }
+
     useEffect(() => {
         if (donorChanged) {
-            console.log("donorDetails updated: ", donorDetails);
             sendRequest();
             setDonorChanged(false);
-            if (type === "add")
+            if (type === "add") {
                 setUpdatedDonor(fields);
+            }
         }
     }, [donorDetails]);
 
@@ -87,7 +94,6 @@ const DonorForm = ({ fields, donorDetails, setDonorDetails, sendRequest, open, h
         e.preventDefault();
         const isValid = checkValidation(updatedDonor, setError, setHelperText);
         if (isValid) {
-            console.log("type ", type)
             setDonorDetails(updatedDonor);
             if (type !== "add") {
                 setFormType("display");
@@ -104,14 +110,20 @@ const DonorForm = ({ fields, donorDetails, setDonorDetails, sendRequest, open, h
 
     return (
         <>
-            <Dialog open={open} onClose={handleClose}>
+            <Dialog open={open}
+                onClose={(event, reason) => {
+                    if (reason !== 'backdropClick' && reason !== 'escapeKeyDown') {
+                        handleClose();
+                    }
+                }}
+                disableEscapeKeyDown
+            >
                 {formType === "display" && <DialogTitle>תורם מספר {donorDetails.id}</DialogTitle>}
                 {formType === "add" && <DialogTitle>הוספת תורם</DialogTitle>}
                 {formType === "edit" && <DialogTitle>עדכון תורם מספר {donorDetails.id}</DialogTitle>}
                 <DialogContent>
                     <form onSubmit={handleSubmit}>
                         <Grid container spacing={3}>
-                            {/* <h5>פרטים בסיסיים:</h5> */}
                             <Grid item xs={12} sm={4}>
                                 <TextField
                                     disabled={formType === "display"}
@@ -312,14 +324,13 @@ const DonorForm = ({ fields, donorDetails, setDonorDetails, sendRequest, open, h
                                     }}
                                 />
                             </Grid>
-                            <Grid item xs={12} sm={6}>
-                                <ContactButton/>
-                            </Grid>
+                            <ContactDonorForm type={formType} setUpdatedDonor={setUpdatedDonor} updatedDonor={updatedDonor} />
                             <Grid item xs={12} sm={6}>
                                 <Button
                                     fullWidth
                                     variant="outlined"
                                     color="info"
+                                    style={{ height: '40px' }}
                                     startIcon={<EventIcon sx={{ marginLeft: 1 }} />}
                                 >תאריכים מיוחדים
                                 </Button>
@@ -381,6 +392,7 @@ const DonorForm = ({ fields, donorDetails, setDonorDetails, sendRequest, open, h
                 <DialogActions>
                     {formType === "display" &&
                         <>
+                            <Button onClick={() => { setOpenDeleteWarning(true) }} color="warning">מחק</Button>
                             <Button onClick={() => { setFormType("edit") }} color="primary">עריכה</Button>
                             <Button onClick={handleClose} color="primary">סגור</Button>
                         </>}
@@ -391,9 +403,16 @@ const DonorForm = ({ fields, donorDetails, setDonorDetails, sendRequest, open, h
                         </>}
                     {formType === "add" &&
                         <>
-                            <Button onClick={handleClose} color="primary">ביטול</Button>
+                            <Button onClick={() => undoAdd()} color="primary">ביטול</Button>
                             <Button onClick={handleSubmit} color="primary">הוסף</Button>
                         </>}
+                    {openDeleteWarning &&
+                        <DonorDelete
+                            id={donorDetails.id}
+                            warningOpen={openDeleteWarning}
+                            setWarningOpen={setOpenDeleteWarning}
+                        />
+                    }
                 </DialogActions>
             </Dialog>
 

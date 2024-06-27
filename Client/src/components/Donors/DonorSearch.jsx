@@ -66,7 +66,7 @@ const DonorSearch = ({ fields, donorsToDisplay, setDonorsToDisplay }) => {
                         margin="dense"
                     />
                     <TextField
-                        style={{ width: '150px' }}
+                        style={{ width: '140px' }}
                         label="שם פרטי"
                         variant="outlined"
                         name="f_name"
@@ -76,7 +76,7 @@ const DonorSearch = ({ fields, donorsToDisplay, setDonorsToDisplay }) => {
                         margin="dense"
                     />
                     <TextField
-                        style={{ width: '150px' }}
+                        style={{ width: '130px' }}
                         label="טלפון"
                         variant="outlined"
                         name="phone"
@@ -86,7 +86,7 @@ const DonorSearch = ({ fields, donorsToDisplay, setDonorsToDisplay }) => {
                         margin="dense"
                     />
                     <TextField
-                        style={{ width: '220px' }}
+                        style={{ width: '210px' }}
                         label="כתובת מייל"
                         variant="outlined"
                         name="email"
@@ -97,7 +97,7 @@ const DonorSearch = ({ fields, donorsToDisplay, setDonorsToDisplay }) => {
                         margin="dense"
                     />
                     <TextField
-                        style={{ width: '200px' }}
+                        style={{ width: '190px' }}
                         label="כתובת"
                         variant="outlined"
                         name="address"

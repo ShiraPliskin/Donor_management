@@ -1,4 +1,3 @@
-import { React, useState } from "react";
 import { config } from "../config.jsx";
 
 export const getRequest = async (table, conditions, state, comment, object ="") => {
@@ -73,7 +72,7 @@ export const putRequest = async (table, updatedObject, comment) => {
     }
 }
 
-export const DeleteRequest = async (state, comment, id, table) => {
+export const deleteRequest = async (state, comment, id, table) => {
     try {
         const response = await fetch(`http://${config.SERVERPORT}/${table}/${id}`, {
             headers: { 'Content-Type': 'application/json' },

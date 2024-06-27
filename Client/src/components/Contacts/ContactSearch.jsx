@@ -46,7 +46,7 @@ const ContactSearch = ({ fields, contactsToDisplay, setContactsToDisplay }) => {
             <form onSubmit={handleSubmit}>
                 <Box display="flex" alignItems="center" flexWrap="wrap" gap={2}>
                     <TextField
-                        style={{ width: '100px' }}
+                        style={{ width: '150px' }}
                         label="מס' איש קשר"
                         variant="outlined"
                         name="id"

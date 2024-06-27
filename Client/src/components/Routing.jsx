@@ -6,6 +6,7 @@ import Register from "./Register/Register"
 import Home from "./Home";
 import Donors from "./Donors/Donors";
 import Gifts from "./Gifts/Gifts";
+import Contacts from "./Contacts/Contacts";
 
 const Routing = () => {
     const [currentUser, setCurrentUser] = useState(JSON.parse(localStorage.getItem("currentUser")));
@@ -24,6 +25,7 @@ const Routing = () => {
                 <Route path="register" element={<Register />} />
                 <Route exact path="users/:userId/home" element={<Home />} >
                     <Route path="donors" element={<Donors />} />
+                    <Route path="contacts" element={<Contacts />} />
                     <Route path="gifts" element={<Gifts />} />
                 </Route>
                 <Route path="*" element={<NotFound />} />
