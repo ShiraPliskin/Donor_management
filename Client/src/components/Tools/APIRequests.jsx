@@ -1,6 +1,6 @@
 import { config } from "../config.jsx";
 
-export const getRequest = async (table, conditions, state, comment, object ="") => {
+export const getRequest = async (table, conditions, state, comment, object = "") => {
     const url = `http://${config.SERVERPORT}/${table}${conditions ? `${conditions}` : ''}`;
     try {
         const response = await fetch(url);
@@ -64,11 +64,11 @@ export const putRequest = async (table, updatedObject, comment) => {
         if (Object.keys(data).length === 0) {
             return false;
         }
-        return true; 
+        return true;
     } catch (error) {
         console.error(error);
         comment(`שגיאת שרת`);
-        return false; 
+        return false;
     }
 }
 
@@ -95,7 +95,7 @@ export const deleteRequest = async (state, comment, id, table) => {
     }
 }
 
-export const postRequest = async ( table, newItem, comment, newID=0) => {
+export const postRequest = async (table, newItem, comment, newID = 0) => {
     try {
         const response = await fetch(`http://${config.SERVERPORT}/${table}`, {
             headers: { 'Content-Type': 'application/json' },
@@ -106,12 +106,12 @@ export const postRequest = async ( table, newItem, comment, newID=0) => {
             throw new Error(`Request failed with status: ${response.status}`);
         }
         const data = await response.json();
-        if(newID !== 0){
+        if (newID !== 0) {
             const insertId = data["insertId"];
             await newID(insertId);
         }
         comment("success");
-        return true; 
+        return true;
 
     } catch (error) {
         console.error("Error creating request:", error);
@@ -120,7 +120,7 @@ export const postRequest = async ( table, newItem, comment, newID=0) => {
     }
 };
 
-export const getByPostRequest = async ( table, newItem, comment) => {
+export const getByPostRequest = async (table, newItem, comment) => {
     try {
         const response = await fetch(`http://${config.SERVERPORT}/${table}`, {
             headers: { 'Content-Type': 'application/json' },
@@ -132,10 +132,31 @@ export const getByPostRequest = async ( table, newItem, comment) => {
             throw new Error(`Request failed with status: ${response.status}`);
         }
         console.log(" response.json() : " + response.status);
-        return true; 
+        return true;
     } catch (error) {
         console.error("Error creating request:", error);
         comment('שגיאת שרת');
+        return false;
+    }
+};
+
+export const checkIfExist = async (table, conditions, comment) => {
+    const url = `http://${config.SERVERPORT}/${table}${conditions ? `${conditions}` : ''}`;
+    try {
+        const response = await fetch(url);
+
+        if (!response.ok) {
+            throw new Error(`Request failed with status: ${response.status}`);
+        }
+        const data = await response.json();
+        if (Object.keys(data).length === 0) {
+            return true;
+        } else {
+            return comment("כתובת מייל קיימת במערכת.");
+        }
+    } catch (error) {
+        console.error("Error in GetRequest:", error);
+        comment(`שגיאת שרת`);
         return false;
     }
 };
