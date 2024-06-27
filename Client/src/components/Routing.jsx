@@ -1,5 +1,5 @@
-import { BrowserRouter, Routes, Route, Navigate, Outlet } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import { React,useState, useEffect } from 'react';
 import NotFound from "./NotFound"
 import Login from "./Login/Login"
 import Register from "./Register/Register"
@@ -10,27 +10,25 @@ import Contacts from "./Contacts/Contacts";
 
 const Routing = () => {
     const [currentUser, setCurrentUser] = useState(JSON.parse(localStorage.getItem("currentUser")));
-    //const [currentPage, setCurrentPage] = useState(currentUser ? `/users/${currentUser.id}/home` : "/login");
 
-    useEffect(() => {
-        setCurrentUser(JSON.parse(localStorage.getItem("currentUser")));
-        //setCurrentPage(currentUser ? `/users/${currentUser.id}/home` : "/login");
-    }, []);
-
-    return (<>
-        <BrowserRouter>
+    return (
+      <>
+        <Router>
             <Routes>
-                <Route path="/" element={<Navigate to={currentUser != null ? "/users/:userId/home" : "/Login"} />} />
-                <Route path="login" element={<Login />} />
-                <Route path="register" element={<Register />} />
-                <Route exact path="users/:userId/home" element={<Home />} >
-                    <Route path="donors" element={<Donors />} />
-                    <Route path="contacts" element={<Contacts />} />
-                    <Route path="gifts" element={<Gifts />} />
+              <Route path='/' element={<Navigate to={currentUser != null ? "/users/:userId/home" : "/Login"} />} />
+              <Route path='/login' element={<Login />} />
+              <Route path='/register' element={<Register />} />
+               <Route path='/users/:userId'>
+                  <Route element={<Home />}>
+                    <Route path='donors' element={<Donors />} />
+                    <Route path='contacts' element={<Contacts />} />
+                    <Route path='gifts' element={<Gifts />} />
+                  </Route>
                 </Route>
-                <Route path="*" element={<NotFound />} />
+              <Route path="*" element={<NotFound />} />
             </Routes>
-        </BrowserRouter>
-    </>)
+        </Router>
+    </>
+  )
 }
-export default Routing;
+export default Routing
