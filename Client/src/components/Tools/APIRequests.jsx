@@ -152,7 +152,7 @@ export const checkIfExist = async (table, conditions, comment) => {
         if (Object.keys(data).length === 0) {
             return true;
         } else {
-            return comment("שם המשתמש קיים. בחר שם משתמש אחר.");
+            return comment("כתובת מייל קיימת במערכת.");
         }
     } catch (error) {
         console.error("Error in GetRequest:", error);

@@ -128,14 +128,11 @@ const Register = () => {
   }, [userId, userFields, navigate]);
 
   useEffect(() => {
-    if (comment === "success") {
-      setSuccess(true);
-    }
-  }, [comment]);
-
-  useEffect(() => {
     setIsPwVerified(userFields.password !== "" && userFields.password === userFields.verifyPW);
   }, [userFields.password, userFields.verifyPW]);
+
+  useEffect(() => {
+console.log("success ",success)  }, [success]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -158,7 +155,7 @@ const Register = () => {
   };
 
   const addUser = (user) => {
-    postRequest("users", user, setComment, setUserId);
+    postRequest("users", user, setSuccess, setUserId);
   };
 
   return (
@@ -166,8 +163,8 @@ const Register = () => {
       <div className={style.wrapper}>
         <h1>משתמש חדש</h1>
         <form onSubmit={handleSubmit} className={style.inputBox}>
-          <input name="name" type="text" placeholder="שם משתמש" required />
-          <input name="email" type="text" placeholder="מייל" required />
+          <input name="name" type="text" placeholder="שם" required />
+          <input name="email" type="text" placeholder="כתובת מייל" required />
           <input 
             placeholder="סיסמה" 
             onChange={(e) => setUserFields(prev => ({ ...prev, password: e.target.value }))} 
@@ -186,7 +183,8 @@ const Register = () => {
         </form>
       </div>
       <p>{comment}</p>
-      {success && <GenericMessage message="נרשמת בהצלחה" type={comment} />}
+      {/* {success == "success" && <GenericMessage message="נרשמת בהצלחה" type="success" />}
+      {success == "error" && <GenericMessage message="ההרשמה נכשלה" type="error" />} */}
       <p className={style.link}>משתמש קיים?<Link to="/Login">לחץ להתחברות</Link></p>
     </>
   );
