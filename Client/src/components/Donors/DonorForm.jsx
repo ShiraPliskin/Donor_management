@@ -13,6 +13,7 @@ import { checkValidation } from './DonorValidation'
 import _isEqual from 'lodash/isEqual';
 import _ from 'lodash';
 import ContactDonorForm from "../Contacts/ContactDonorForm";
+import DonorDelete from "./DonorDelete";
 
 const DonorForm = ({ fields, donorDetails, setDonorDetails, sendRequest, open, handleClose, type }) => {
 
@@ -20,6 +21,7 @@ const DonorForm = ({ fields, donorDetails, setDonorDetails, sendRequest, open, h
     const [formType, setFormType] = useState(type);
     const [updatedDonor, setUpdatedDonor] = useState(donorDetails);
     const [donorChanged, setDonorChanged] = useState(false);
+    const [openDeleteWarning, setOpenDeleteWarning] = useState(false);
 
     const errorObject = {
         f_name: false,
@@ -53,7 +55,6 @@ const DonorForm = ({ fields, donorDetails, setDonorDetails, sendRequest, open, h
     const [helperText, setHelperText] = useState(helperTextObject);
 
     useEffect(() => {
-        console.log(type)
         setCommentArea("");
         setDonorChanged(false);
         setError(errorObject);
@@ -80,10 +81,9 @@ const DonorForm = ({ fields, donorDetails, setDonorDetails, sendRequest, open, h
 
     useEffect(() => {
         if (donorChanged) {
-            console.log("donorDetails updated: ", donorDetails);
             sendRequest();
             setDonorChanged(false);
-            if (type === "add"){
+            if (type === "add") {
                 setUpdatedDonor(fields);
             }
         }
@@ -94,7 +94,6 @@ const DonorForm = ({ fields, donorDetails, setDonorDetails, sendRequest, open, h
         e.preventDefault();
         const isValid = checkValidation(updatedDonor, setError, setHelperText);
         if (isValid) {
-            console.log("type ", type)
             setDonorDetails(updatedDonor);
             if (type !== "add") {
                 setFormType("display");
@@ -108,7 +107,7 @@ const DonorForm = ({ fields, donorDetails, setDonorDetails, sendRequest, open, h
         setError((prevData) => ({ ...prevData, [name]: false }));
         setHelperText((prevData) => ({ ...prevData, [name]: '' }));
     };
-   
+
     return (
         <>
             <Dialog open={open}
@@ -325,9 +324,7 @@ const DonorForm = ({ fields, donorDetails, setDonorDetails, sendRequest, open, h
                                     }}
                                 />
                             </Grid>
-
-                            <ContactDonorForm type={formType} setUpdatedDonor={setUpdatedDonor} updatedDonor={updatedDonor}/>
-                            
+                            <ContactDonorForm type={formType} setUpdatedDonor={setUpdatedDonor} updatedDonor={updatedDonor} />
                             <Grid item xs={12} sm={6}>
                                 <Button
                                     fullWidth
@@ -395,6 +392,7 @@ const DonorForm = ({ fields, donorDetails, setDonorDetails, sendRequest, open, h
                 <DialogActions>
                     {formType === "display" &&
                         <>
+                            <Button onClick={() => { setOpenDeleteWarning(true) }} color="warning">מחק</Button>
                             <Button onClick={() => { setFormType("edit") }} color="primary">עריכה</Button>
                             <Button onClick={handleClose} color="primary">סגור</Button>
                         </>}
@@ -408,6 +406,13 @@ const DonorForm = ({ fields, donorDetails, setDonorDetails, sendRequest, open, h
                             <Button onClick={() => undoAdd()} color="primary">ביטול</Button>
                             <Button onClick={handleSubmit} color="primary">הוסף</Button>
                         </>}
+                    {openDeleteWarning &&
+                        <DonorDelete
+                            id={donorDetails.id}
+                            warningOpen={openDeleteWarning}
+                            setWarningOpen={setOpenDeleteWarning}
+                        />
+                    }
                 </DialogActions>
             </Dialog>
 

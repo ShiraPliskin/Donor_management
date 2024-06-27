@@ -1,6 +1,7 @@
 import { useState } from "react";
 import GiftSearch from "./GiftSearch"
 import GiftsDisplay from "./GiftsDisplay"
+import GiftAdd from "./GiftAdd";
 
 const Gifts = () => {
 
@@ -21,7 +22,7 @@ const Gifts = () => {
 
     return (
         <>
-            {/* <DonorAdd fields={fields} /> */}
+            <GiftAdd fields={fields} />
             <GiftSearch fields={fields} giftsToDisplay={giftsToDisplay} setGiftsToDisplay={setGiftsToDisplay}/>
             <GiftsDisplay giftsToDisplay={giftsToDisplay} setGiftsToDisplay={setGiftsToDisplay}/>
         </>

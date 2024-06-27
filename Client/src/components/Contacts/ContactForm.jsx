@@ -34,7 +34,6 @@ const ContactForm = ({ fields, contactDetails, setContactDetails, sendRequest, o
     const [helperText, setHelperText] = useState(helperTextObject);
 
     useEffect(() => {
-        console.log("helperText ", helperText)
         setCommentArea("");
         setContactChanged(false);
         setError(errorObject);
@@ -61,7 +60,6 @@ const ContactForm = ({ fields, contactDetails, setContactDetails, sendRequest, o
 
     useEffect(() => {
         if (contactChanged) {
-            console.log("contactDetails updated: ", contactDetails);
             sendRequest();
             setContactChanged(false);
             if (type === "add"){
@@ -75,7 +73,6 @@ const ContactForm = ({ fields, contactDetails, setContactDetails, sendRequest, o
         e.preventDefault();
         const isValid = checkValidation(updatedContact, setError, setHelperText);
         if (isValid) {
-            console.log("type ", type)
             setContactDetails(updatedContact);
             if (type !== "add") {
                 setFormType("display");

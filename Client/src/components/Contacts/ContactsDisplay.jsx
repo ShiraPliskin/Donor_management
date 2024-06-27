@@ -2,22 +2,12 @@ import { React, useState } from 'react';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Box, Button } from '@mui/material';
 import ContactDisplay from './ContactDisplay';
 
-const ContactsDisplay = ({ fields, contactsToDisplay, setContactsToDisplay, selectedContactId, setSelectedContactId, type}) => {
+const ContactsDisplay = ({ fields, contactsToDisplay, setContactsToDisplay, selectedContactId, setSelectedContactId, type }) => {
 
     return (
         <>
             {contactsToDisplay.length > 0 && (<>
-                <Box sx={{
-                    width: '100%',
-                    height: '100%',
-                    padding: 2,
-                    overflow: 'hidden',
-                    display: 'flex',
-                    justifyContent: 'center',
-                    flexDirection: 'column',
-                }}
-                    maxWidth='955px'
-                >
+                <Box sx={{ minWidth: 650 }} maxWidth={type === "contacts" ? "xl" : "lg"} >
                     <TableContainer component={Paper} sx={{ width: '100%', height: '100%' }}>
                         <Table sx={{ width: '100%', height: '100%' }} aria-label="simple table">
                             <TableHead>
@@ -33,6 +23,7 @@ const ContactsDisplay = ({ fields, contactsToDisplay, setContactsToDisplay, sele
                             <TableBody>
                                 {contactsToDisplay.map((contact, index) => (
                                     <ContactDisplay
+                                        fields={fields}
                                         contact={contact}
                                         index={index}
                                         key={index}
@@ -46,7 +37,7 @@ const ContactsDisplay = ({ fields, contactsToDisplay, setContactsToDisplay, sele
                         </Table>
                     </TableContainer>
                 </Box>
-                </>
+            </>
             )}
         </>
     );
