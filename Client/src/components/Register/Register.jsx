@@ -110,7 +110,7 @@ const Register = () => {
     id: '',
     name: '',
     email: '',
-    permission: '',
+    permission: "secretary",
     password: '',
     verifyPW: ''
   });
@@ -119,10 +119,9 @@ const Register = () => {
     if (userId) {
       const updatedUser = {
         ...userFields,
-        id: userId,
-        permission: "secretary"
+        id: userId
       };
-      const { password, verifyPW, ...userWithoutPassword } = updatedUser;
+      const {password, verifyPW, ...userWithoutPassword } = updatedUser;
       localStorage.setItem("currentUser", JSON.stringify(userWithoutPassword));
       navigate(`users/${updatedUser.id}/home`, { replace: true });
     }
@@ -147,7 +146,8 @@ const Register = () => {
       password: e.target.password.value
     };
     setUserFields(updatedUserFields);
-    checkIsUserExist(updatedUserFields);
+    const {id, verifyPW, ...userForAdd } = updatedUserFields;
+    checkIsUserExist(userForAdd);
   };
 
   const checkIsUserExist = async (user) => {
