@@ -1,103 +1,12 @@
-// import { useState, useEffect } from "react";
-// import { Link, useNavigate } from "react-router-dom";
-// import { checkIfExist, postRequest } from "../Tools/APIRequests";
-// import GenericMessage from '../Tools/GenericMessage'
-// import style from "./Register.module.css"
-
-// const Register = () => {
-
-//   const [isPwVerified, setIsPwVerified] = useState(false);
-//   const [comment, setComment] = useState("");
-//   const [success, setSuccess] = useState(false);
-//   const [userId, setUserId]= useState("");
-//   // const navigate = useNavigate();
-
-//   const passwordFields = {
-//     password: '',
-//     verifyPW: ''
-//   }
-
-//   const userFields = {
-//     id: '',
-//     name: '',
-//     email: '',
-//     permition: '',
-//     password: '',
-// };
-
-//   const [PW, setPW] = useState(passwordFields)
-//   const [currentUser, setCurrentUser] = useState(userFields);
-
-//   useEffect(() => { 
-//     if (userId)
-//       {
-//         setCurrentUser(prevState => ({
-//           ...prevState,
-//             ["id"]: userId,
-//             ["permission"]: "secretary",
-//           }));
-//         delete currentUser["password"];
-//         localStorage.setItem("currentUser", JSON.stringify(currentUser));
-//         // navigate(`users/${currentUser.id}/home`, { replace: true });
-//       }
-//   },[userId])
-
-//   useEffect(() => {
-//     if (comment === "success") {
-//       setSuccess(true);
-//     }
-//   }, [comment]);
-
-//   useEffect(() => {
-//     setIsPwVerified(!PW.password == "" && PW.password === PW.verifyPW);
-//   }, [PW])
-
-//   const handleSubmit = async (e) => {
-//     e.preventDefault();
-//     setCurrentUser(prevState => ({
-//       ...prevState,
-//         ["name"]: e.target.name.value,
-//         ["email"]:e.target.email.value,
-//         ["password"]:e.target.password.value
-//       }));
-//     chackIsUserExist();
-//   }
-
-//   const chackIsUserExist = async () => {
-//     const isNew = await checkIfExist("users", `?filter=email=${currentUser.email}`, setComment);
-//     if(isNew)
-//       adduser();
-//   }
-
-//   const adduser = () => {
-//     postRequest("users", currentUser, setComment, setUserId);
-//   }
-
-//   return (
-//     <>
-//       <div className={style.wrapper}>
-//         <h1>משתמש חדש</h1>
-//         <form onSubmit={handleSubmit} className={style.inputBox}>
-//           <input name="name" type="text" placeholder="שם משתמש" required />
-//           <input name="email" type="text" placeholder="מייל" required />
-//           <input placeholder="סיסמה" onChange={(e) => setPW(prev => ({ ...prev, password: e.target.value }))} name="password" type="password" />
-//           <input placeholder="אימות סיסמה" onChange={(e) => setPW(prev => ({ ...prev, verifyPW: e.target.value }))} name="verifyPassword" type="password" />
-//           <button disabled={!isPwVerified} type="submit">המשך</button>
-//         </form>
-//       </div>
-//       <p>{comment}</p>
-//       {success&&<GenericMessage message="נרשמת בהצלחה" type={comment}/>}
-//       <p className={style.link}>משתמש קיים?<Link to={"/Login"}>לחץ להתחברות</Link></p>
-//     </>
-//   )
-// }
-// export default Register
-
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { checkIfExist, postRequest } from "../Tools/APIRequests";
+import { TextField, Button, InputAdornment, IconButton } from '@mui/material';
+import EmailIcon from '@mui/icons-material/Email';
+import PersonIcon from '@mui/icons-material/Person';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
+import { checkValidation } from './RegisterValidation'
 import GenericMessage from '../Tools/GenericMessage';
-import style from "./Register.module.css";
 
 const Register = () => {
   const [isPwVerified, setIsPwVerified] = useState(false);
@@ -115,6 +24,21 @@ const Register = () => {
     verifyPW: ''
   });
 
+  const [error, setError] = useState({
+    name: false,
+    email: false,
+    password: false
+  });
+
+  const [helperText, setHelperText] = useState({
+    name: '',
+    email: '',
+    password: ''
+  });
+
+  const [showPassword, setShowPassword] = useState(false);
+  const [showVerifyPassword, setShowVerifyPassword] = useState(false);
+
   useEffect(() => { 
     if (userId) {
       const updatedUser = {
@@ -128,14 +52,15 @@ const Register = () => {
   }, [userId, userFields, navigate]);
 
   useEffect(() => {
+    console.log(userFields)
     setIsPwVerified(userFields.password !== "" && userFields.password === userFields.verifyPW);
   }, [userFields.password, userFields.verifyPW]);
 
-  useEffect(() => {
-console.log("success ",success)  }, [success]);
-
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const isValid = checkValidation(userFields, setError, setHelperText);
+    if (!isValid) 
+      return;
     const updatedUserFields = {
       ...userFields,
       name: e.target.name.value,
@@ -158,34 +83,120 @@ console.log("success ",success)  }, [success]);
     postRequest("users", user, setSuccess, setUserId);
   };
 
+  const handleChange = (e) =>{
+    const { name, value } = e.target;
+    setUserFields((prevData) => ({ ...prevData, [name]: value }));
+    setError((prevData) => ({ ...prevData, [name]: false }));
+    setHelperText((prevData) => ({ ...prevData, [name]: '' }));
+  }
+
   return (
     <>
-      <div className={style.wrapper}>
-        <h1>משתמש חדש</h1>
-        <form onSubmit={handleSubmit} className={style.inputBox}>
-          <input name="name" type="text" placeholder="שם" required />
-          <input name="email" type="text" placeholder="כתובת מייל" required />
-          <input 
-            placeholder="סיסמה" 
-            onChange={(e) => setUserFields(prev => ({ ...prev, password: e.target.value }))} 
-            name="password" 
-            type="password" 
-            required 
-          />
-          <input 
-            placeholder="אימות סיסמה" 
-            onChange={(e) => setUserFields(prev => ({ ...prev, verifyPW: e.target.value }))} 
-            name="verifyPassword" 
-            type="password" 
-            required 
-          />
-          <button disabled={!isPwVerified} type="submit">המשך</button>
+      <div>
+        <h2>משתמש חדש</h2>
+        <form onSubmit={handleSubmit}>
+          <TextField
+            name="name"
+            label="שם"
+            variant="outlined"
+            placeholder="שם"
+            size="small"
+            required
+            margin="normal"
+            error={error.name}
+            helperText={helperText.name}
+            onChange={handleChange}
+            inputProps={{
+                maxLength: 20,
+            }}
+            InputProps={{
+                startAdornment: (
+                    <InputAdornment position="start">
+                        <PersonIcon />
+                    </InputAdornment>
+                ),
+            }}
+          /><br/>
+          <TextField
+            name="email"
+            label="כתובת מייל"
+            variant="outlined"
+            placeholder="כתובת מייל"
+            size="small"
+            required
+            margin="normal"
+            error={error.email}
+            helperText={helperText.email}
+            onChange={handleChange}
+            inputProps={{
+                maxLength: 40,
+            }}
+            InputProps={{
+                startAdornment: (
+                    <InputAdornment position="start">
+                        <EmailIcon />
+                    </InputAdornment>
+                ),
+            }}
+          /><br/>
+          <TextField
+            name="password"
+            label="סיסמה"
+            variant="outlined"
+            placeholder="סיסמה"
+            size="small"
+            type={showPassword ? 'text' : 'password'}
+            required
+            margin="normal"
+            error={error.password}
+            helperText={helperText.password}
+            onChange={handleChange}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <IconButton
+                    onClick={()=>{setShowPassword(prev=>!prev)}}
+                    edge="start"
+                  >
+                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              )
+            }}/><br/>
+          <TextField
+            name="verifyPW"
+            label="אימות סיסמה"
+            variant="outlined"
+            placeholder="אימות סיסמה"
+            size="small"
+            type={showVerifyPassword ? 'text' : 'password'}
+            required
+            margin="normal"
+            onChange={handleChange}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <IconButton
+                    onClick={()=>{setShowVerifyPassword(prev=>!prev)}}
+                    edge="start"
+                  >
+                    {showVerifyPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              )
+            }}/><br/>
+          <Button
+            disabled={!isPwVerified}
+            variant="contained"
+            color="primary"
+            type="submit"
+          >
+            המשך
+          </Button>
         </form>
       </div>
       <p>{comment}</p>
-      {/* {success == "success" && <GenericMessage message="נרשמת בהצלחה" type="success" />}
-      {success == "error" && <GenericMessage message="ההרשמה נכשלה" type="error" />} */}
-      <p className={style.link}>משתמש קיים?<Link to="/Login">לחץ להתחברות</Link></p>
+      <p>משתמש קיים? <Link to="/Login">לחץ להתחברות</Link></p>
     </>
   );
 };
