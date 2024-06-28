@@ -6,7 +6,7 @@ import EmailIcon from '@mui/icons-material/Email';
 import PersonIcon from '@mui/icons-material/Person';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { checkValidation } from './RegisterValidation'
-import GenericMessage from '../Tools/GenericMessage';
+import GenericMessage from '../Tools/GenericSuccessMessage';
 
 const Register = () => {
   const [isPwVerified, setIsPwVerified] = useState(false);

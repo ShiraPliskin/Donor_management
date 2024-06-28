@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Button, TextField, Dialog, DialogActions, DialogContent, DialogTitle, Grid, InputAdornment } from "@mui/material";
+import { Button, TextField, Dialog, DialogActions, DialogContent, DialogTitle, Grid, InputAdornment, IconButton } from "@mui/material";
 import EmailIcon from '@mui/icons-material/Email';
 import PhoneIcon from '@mui/icons-material/Phone';
 import PersonIcon from '@mui/icons-material/Person';
@@ -9,19 +9,18 @@ import WorkIcon from '@mui/icons-material/Work';
 import DescriptionIcon from '@mui/icons-material/Description';
 import NoteIcon from '@mui/icons-material/Note';
 import EventIcon from '@mui/icons-material/Event';
+import DeleteIcon from '@mui/icons-material/Delete';
 import { checkValidation } from './DonorValidation'
 import _isEqual from 'lodash/isEqual';
 import _ from 'lodash';
 import ContactDonorForm from "../Contacts/ContactDonorForm";
-import DonorDelete from "./DonorDelete";
 
-const DonorForm = ({ fields, donorDetails, setDonorDetails, sendRequest, open, handleClose, type }) => {
+const DonorForm = ({ fields, donorDetails, setDonorDetails, sendRequest, open, handleClose, type, deleteDonor}) => {
 
     const [commentArea, setCommentArea] = useState("");
     const [formType, setFormType] = useState(type);
     const [updatedDonor, setUpdatedDonor] = useState(donorDetails);
     const [donorChanged, setDonorChanged] = useState(false);
-    const [openDeleteWarning, setOpenDeleteWarning] = useState(false);
 
     const errorObject = {
         f_name: false,
@@ -88,7 +87,6 @@ const DonorForm = ({ fields, donorDetails, setDonorDetails, sendRequest, open, h
             }
         }
     }, [donorDetails]);
-
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -392,7 +390,9 @@ const DonorForm = ({ fields, donorDetails, setDonorDetails, sendRequest, open, h
                 <DialogActions>
                     {formType === "display" &&
                         <>
-                            <Button onClick={() => { setOpenDeleteWarning(true) }} color="warning">מחק</Button>
+                            <IconButton onClick={() => { deleteDonor() }} color="primary">
+                                <DeleteIcon />
+                            </IconButton>
                             <Button onClick={() => { setFormType("edit") }} color="primary">עריכה</Button>
                             <Button onClick={handleClose} color="primary">סגור</Button>
                         </>}
@@ -406,16 +406,8 @@ const DonorForm = ({ fields, donorDetails, setDonorDetails, sendRequest, open, h
                             <Button onClick={() => undoAdd()} color="primary">ביטול</Button>
                             <Button onClick={handleSubmit} color="primary">הוסף</Button>
                         </>}
-                    {openDeleteWarning &&
-                        <DonorDelete
-                            id={donorDetails.id}
-                            warningOpen={openDeleteWarning}
-                            setWarningOpen={setOpenDeleteWarning}
-                        />
-                    }
                 </DialogActions>
             </Dialog>
-
         </>
     );
 };

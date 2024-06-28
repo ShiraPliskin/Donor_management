@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import style from "./Login.module.css";
 import { getRequest, postRequest } from "../Tools/APIRequests";
-import GenericMessage from '../Tools/GenericMessage'
+import GenericMessage from '../Tools/GenericSuccessMessage'
 
 const Login = () => {
 

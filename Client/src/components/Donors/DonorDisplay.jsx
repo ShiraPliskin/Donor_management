@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
 import { getByIdRequest, putRequest } from '../Tools/APIRequests';
-import { TableCell, TableRow, IconButton} from '@mui/material';
+import { TableCell, TableRow, IconButton } from '@mui/material';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import DonorForm from './DonorForm';
-import {filterEmptyValues} from "../Tools/Validation"
+import { filterEmptyValues } from "../Tools/Validation"
+import DonorDelete from './DonorDelete';
 
-const DonorDisplay = ({ donor, index , setDonorsToDisplay}) => {
+const DonorDisplay = ({ donor, index, setDonorsToDisplay }) => {
     const [currentDonor, setCurrentDonor] = useState("");
     const [commentArea, setCommentArea] = useState("");
     const [open, setOpen] = useState(false);
+    const [openDeleteWarning, setOpenDeleteWarning] = useState(false);
 
     const getDonorDetails = async () => {
         await getByIdRequest("donors", donor.id, setCurrentDonor, setCommentArea);
@@ -27,11 +29,15 @@ const DonorDisplay = ({ donor, index , setDonorsToDisplay}) => {
         const updatedDonor = filterEmptyValues(currentDonor);
         putRequest("donors", updatedDonor, setCommentArea);
         setDonorsToDisplay((prevDonors) => {
-            return prevDonors.map(donor => 
+            return prevDonors.map(donor =>
                 donor.id === updatedDonor.id ? updatedDonor : donor
             );
         });
     };
+
+    const deleteDonor = () => {
+        setOpenDeleteWarning(true);
+    }
 
     return (
         <>
@@ -49,8 +55,24 @@ const DonorDisplay = ({ donor, index , setDonorsToDisplay}) => {
                 </TableCell>
             </TableRow>
             {open && (
-                <DonorForm donorDetails={currentDonor} setDonorDetails={setCurrentDonor} sendRequest={updateDonorRequest} open={open} handleClose={handleClose} type="display"/>
+                <DonorForm
+                    donorDetails={currentDonor}
+                    setDonorDetails={setCurrentDonor}
+                    sendRequest={updateDonorRequest}
+                    deleteDonor={deleteDonor}
+                    open={open}
+                    handleClose={handleClose}
+                    type="display"
+                />
             )}
+            {openDeleteWarning &&
+                <DonorDelete
+                    id={currentDonor.id}
+                    warningOpen={openDeleteWarning}
+                    setWarningOpen={setOpenDeleteWarning}
+                    closeForm={handleClose}
+                />
+            }
             <p>{commentArea}</p>
         </>
     );

@@ -72,7 +72,7 @@ export const putRequest = async (table, updatedObject, comment) => {
     }
 }
 
-export const deleteRequest = async (state, comment, id, table) => {
+export const deleteRequest = async (table, id, setIsSucceed) => {
     try {
         const response = await fetch(`http://${config.SERVERPORT}/${table}/${id}`, {
             headers: { 'Content-Type': 'application/json' },
@@ -84,14 +84,15 @@ export const deleteRequest = async (state, comment, id, table) => {
         }
 
         const data = await response.json();
-
+        console.log(data)
         if (Object.keys(data).length === 0) {
-            comment(`can't delete`);
+            setIsSucceed("error");
         } else {
-            state(data);
+            setIsSucceed("success");
+            // state(data);
         }
     } catch (error) {
-        comment(`Server error: ${error}`);
+        setIsSucceed("error");
     }
 }
 

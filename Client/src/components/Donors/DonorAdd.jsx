@@ -3,7 +3,7 @@ import { Button } from "@mui/material";
 import DonorForm from "./DonorForm";
 import { postRequest } from "../Tools/APIRequests";
 import { filterEmptyValues } from "../Tools/Validation"
-import GenericMessage from "../Tools/GenericMessage";
+import GenericMessage from "../Tools/GenericSuccessMessage";
 
 const DonorAdd = ({ fields }) => {
     const [donorDetails, setDonorDetails] = useState(fields);

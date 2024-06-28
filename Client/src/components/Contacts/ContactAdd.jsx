@@ -3,7 +3,7 @@ import { Button } from "@mui/material";
 import ContactForm from "./ContactForm";
 import { postRequest } from "../Tools/APIRequests";
 import { filterEmptyValues } from "../Tools/Validation"
-import GenericMessage from "../Tools/GenericMessage";
+import GenericMessage from "../Tools/GenericSuccessMessage";
 
 const ContactAdd = ({ fields, type, newContactID, setNewContactID }) => {
 
