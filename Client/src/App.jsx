@@ -6,8 +6,8 @@ function App() {
 
   return (
     <>
-      <Routing/>
-      {/* <Donors/> */}
+      {/* <Routing/> */}
+      <Donors/>
     </>
   )
 }

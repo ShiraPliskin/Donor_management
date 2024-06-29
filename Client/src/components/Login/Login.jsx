@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import style from "./Login.module.css";
 import { getRequest, postRequest } from "../Tools/APIRequests";
-import GenericMessage from '../Tools/GenericSuccessMessage'
+// import GenericMessage from '../Tools/GenericSuccessMessage'
 
 const Login = () => {
 
@@ -16,17 +16,14 @@ const Login = () => {
 
   useEffect(() => {
     if (userDetails) {
-      console.log("user", userDetails[0].id);
       const passwordObject = {"password" : password};
-      console.log("password", passwordObject);
       postRequest(`register/${userDetails[0].id}`, passwordObject, setReqStatus);
     } else if (userDetails === null && comment) {
-      setErrorMessage(true);
+      setErrorMessage("שם משתמש או סיסמא שגויים");
     }
   }, [userDetails, password, comment]);
 
   useEffect(() => {
-    console.log("reqStatus ",reqStatus)
     if (reqStatus === "success")
       navigateToHomePage(userDetails);
   }, [reqStatus]);
@@ -55,7 +52,7 @@ const Login = () => {
           <button type="submit">המשך</button>
         </form>
         <p>{errorMessage}</p>
-        {errorMessage && <GenericMessage message="שם משתמש או סיסמא שגויים" type="error" />}
+        {/* {errorMessage && <GenericMessage message="שם משתמש או סיסמא שגויים" type="error" />} */}
         <p className={style.link}>אין לך חשבון עדיין?  <Link to={"/register"}>לחץ להרשמה</Link></p>
       </div>
     </>

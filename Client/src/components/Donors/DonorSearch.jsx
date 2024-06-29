@@ -9,9 +9,12 @@ const DonorSearch = ({ fields, donorsToDisplay, setDonorsToDisplay }) => {
     const [donorDetails, setDonorDetails] = useState({});
     const [minDonationAmount, setMinDonationAmount] = useState("");
     const [commentArea, setCommentArea] = useState("");
+    const [currentPermission, setCurrentPermission] = useState("")
 
     useEffect(() => {
         setDonorDetails(fields);
+        const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+        setCurrentPermission(currentUser.permission);
     }, []);
 
     useEffect(() => {
@@ -21,6 +24,11 @@ const DonorSearch = ({ fields, donorsToDisplay, setDonorsToDisplay }) => {
             setCommentArea("");
         }
     }, [donorsToDisplay]);
+
+    const displayAllDonors = () => {
+        const currentUser = JSON.parse(localStorage.getItem("cirrentUser"));
+        getRequest("donors", "", setDonorsToDisplay, setCommentArea, "תורם");
+    }
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -48,6 +56,7 @@ const DonorSearch = ({ fields, donorsToDisplay, setDonorsToDisplay }) => {
 
     return (
         <>
+            {currentPermission === "administrator" && <Button variant="outlined" onClick={displayAllDonors}>כל התורמים</Button>}
             <h3>חיפוש תורם</h3>
             <form onSubmit={handleSubmit}>
                 <Box display="flex" alignItems="center" flexWrap="wrap" gap={2}>
