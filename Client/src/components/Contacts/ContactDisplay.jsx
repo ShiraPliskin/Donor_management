@@ -4,22 +4,27 @@ import Checkbox from "@mui/material/Checkbox";
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import ContactForm from './ContactForm';
 import { putRequest } from '../Tools/APIRequests';
-import {filterEmptyValues} from "../Tools/Validation"
+import {filterEmptyValues} from "../Tools/objectsOperations"
 
 const ContactDisplay = ({ fields, contact, index, setContactsToDisplay, selectedContactId, setSelectedContactId, type }) => {
 
     const [currentContact, setCurrentContact] = useState(contact);
-    const [commentArea, setCommentArea] = useState("");
     const [open, setOpen] = useState(false);
+    const [updateSuccessful, setUpdateSuccessful] = useState('');
+
+    useEffect(() => {
+        if (setContactsToDisplay === "success") {
+            setDonorsToDisplay((prevContacts) => {
+                return prevContacts.map(contact =>
+                    contact.id === currentContact.id ? currentContact : contact
+                );
+            });
+        }
+    }, [updateSuccessful]);
 
     const updateContactRequest = () => {
         const updatedContact = filterEmptyValues(currentContact);
-        putRequest("contacts", updatedContact, setCommentArea);
-        setContactsToDisplay((prevContacts) => {
-            return prevContacts.map(contact =>
-                contact.id === updatedContact.id ? updatedContact : contact
-            );
-        });
+        putRequest("contacts", updatedContact, setUpdateSuccessful);
     };
 
     const handleClickChoose = () => {
@@ -70,7 +75,6 @@ const ContactDisplay = ({ fields, contact, index, setContactsToDisplay, selected
                     type="display"
                 />
             )}
-            <p>{commentArea}</p>
         </>
     );
 };

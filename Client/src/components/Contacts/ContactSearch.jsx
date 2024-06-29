@@ -14,7 +14,11 @@ const ContactSearch = ({ fields, contactsToDisplay, setContactsToDisplay }) => {
     }, []);
 
     useEffect(() => {
+        if (contactsToDisplay.length === 0 && (!isEmptyObject(contactDetails) || donorId)) {
+            setCommentArea("לא נמצא איש קשר");
+        } else {
             setCommentArea("");
+        }
     }, [contactsToDisplay]);
 
     const handleSubmit = (e) => {

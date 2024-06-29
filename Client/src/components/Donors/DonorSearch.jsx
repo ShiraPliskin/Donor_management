@@ -2,8 +2,10 @@ import React, { useState, useEffect } from "react";
 import { getRequest } from "../Tools/APIRequests";
 import { Button, TextField, Box } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
+import { isEmptyObject } from "../Tools/objectsOperations"
 
 const DonorSearch = ({ fields, donorsToDisplay, setDonorsToDisplay }) => {
+
     const [donorDetails, setDonorDetails] = useState({});
     const [minDonationAmount, setMinDonationAmount] = useState("");
     const [commentArea, setCommentArea] = useState("");
@@ -13,7 +15,11 @@ const DonorSearch = ({ fields, donorsToDisplay, setDonorsToDisplay }) => {
     }, []);
 
     useEffect(() => {
+        if (donorsToDisplay.length === 0 && (!isEmptyObject(donorDetails) || minDonationAmount)) {
+            setCommentArea("לא נמצא תורם");
+        } else {
             setCommentArea("");
+        }
     }, [donorsToDisplay]);
 
     const handleSubmit = (e) => {

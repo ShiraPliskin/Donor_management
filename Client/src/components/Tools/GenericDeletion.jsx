@@ -1,19 +1,25 @@
 import React, { useState, useEffect } from "react";
 import { Button, Dialog, DialogContent, Typography, Box, IconButton, DialogTitle } from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";
-import { deleteRequest } from "../Tools/APIRequests";
-import GenericMessage from "../Tools/GenericSuccessMessage";
+import { deleteRequest } from "./APIRequests";
+import GenericMessage from "./GenericSuccessMessage";
 
-const DonorDelete = ({ id, warningOpen, setWarningOpen, closeForm }) => {
+const GenericDeletion = ({ id, warningOpen, setWarningOpen, table, objectName, objectState }) => {
 
     const [isSucceed, setIsSucceed] = useState('');
     const [isChecked, setIsChecked] = useState('');
 
-    const deleteDonorRequest = () => {
+    useEffect(() => {
+        if (isSucceed === "success") {
+            objectState((prev) => {
+                return prev.filter(obj => obj.id !== id);
+            });
+        }
+    }, [isSucceed]);
+
+    const deleteObject = () => {
         setIsSucceed("");
-        deleteRequest("donors", id, setIsSucceed);
-        setWarningOpen(false)
-        closeForm();
+        deleteRequest(table, id, setIsSucceed);
     };
 
     const handleClickAgree = () => {
@@ -33,11 +39,11 @@ const DonorDelete = ({ id, warningOpen, setWarningOpen, closeForm }) => {
                 maxWidth="lg"
             >
                 <DialogTitle sx={{ bgcolor: 'error.main', color: 'white' }}>
-                    האם אתה בטוח שברצונך למחוק את תורם מספר {id}?
+                    האם אתה בטוח שברצונך למחוק את {objectName} מספר {id}?
                 </DialogTitle>
                 <DialogContent>
                     <Typography variant="h6" gutterBottom>
-                        מחיקת התורם תגרום למחיקת כל הפרטים שלו, ואינה ניתנת לשיחזור
+                        מחיקת ה{objectName} תגרום למחיקת כל הפרטים שלו, ואינה ניתנת לשיחזור
                         <IconButton onClick={handleClickAgree}>
                             <Checkbox
                                 checked={isChecked}
@@ -48,15 +54,15 @@ const DonorDelete = ({ id, warningOpen, setWarningOpen, closeForm }) => {
                         </IconButton>
                     </Typography>
                     <Box sx={{ display: 'flex', justifyContent: 'flex-end', marginTop: 2 }}>
-                        <Button disabled={!isChecked} onClick={deleteDonorRequest} sx={{ marginRight: 2 }}>מחיקה</Button>
+                        <Button disabled={!isChecked} onClick={deleteObject} sx={{ marginRight: 2 }}>מחיקה</Button>
                         <Button onClick={() => { setWarningOpen(false) }}>ביטול</Button>
                     </Box>
                 </DialogContent>
             </Dialog>
-            {isSucceed == "success" && <GenericMessage message={`תורם מספר ${id} נמחק בהצלחה`} type="success"/>}
-            {isSucceed == "error" && <GenericMessage message="מחיקת תורם נכשלה" type="error"/>}
+            {isSucceed === "success" && <GenericMessage message={`${objectName} מספר ${id} נמחק בהצלחה`} type="success"/>}
+            {isSucceed === "error" && <GenericMessage message={`מחיקת ${objectName} נכשלה`} type="error" />}
         </>
     );
 };
 
-export default DonorDelete;
+export default GenericDeletion;

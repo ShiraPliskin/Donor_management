@@ -1,19 +1,32 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { getByIdRequest, putRequest } from '../Tools/APIRequests';
 import { TableCell, TableRow, IconButton } from '@mui/material';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import DonorForm from './DonorForm';
-import { filterEmptyValues } from "../Tools/Validation"
-import DonorDelete from './DonorDelete';
+import { filterEmptyValues } from "../Tools/objectsOperations"
+import GenericDeletion from '../Tools/GenericDeletion';
+import GenericMessage from '../Tools/GenericSuccessMessage';
 
 const DonorDisplay = ({ donor, index, setDonorsToDisplay }) => {
+
     const [currentDonor, setCurrentDonor] = useState("");
-    const [commentArea, setCommentArea] = useState("");
     const [open, setOpen] = useState(false);
     const [openDeleteWarning, setOpenDeleteWarning] = useState(false);
+    const [updateSuccessful, setUpdateSuccessful] = useState('');
+    const [comment, setComment] = useState("");
+
+    useEffect(() => {
+        if (updateSuccessful === "success") {
+            setDonorsToDisplay((prevDonors) => {
+                return prevDonors.map(donor =>
+                    donor.id === currentDonor.id ? currentDonor : donor
+                );
+            });
+        }
+    }, [updateSuccessful]);
 
     const getDonorDetails = async () => {
-        await getByIdRequest("donors", donor.id, setCurrentDonor, setCommentArea);
+        await getByIdRequest("donors", donor.id, setCurrentDonor, setComment);
     };
 
     const handleClickOpen = async () => {
@@ -25,19 +38,15 @@ const DonorDisplay = ({ donor, index, setDonorsToDisplay }) => {
         setOpen(false);
     };
 
-    const updateDonorRequest = () => {
-        const updatedDonor = filterEmptyValues(currentDonor);
-        putRequest("donors", updatedDonor, setCommentArea);
-        setDonorsToDisplay((prevDonors) => {
-            return prevDonors.map(donor =>
-                donor.id === updatedDonor.id ? updatedDonor : donor
-            );
-        });
-    };
-
     const deleteDonor = () => {
         setOpenDeleteWarning(true);
     }
+
+    const updateDonorRequest = () => {
+        setUpdateSuccessful("");
+        const updatedDonor = filterEmptyValues(currentDonor);
+        putRequest("donors", updatedDonor, setUpdateSuccessful);
+    };
 
     return (
         <>
@@ -66,14 +75,18 @@ const DonorDisplay = ({ donor, index, setDonorsToDisplay }) => {
                 />
             )}
             {openDeleteWarning &&
-                <DonorDelete
+                <GenericDeletion
                     id={currentDonor.id}
                     warningOpen={openDeleteWarning}
                     setWarningOpen={setOpenDeleteWarning}
-                    closeForm={handleClose}
+                    table="donors"
+                    objectName="תורם"
+                    objectState={setDonorsToDisplay}
                 />
             }
-            <p>{commentArea}</p>
+            {updateSuccessful === "success" && <GenericMessage message={`תורם מספר ${currentDonor.id} עודכן בהצלחה`} type="success" />}
+            {updateSuccessful === "error" && <GenericMessage message="עדכון תורם נכשל" type="error" />}
+            <p>{comment}</p> 
         </>
     );
 };

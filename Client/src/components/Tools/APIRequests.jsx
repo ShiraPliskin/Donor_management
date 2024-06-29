@@ -47,7 +47,7 @@ export const getByIdRequest = async (table, id, state, comment) => {
     }
 };
 
-export const putRequest = async (table, updatedObject, comment) => {
+export const putRequest = async (table, updatedObject, setIsSucceed) => {
     try {
         const response = await fetch(`http://${config.SERVERPORT}/${table}/${updatedObject.id}`, {
             headers: { 'Content-Type': 'application/json' },
@@ -62,12 +62,14 @@ export const putRequest = async (table, updatedObject, comment) => {
         const data = await response.json();
 
         if (Object.keys(data).length === 0) {
-            return false;
+            setIsSucceed("error");
         }
-        return true;
+
+        setIsSucceed("success");
+
     } catch (error) {
         console.error(error);
-        comment(`שגיאת שרת`);
+        setIsSucceed("error");
         return false;
     }
 }
@@ -84,15 +86,18 @@ export const deleteRequest = async (table, id, setIsSucceed) => {
         }
 
         const data = await response.json();
-        console.log(data)
+
         if (Object.keys(data).length === 0) {
             setIsSucceed("error");
-        } else {
-            setIsSucceed("success");
-            // state(data);
+            return false
         }
+       setIsSucceed("success");
+       return true
+
     } catch (error) {
+        console.error("Error creating request:", error);
         setIsSucceed("error");
+        return false
     }
 }
 

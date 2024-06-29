@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Button } from "@mui/material";
 import DonorForm from "./DonorForm";
 import { postRequest } from "../Tools/APIRequests";
-import { filterEmptyValues } from "../Tools/Validation"
+import { filterEmptyValues } from "../Tools/objectsOperations"
 import GenericMessage from "../Tools/GenericSuccessMessage";
 
 const DonorAdd = ({ fields }) => {

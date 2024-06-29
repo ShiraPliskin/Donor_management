@@ -5,7 +5,7 @@ import { TextField, Button, InputAdornment, IconButton } from '@mui/material';
 import EmailIcon from '@mui/icons-material/Email';
 import PersonIcon from '@mui/icons-material/Person';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-import { checkValidation } from './RegisterValidation'
+import { checkValidation } from '../Tools/Validation'
 import GenericMessage from '../Tools/GenericSuccessMessage';
 
 const Register = () => {
@@ -58,6 +58,7 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const requiredFields = ["name", "email", "password", "verifyPW"]
     const isValid = checkValidation(userFields, setError, setHelperText);
     if (!isValid) 
       return;

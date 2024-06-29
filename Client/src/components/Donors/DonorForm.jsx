@@ -10,10 +10,10 @@ import DescriptionIcon from '@mui/icons-material/Description';
 import NoteIcon from '@mui/icons-material/Note';
 import EventIcon from '@mui/icons-material/Event';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { checkValidation } from './DonorValidation'
+import { checkValidation } from '../Tools/Validation'
 import _isEqual from 'lodash/isEqual';
-import _ from 'lodash';
 import ContactDonorForm from "../Contacts/ContactDonorForm";
+import { trimObjectStrings } from "../Tools/objectsOperations"
 
 const DonorForm = ({ fields, donorDetails, setDonorDetails, sendRequest, open, handleClose, type, deleteDonor}) => {
 
@@ -60,10 +60,6 @@ const DonorForm = ({ fields, donorDetails, setDonorDetails, sendRequest, open, h
         setHelperText(helperTextObject);
     }, [open, formType]);
 
-    const trimObjectStrings = (obj) => {
-        return _.mapValues(obj, value => _.isString(value) ? value.trim() : value);
-    };
-
     useEffect(() => {
         setDonorChanged(!_isEqual(trimObjectStrings(donorDetails), trimObjectStrings(updatedDonor)));
     }, [updatedDonor]);
@@ -90,7 +86,8 @@ const DonorForm = ({ fields, donorDetails, setDonorDetails, sendRequest, open, h
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const isValid = checkValidation(updatedDonor, setError, setHelperText);
+        const requiredFields = ["f_name", "l_name", "address"];
+        const isValid = checkValidation(updatedDonor, setError, setHelperText, requiredFields);
         if (isValid) {
             setDonorDetails(updatedDonor);
             if (type !== "add") {

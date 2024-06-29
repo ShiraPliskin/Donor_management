@@ -5,9 +5,9 @@ import PhoneIcon from '@mui/icons-material/Phone';
 import PersonIcon from '@mui/icons-material/Person';
 import HomeIcon from '@mui/icons-material/Home';
 import NoteIcon from '@mui/icons-material/Note';
-import { checkValidation } from './ContactValidation'
+import { checkValidation } from '../Tools/Validation'
 import _isEqual from 'lodash/isEqual';
-import _ from 'lodash';
+import { trimObjectStrings } from "../Tools/objectsOperations"
 
 const ContactForm = ({ fields, contactDetails, setContactDetails, sendRequest, open, handleClose, type }) => {
 
@@ -40,10 +40,6 @@ const ContactForm = ({ fields, contactDetails, setContactDetails, sendRequest, o
         setHelperText(helperTextObject);
     }, [open, formType]);
 
-    const trimObjectStrings = (obj) => {
-        return _.mapValues(obj, value => _.isString(value) ? value.trim() : value);
-    };
-
     useEffect(() => {
         setContactChanged(!_isEqual(trimObjectStrings(contactDetails), trimObjectStrings(updatedContact)));
     }, [updatedContact]);
@@ -71,7 +67,8 @@ const ContactForm = ({ fields, contactDetails, setContactDetails, sendRequest, o
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const isValid = checkValidation(updatedContact, setError, setHelperText);
+        const requiredFields = ["name", "email"];
+        const isValid = checkValidation(updatedContact, setError, setHelperText, requiredFields);
         if (isValid) {
             setContactDetails(updatedContact);
             if (type !== "add") {
@@ -138,6 +135,7 @@ const ContactForm = ({ fields, contactDetails, setContactDetails, sendRequest, o
                                     label="כתובת מייל"
                                     type="email"
                                     fullWidth
+                                    required={formType !== "display"}
                                     value={updatedContact.email || ""}
                                     error={error.email}
                                     helperText={helperText.email}
@@ -163,7 +161,6 @@ const ContactForm = ({ fields, contactDetails, setContactDetails, sendRequest, o
                                     label="טלפון"
                                     type="text"
                                     fullWidth
-                                    required={formType !== "display"}
                                     value={updatedContact.phone || ""}
                                     error={error.phone}
                                     helperText={helperText.phone}
