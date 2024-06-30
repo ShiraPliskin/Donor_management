@@ -46,7 +46,7 @@ import Layout from "./Layout";
 import Home from "./Home";
 
 const Routing = () => {
-  const [redirect, setRedirect] = useState(`/users/${user.id}/home`);
+  const [redirect, setRedirect] = useState(null);
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("currentUser"));
@@ -60,7 +60,7 @@ const Routing = () => {
   return (
     <Router>
       <Routes>
-        <Route path='/' element={<Navigate to={redirect} replace />}/>
+        <Route path='/' element={<Navigate to={redirect && redirect} replace />}/>
         <Route path='/login' element={<Login />} />
         <Route path='/register' element={<Register />} />
         <Route element={<Layout />}>

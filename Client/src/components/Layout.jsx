@@ -51,6 +51,7 @@ import { useNavigate, Outlet, NavLink, useParams } from "react-router-dom";
 import { AppBar, Toolbar, Typography, Button, Container, Box } from '@mui/material';
 
 export default function Layout() {
+
   const [currentUser, setCurrentUser] = useState(JSON.parse(localStorage.getItem("currentUser")));
 
   const navigate = useNavigate();
@@ -58,8 +59,8 @@ export default function Layout() {
 
   useEffect(() => {
     console.log("currentUser ", currentUser);
-    if (currentUser === null || currentUser.id !== userId) {
-      navigate("/");
+    if (currentUser === null || currentUser.id != userId) {
+      navigate("/login");
     }
   }, [currentUser]);
 
