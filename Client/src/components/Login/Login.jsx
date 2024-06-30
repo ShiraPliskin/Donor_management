@@ -2,22 +2,27 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import style from "./Login.module.css";
 import { getRequest, getByPostRequest } from "../Tools/APIRequests";
-// import GenericMessage from '../Tools/GenericSuccessMessage'
 
 const Login = () => {
   const [comment, setComment] = useState("");
   const [userDetails, setUserDetails] = useState("");
-  const [errorMessage, setErrorMessage] = useState(false);
   const [password, setPassword] = useState("");
+  const [status, setStatus] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
+    if (status === 200)
+      navigateToHomePage(userDetails);
+    else if (status === 500)
+      setComment("שם משתמש או סיסמא שגויים");
+  }, [status])
+
+  useEffect(() => {
     if (userDetails[0]) {
-      const passwordObject = {"password" : password};
-      const isPasswordCorrect = getByPostRequest(`register/${userDetails[0].id}`, passwordObject, setComment);
-      isPasswordCorrect? navigateToHomePage(userDetails): setErrorMessage("שם משתמש או סיסמא שגויים");
-    } 
-  }, [userDetails, password, comment]);
+      const passwordObject = { "password": password };
+      getByPostRequest(`register/${userDetails[0].id}`, passwordObject, setComment, setStatus);
+    }
+  }, [userDetails]);
 
   const handleFormSubmit = (event) => {
     event.preventDefault();
@@ -42,8 +47,7 @@ const Login = () => {
           <input name="password" type="password" placeholder="סיסמה" required />
           <button type="submit">המשך</button>
         </form>
-        <p>{errorMessage}</p>
-        {/* {errorMessage && <GenericMessage message="שם משתמש או סיסמא שגויים" type="error" />} */}
+        <p>{comment}</p>
         <p className={style.link}>אין לך חשבון עדיין?  <Link to={"/register"}>לחץ להרשמה</Link></p>
       </div>
     </>
