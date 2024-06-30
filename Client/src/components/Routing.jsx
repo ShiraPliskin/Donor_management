@@ -15,12 +15,12 @@ const Routing = () => {
       <>
         <Router>
             <Routes>
-              <Route path='/' element={<Navigate to={currentUser != null ? "/home" : "/Login"} />} />
+              <Route path='/' element={<Navigate to={currentUser != null ? "/users/:userId/home" : "/Login"} />} />
               <Route path='/login' element={<Login />} />
               <Route path='/register' element={<Register />} />
               <Route element={<Layout />}>
-                  <Route path='/home' element={<Home />} />
                   <Route path='/users/:userId'>
+                    <Route path='home' element={<Home />} />
                     <Route path='donors' element={<Donors />} />
                     <Route path='contacts' element={<Contacts />} />
                     <Route path='gifts' element={<Gifts />} />
