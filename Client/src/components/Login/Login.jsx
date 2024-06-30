@@ -48,7 +48,7 @@ const Login = () => {
           <button type="submit">המשך</button>
         </form>
         <p>{comment}</p>
-        <p className={style.link}>אין לך חשבון עדיין?  <Link to={"/register"}>לחץ להרשמה</Link></p>
+        <p>אין לך עדיין חשבון? פנה למנהל להרשמה</p>
       </div>
     </>
   );

@@ -2,7 +2,6 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-d
 import React, { useState, useEffect } from 'react';
 import NotFound from "./NotFound";
 import Login from "./Login/Login";
-import Register from "./Register/Register";
 import Donors from "./Donors/Donors";
 import Gifts from "./Gifts/Gifts";
 import Contacts from "./Contacts/Contacts";
@@ -28,7 +27,6 @@ const Routing = () => {
       <Routes>
         <Route path='/' element={<Navigate to={redirect && redirect} replace />}/>
         <Route path='/login' element={<Login />} />
-        <Route path='/register' element={<Register />} />
         <Route element={<Layout />}>
           <Route path='/users/:userId'>
             <Route path='home' element={<Home />} />
