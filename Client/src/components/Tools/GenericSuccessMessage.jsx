@@ -1,8 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Snackbar, Alert } from '@mui/material';
 
 const GenericMessage = ({ message, type }) => {  //type can be success or error
+
   const [open, setOpen] = useState(true);
+
+  useEffect(() => {
+    setOpen(true);  
+  }, [message, type]);
 
   const handleClose = (event, reason) => {
     if (reason === 'clickaway') {

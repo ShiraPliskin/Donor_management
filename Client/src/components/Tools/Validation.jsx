@@ -1,20 +1,9 @@
 
-export const filterEmptyValues = (obj) => {
-    return Object.keys(obj)
-        .filter(key => obj[key] !== null && obj[key] !== undefined && obj[key] !== '')
-        .reduce((filteredObj, key) => {
-            filteredObj[key] = obj[key];
-            return filteredObj;
-        }, {});
-};
-
-const isValidUsername = (inputString) => {
-    const regex = /^[a-zA-Z0-9]+$/;
-    return regex.test(inputString);
-  };
+export const checkValidation = (objectDetails, error, helperText, requiredFields) => {
+  let isValid = true;
 
   const isValidPassword = (inputString) => {
-    const regex = /^[a-z]*[a-z]\.[a-z]+$/;
+    const regex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*?&^#*]{8,}$/;
     return regex.test(inputString);
   };
 
@@ -29,14 +18,54 @@ const isValidUsername = (inputString) => {
   };
 
   const isValidNumber = (inputString) => {
-    const regex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*?&^#*]{8,}$/;
+    const regex = /^(\+?\d{1,3}[-.\s]?)?(\(?\d{3}\)?[-.\s]?)?[\d-.\s]{7,10}$/;
     return regex.test(inputString);
   };
 
- export {
-    isValidUsername,
-    isValidPassword,
-    isValidEmail,
-    isValidString,
-    isValidNumber
- }
+  const checkRequieredFields = () => {
+    for (const field of requiredFields) {
+      if (!objectDetails[field]) {
+        error(prevError => ({ ...prevError, [field]: true }));
+        helperText(prevHelperText => ({ ...prevHelperText, [field]: "זהו שדה חובה." }));
+        isValid = false;
+      }
+    }
+    if (!isValid) return false;
+    checkValues();
+  }
+
+  const checkValues = () => {
+    Object.keys(objectDetails).forEach(key => {
+      switch (key) {
+        case "f_name":
+        case "l_name":
+        case "name":
+        case "spouse_name":
+          checkValidate(key, isValidString, "מלא אותיות בלבד.");
+          break;
+        case "email":
+          checkValidate(key, isValidEmail, "כתובת המייל אינה תקינה.");
+          break;
+        case "phone":
+          checkValidate(key, isValidNumber, "מספר הטלפון אינו תקין.");
+          break;
+        case "password":
+          checkValidate(key, isValidPassword, "הסיסמא צריכה להכיל לפחות 8 תווים כולל אותיות וספרות.");
+          break;
+        default: break;
+      }
+    });
+  }
+
+  const checkValidate = (key, validateFunc, message) => {
+    const value = objectDetails[key] ?? '';
+    if (value.trim() !== '' && !validateFunc(value)) {
+      error(prevError => ({ ...prevError, [key]: true }));
+      helperText(prevHelperText => ({ ...prevHelperText, [key]: message }));
+      isValid = false;
+    }
+  }
+
+  checkRequieredFields();
+  return isValid;
+}

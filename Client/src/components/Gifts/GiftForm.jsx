@@ -5,7 +5,7 @@ import DescriptionIcon from '@mui/icons-material/Description';
 import NoteIcon from '@mui/icons-material/Note';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import { checkValidation } from '../Donors/DonorValidation'
+import { checkValidation } from '../Tools/Validation'
 import _isEqual from 'lodash/isEqual';
 import _ from 'lodash';
 import ImporterGiftForm from "../Importers/ImporterGiftForm";
@@ -79,10 +79,10 @@ const GiftForm = ({ fields, giftDetails, setGiftDetails, sendRequest, open, hand
         }
     }, [giftDetails]);
 
-
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const isValid = checkValidation(updatedGift, setError, setHelperText);
+        const requiredFields = ["description"]
+        const isValid = checkValidation(updatedGift, setError, setHelperText, requiredFields);
         if (isValid) {
             setGiftDetails(updatedGift);
             if (type !== "add") {
@@ -243,6 +243,7 @@ const GiftForm = ({ fields, giftDetails, setGiftDetails, sendRequest, open, hand
                                         labelId="success-level-label"
                                         id="success_level"
                                         name="success_level"
+                                        label="רמת הצלחה"
                                         value={updatedGift.success_level || ""}
                                         onChange={handleChange}
                                         disabled={formType === "display"}

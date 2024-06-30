@@ -5,8 +5,8 @@ import { TextField, Button, InputAdornment, IconButton } from '@mui/material';
 import EmailIcon from '@mui/icons-material/Email';
 import PersonIcon from '@mui/icons-material/Person';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-import { checkValidation } from './RegisterValidation'
-import GenericMessage from '../Tools/GenericMessage';
+import { checkValidation } from '../Tools/Validation'
+import GenericMessage from '../Tools/GenericSuccessMessage';
 
 const Register = () => {
   const [isPwVerified, setIsPwVerified] = useState(false);
@@ -39,13 +39,13 @@ const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showVerifyPassword, setShowVerifyPassword] = useState(false);
 
-  useEffect(() => { 
+  useEffect(() => {
     if (userId) {
       const updatedUser = {
         ...userFields,
         id: userId
       };
-      const {password, verifyPW, ...userWithoutPassword } = updatedUser;
+      const { password, verifyPW, ...userWithoutPassword } = updatedUser;
       localStorage.setItem("currentUser", JSON.stringify(userWithoutPassword));
       navigate(`users/${updatedUser.id}/home`, { replace: true });
     }
@@ -58,8 +58,9 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const isValid = checkValidation(userFields, setError, setHelperText);
-    if (!isValid) 
+    const requiredFields = ["name", "email", "password", "verifyPW"]
+    const isValid = checkValidation(userFields, setError, setHelperText, requiredFields);
+    if (!isValid)
       return;
     const updatedUserFields = {
       ...userFields,
@@ -68,7 +69,7 @@ const Register = () => {
       password: e.target.password.value
     };
     setUserFields(updatedUserFields);
-    const {id, verifyPW, ...userForAdd } = updatedUserFields;
+    const { id, verifyPW, ...userForAdd } = updatedUserFields;
     checkIsUserExist(userForAdd);
   };
 
@@ -83,7 +84,7 @@ const Register = () => {
     postRequest("users", user, setSuccess, setUserId);
   };
 
-  const handleChange = (e) =>{
+  const handleChange = (e) => {
     const { name, value } = e.target;
     setUserFields((prevData) => ({ ...prevData, [name]: value }));
     setError((prevData) => ({ ...prevData, [name]: false }));
@@ -95,104 +96,100 @@ const Register = () => {
       <div>
         <h2>משתמש חדש</h2>
         <form onSubmit={handleSubmit}>
-          <TextField
-            name="name"
-            label="שם"
-            variant="outlined"
-            placeholder="שם"
-            size="small"
-            required
-            margin="normal"
-            error={error.name}
-            helperText={helperText.name}
-            onChange={handleChange}
-            inputProps={{
+           <TextField
+              name="name"
+              variant="outlined"
+              size="small"
+              required
+              margin="normal"
+              placeholder="שם"
+              error={error.name}
+              helperText={helperText.name}
+              onChange={handleChange}
+              inputProps={{
                 maxLength: 20,
-            }}
-            InputProps={{
+              }}
+              InputProps={{
                 startAdornment: (
-                    <InputAdornment position="start">
-                        <PersonIcon />
-                    </InputAdornment>
+                  <InputAdornment position="start">
+                    <PersonIcon />
+                  </InputAdornment>
                 ),
-            }}
-          /><br/>
-          <TextField
-            name="email"
-            label="כתובת מייל"
-            variant="outlined"
-            placeholder="כתובת מייל"
-            size="small"
-            required
-            margin="normal"
-            error={error.email}
-            helperText={helperText.email}
-            onChange={handleChange}
-            inputProps={{
+              }}
+            /><br />
+            <TextField
+              name="email"
+              variant="outlined"
+              size="small"
+              required
+              margin="normal"
+              placeholder="כתובת מייל"
+              error={error.email}
+              helperText={helperText.email}
+              onChange={handleChange}
+              inputProps={{
                 maxLength: 40,
-            }}
-            InputProps={{
+              }}
+              InputProps={{
                 startAdornment: (
-                    <InputAdornment position="start">
-                        <EmailIcon />
-                    </InputAdornment>
+                  <InputAdornment position="start">
+                    <EmailIcon />
+                  </InputAdornment>
                 ),
-            }}
-          /><br/>
-          <TextField
-            name="password"
-            label="סיסמה"
-            variant="outlined"
-            placeholder="סיסמה"
-            size="small"
-            type={showPassword ? 'text' : 'password'}
-            required
-            margin="normal"
-            error={error.password}
-            helperText={helperText.password}
-            onChange={handleChange}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <IconButton
-                    onClick={()=>{setShowPassword(prev=>!prev)}}
-                    edge="start"
-                  >
-                    {showPassword ? <VisibilityOff /> : <Visibility />}
-                  </IconButton>
-                </InputAdornment>
-              )
-            }}/><br/>
-          <TextField
-            name="verifyPW"
-            label="אימות סיסמה"
-            variant="outlined"
-            placeholder="אימות סיסמה"
-            size="small"
-            type={showVerifyPassword ? 'text' : 'password'}
-            required
-            margin="normal"
-            onChange={handleChange}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <IconButton
-                    onClick={()=>{setShowVerifyPassword(prev=>!prev)}}
-                    edge="start"
-                  >
-                    {showVerifyPassword ? <VisibilityOff /> : <Visibility />}
-                  </IconButton>
-                </InputAdornment>
-              )
-            }}/><br/>
-          <Button
-            disabled={!isPwVerified}
-            variant="contained"
-            color="primary"
-            type="submit"
-          >
-            המשך
-          </Button>
+              }}
+            /><br />
+            <TextField
+              name="password"
+              placeholder="סיסמה"
+              variant="outlined"
+              size="small"
+              type={showPassword ? 'text' : 'password'}
+              required
+              margin="normal"
+              error={error.password}
+              helperText={helperText.password}
+              onChange={handleChange}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <IconButton
+                      onClick={() => { setShowPassword(prev => !prev) }}
+                      edge="start"
+                    >
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                )
+              }} /><br />
+            <TextField
+              name="verifyPW"
+              placeholder="אימות סיסמה"
+              variant="outlined"
+              size="small"
+              type={showVerifyPassword ? 'text' : 'password'}
+              required
+              margin="normal"
+              onChange={handleChange}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <IconButton
+                      onClick={() => { setShowVerifyPassword(prev => !prev) }}
+                      edge="start"
+                    >
+                      {showVerifyPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                )
+              }} /><br />
+            <Button
+              disabled={!isPwVerified}
+              variant="contained"
+              color="primary"
+              type="submit"
+            >
+              המשך
+            </Button>
         </form>
       </div>
       <p>{comment}</p>

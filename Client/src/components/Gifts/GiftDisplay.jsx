@@ -3,7 +3,7 @@ import { getByIdRequest, putRequest } from '../Tools/APIRequests';
 import { TableCell, TableRow, IconButton} from '@mui/material';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 // import DonorForm from './DonorForm';
-import {filterEmptyValues} from "../Tools/Validation"
+import {filterEmptyValues} from "../Tools/objectsOperations"
 
 const GiftDisplay = ({ gift, index , setGiftsToDisplay}) => {
     const [currentGift, setCurrentGift] = useState("");

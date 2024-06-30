@@ -2,19 +2,33 @@ import React, { useState, useEffect } from "react";
 import { getRequest } from "../Tools/APIRequests";
 import { Button, TextField, Box } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
+import { isEmptyObject } from "../Tools/objectsOperations"
 
-const DonorSearch = ({ fields, donorsToDisplay, setDonorsToDisplay }) => {
+const DonorSearch = ({ fields, donorsToDisplay, setDonorsToDisplay, setQueryString, rowsPerPage }) => {
+  
     const [donorDetails, setDonorDetails] = useState({});
     const [minDonationAmount, setMinDonationAmount] = useState("");
     const [commentArea, setCommentArea] = useState("");
+    const [currentPermission, setCurrentPermission] = useState("")
 
     useEffect(() => {
         setDonorDetails(fields);
+        const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+        setCurrentPermission(currentUser.permission);
     }, []);
 
     useEffect(() => {
+        if (donorsToDisplay.length === 0 && (!isEmptyObject(donorDetails) || minDonationAmount)) {
+            setCommentArea("לא נמצא תורם");
+        } else {
             setCommentArea("");
+        }
     }, [donorsToDisplay]);
+
+    const displayAllDonors = () => {
+        getRequest("donors", `?_limit=${rowsPerPage}`, setDonorsToDisplay, setCommentArea, "תורם");
+        setQueryString(`?_limit=${rowsPerPage}`);
+    }
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -26,10 +40,11 @@ const DonorSearch = ({ fields, donorsToDisplay, setDonorsToDisplay }) => {
             }
         }
         const columnsToDisplay = "id, l_name, f_name, email, phone, address";
-        const queryString = conditions.length > 0 ? `?fields=${columnsToDisplay}&filter=${conditions.join(',')}` : "";
-        if (queryString) {
-            getRequest("donors", queryString, setDonorsToDisplay, setCommentArea, "תורם");
+        const queryConditions = conditions.length > 0 ? `?fields=${columnsToDisplay}&filter=${conditions.join(',')}&_limit=${rowsPerPage}` : "";
+        if (queryConditions) {
+            getRequest("donors", queryConditions, setDonorsToDisplay, setCommentArea, "תורם");
         }
+        setQueryString(queryConditions);
     };
 
     const handleChange = (e) => {
@@ -42,6 +57,7 @@ const DonorSearch = ({ fields, donorsToDisplay, setDonorsToDisplay }) => {
 
     return (
         <>
+            {currentPermission === "administrator" && <Button variant="outlined" onClick={displayAllDonors}>כל התורמים</Button>}
             <h3>חיפוש תורם</h3>
             <form onSubmit={handleSubmit}>
                 <Box display="flex" alignItems="center" flexWrap="wrap" gap={2}>

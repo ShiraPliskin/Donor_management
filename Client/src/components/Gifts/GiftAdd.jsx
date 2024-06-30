@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Button } from "@mui/material";
 import { postRequest } from "../Tools/APIRequests";
-import { filterEmptyValues } from "../Tools/Validation"
-import GenericMessage from "../Tools/GenericMessage";
+import { filterEmptyValues } from "../Tools/objectsOperations"
+import GenericMessage from "../Tools/GenericSuccessMessage";
 import GiftForm from "./GiftForm";
 
 const GiftAdd = ({ fields }) => {

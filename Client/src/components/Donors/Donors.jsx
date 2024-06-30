@@ -21,12 +21,27 @@ const Donors = () => {
     };
 
     const [donorsToDisplay, setDonorsToDisplay] = useState([]);
+    const [queryString, setQueryString] = useState("");
+    const [rowsPerPage, setRowsPerPage] = useState(8);
 
     return (
         <>
-            <DonorAdd fields={fields} />
-            <DonorSearch fields={fields} donorsToDisplay={donorsToDisplay} setDonorsToDisplay={setDonorsToDisplay}/>
-            <DonorsDisplay donorsToDisplay={donorsToDisplay} setDonorsToDisplay={setDonorsToDisplay}/>
+            <DonorAdd
+                fields={fields}
+            />
+            <DonorSearch
+                fields={fields}
+                donorsToDisplay={donorsToDisplay}
+                setDonorsToDisplay={setDonorsToDisplay}
+                setQueryString={setQueryString}
+                rowsPerPage={rowsPerPage}
+            />
+            <DonorsDisplay
+                donorsToDisplay={donorsToDisplay}
+                setDonorsToDisplay={setDonorsToDisplay}
+                queryString={queryString}
+                rowsPerPage={rowsPerPage}
+            />
         </>
     );
 };

@@ -1,10 +1,42 @@
 import 'dotenv/config'
 const db = process.env.DB_NAME;
 
+// function getByConditionQuery(tableName, queryParams) {
+//     let fields = queryParams.fields || '*';
+//     let filter = queryParams.filter || '';
+//     let limit = queryParams._limit;
+//     let page = queryParams.page;
+//     let sortby = queryParams.sortby;
+
+//     let query = `SELECT ${fields} FROM ${db}.${tableName}`;
+
+//     if (filter) {
+//         query += ' WHERE ';
+//         const conditionArray = filter.split(',').map(condition => {
+//             const [key, value] = condition.split('=');
+//             return `${key.trim()} = '${value.trim()}'`;
+//         });
+//         query += conditionArray.join(' AND ');
+//     }
+
+//     if (limit) {
+//         if (page) {
+//             const offset = (page - 1) * limit;
+//             query += ` LIMIT ${limit} OFFSET ${offset}`;
+//         } else {
+//             query += ` LIMIT ${limit}`;
+//         }
+//     }
+
+//     return query;
+// }
+
 function getByConditionQuery(tableName, queryParams) {
     let fields = queryParams.fields || '*';
     let filter = queryParams.filter || '';
     let limit = queryParams._limit;
+    let page = queryParams.page;
+    let sortby = queryParams.sortby;
 
     let query = `SELECT ${fields} FROM ${db}.${tableName}`;
 
@@ -17,8 +49,17 @@ function getByConditionQuery(tableName, queryParams) {
         query += conditionArray.join(' AND ');
     }
 
+    if (sortby) {
+        query += ` ORDER BY ${sortby}`;
+    }
+
     if (limit) {
-        query += ` LIMIT ${limit}`;
+        if (page) {
+            const offset = (page - 1) * limit;
+            query += ` LIMIT ${limit} OFFSET ${offset}`;
+        } else {
+            query += ` LIMIT ${limit}`;
+        }
     }
 
     return query;
@@ -42,7 +83,6 @@ function updateQuery(table_name, queryParams, idKey) {
     }
     query += conditions.join(', ');
     query += ` WHERE ${idKey} = ?`
-    console.log(query)
     return query;
 }
 
