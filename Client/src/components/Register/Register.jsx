@@ -47,9 +47,9 @@ const Register = () => {
       };
       const { password, verifyPW, ...userWithoutPassword } = updatedUser;
       localStorage.setItem("currentUser", JSON.stringify(userWithoutPassword));
-      navigate(`users/${updatedUser.id}/home`, { replace: true });
+      navigate(`/users/${updatedUser.id}/home`, { replace: true });
     }
-  }, [userId, userFields, navigate]);
+  }, [userId, userFields]);
 
   useEffect(() => {
     console.log(userFields)

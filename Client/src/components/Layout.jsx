@@ -52,56 +52,37 @@ import { AppBar, Toolbar, Typography, Button, Container, Box } from '@mui/materi
 
 export default function Layout() {
   const [currentUser, setCurrentUser] = useState(JSON.parse(localStorage.getItem("currentUser")));
-  const [linkClicked, setLinkClicked] = useState(false);
+
   const navigate = useNavigate();
   const { userId } = useParams();
 
-  // For paragraph in Layout
   useEffect(() => {
-    const pathSegments = window.location.pathname.split('/');
-    const lastSegment = pathSegments[pathSegments.length - 1];
-    if (lastSegment !== "Layout") {
-      setLinkClicked(true);
-    }
-  }, []);
-
-  useEffect(() => {
+    console.log("currentUser ", currentUser);
     if (currentUser === null || currentUser.id !== userId) {
       navigate("/");
     }
   }, [currentUser]);
 
-  // const logout = () => {
-  //   localStorage.clear();
-  //   setCurrentUser(null);
-  // };
-
   return (
-    <Container>
-      <AppBar position="static">
-        <Toolbar>
-          <Typography variant="h6">
-            {currentUser && currentUser.name}
-          </Typography>
-          <Box sx={{ flexGrow: 1 }} />
-          {/* <Button color="inherit" onClick={logout}>Logout</Button> */}
-          <Button color="inherit" component={NavLink} to={`users/${currentUser.id}/donors`} onClick={() => setLinkClicked(true)}>
-            Donors
-          </Button>
-          <Button color="inherit" component={NavLink} to={`users/${currentUser.id}/contacts`} onClick={() => setLinkClicked(true)}>
-            Contacts
-          </Button>
-        </Toolbar>
-      </AppBar>
-      <Box mt={3}>
-        {/* {!linkClicked && (
-          <Typography variant="h1" align="center">
-            כולל צילו של היכל
-          </Typography>
-        )} */}
-        <Outlet />
-      </Box>
-    </Container>
+    <>
+      {currentUser &&
+        <Container>
+          <AppBar position="static">
+            <Toolbar>
+              <Typography variant="h6">
+                {currentUser && currentUser.name}
+              </Typography>
+              <Box sx={{ flexGrow: 1 }} />
+              <Button color="inherit" component={NavLink} to={`users/${currentUser.id}/u`}>ניהול משתמשים</Button>
+              <Button color="inherit" component={NavLink} to={`users/${currentUser.id}/donors`}>תורמים</Button>
+              <Button color="inherit" component={NavLink} to={`users/${currentUser.id}/contacts`}>אנשי קשר</Button>
+            </Toolbar>
+          </AppBar>
+          <Box mt={3}>
+            <Outlet />
+          </Box>
+        </Container>}
+    </>
   );
 }
 
