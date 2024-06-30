@@ -73,7 +73,7 @@ export default function Layout() {
                 {currentUser && currentUser.name}
               </Typography>
               <Box sx={{ flexGrow: 1 }} />
-              <Button color="inherit" component={NavLink} to={`users/${currentUser.id}/u`}>ניהול משתמשים</Button>
+              <Button color="inherit" component={NavLink} to={`users/${currentUser.id}/userManagement`}>ניהול משתמשים</Button>
               <Button color="inherit" component={NavLink} to={`users/${currentUser.id}/donors`}>תורמים</Button>
               <Button color="inherit" component={NavLink} to={`users/${currentUser.id}/contacts`}>אנשי קשר</Button>
             </Toolbar>
