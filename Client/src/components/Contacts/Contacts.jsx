@@ -14,6 +14,8 @@ const Contacts = ({ selectedContactId, setSelectedContactId, type }) => {
     };
 
     const [contactsToDisplay, setContactsToDisplay] = useState([]);
+    const [queryString, setQueryString] = useState("");
+    const [rowsPerPage, setRowsPerPage] = useState(8);
 
     return (
         <>
@@ -22,6 +24,8 @@ const Contacts = ({ selectedContactId, setSelectedContactId, type }) => {
                 fields={fields}
                 contactsToDisplay={contactsToDisplay}
                 setContactsToDisplay={setContactsToDisplay}
+                setQueryString={setQueryString}
+                rowsPerPage={rowsPerPage}
             />
             <ContactsDisplay
                 contactsToDisplay={contactsToDisplay}
@@ -30,6 +34,8 @@ const Contacts = ({ selectedContactId, setSelectedContactId, type }) => {
                 setSelectedContactId={setSelectedContactId}
                 type={type}
                 fields={fields}
+                queryString={queryString}
+                rowsPerPage={rowsPerPage}
             />
         </>
     );

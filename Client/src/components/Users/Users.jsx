@@ -1,49 +1,39 @@
 import { useState } from "react";
-import DonorAdd from "./DonorAdd";
-import DonorSearch from "./DonorSearch";
-import DonorsDisplay from "./DonorsDisplay";
+import UserAdd from "./UserAdd";
 
-const Donors = () => {
+const Users = () => {
 
     const fields = {
         id: '',
-        f_name: '',
-        l_name: '',
+        name: '',
         email: '',
-        phone: '',
-        address: '',
-        num_of_children: '',
-        spouse_name: '',
-        address_at_work: '',
-        introduction_description: '',
-        contact_id: '',
-        remarks: ''
+        permission: ''
     };
 
-    const [donorsToDisplay, setDonorsToDisplay] = useState([]);
+    const [usersToDisplay, setUsersToDisplay] = useState([]);
     const [queryString, setQueryString] = useState("");
     const [rowsPerPage, setRowsPerPage] = useState(8);
 
     return (
         <>
-            <DonorSearch
+            <UserAdd
+                fields={fields}
+            />
+            {/* <DonorSearch
                 fields={fields}
                 donorsToDisplay={donorsToDisplay}
                 setDonorsToDisplay={setDonorsToDisplay}
                 setQueryString={setQueryString}
                 rowsPerPage={rowsPerPage}
             />
-             <DonorAdd
-                fields={fields}
-            />
             <DonorsDisplay
                 donorsToDisplay={donorsToDisplay}
                 setDonorsToDisplay={setDonorsToDisplay}
                 queryString={queryString}
                 rowsPerPage={rowsPerPage}
-            />
+            /> */}
         </>
     );
 };
 
-export default Donors;
+export default Users;

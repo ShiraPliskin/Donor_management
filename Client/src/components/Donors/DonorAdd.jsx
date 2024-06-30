@@ -4,6 +4,7 @@ import DonorForm from "./DonorForm";
 import { postRequest } from "../Tools/APIRequests";
 import { filterEmptyValues } from "../Tools/objectsOperations"
 import GenericMessage from "../Tools/GenericSuccessMessage";
+import "../style.css";
 
 const DonorAdd = ({ fields }) => {
     const [donorDetails, setDonorDetails] = useState(fields);
@@ -33,7 +34,7 @@ const DonorAdd = ({ fields }) => {
 
     return (
         <>
-            <Button variant="outlined" onClick={handleClickOpen}>הוספת תורם</Button>
+            <Button className="mainButton" variant="contained" onClick={handleClickOpen}>הוספת תורם</Button>
             {isSucceed === "success" && <GenericMessage message={`תורם מספר ${newID} נוסף בהצלחה`} type="success" />}
             {isSucceed === "error" && <GenericMessage message="הוספת תורם נכשלה" type="error" />}
             <DonorForm fields={fields} donorDetails={donorDetails} setDonorDetails={setDonorDetails} sendRequest={addDonorRequest} open={open} handleClose={handleClose} type="add" />

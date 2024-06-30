@@ -313,7 +313,6 @@ const GiftForm = ({ fields, giftDetails, setGiftDetails, sendRequest, open, hand
                         </>}
                 </DialogActions>
             </Dialog>
-
         </>
     );
 };
