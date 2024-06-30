@@ -3,6 +3,7 @@ import { getRequest } from "../Tools/APIRequests";
 import { Button, TextField, Box } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import { isEmptyObject } from "../Tools/objectsOperations"
+import { config } from "../config.jsx";
 
 const DonorSearch = ({ fields, donorsToDisplay, setDonorsToDisplay, setQueryString, rowsPerPage }) => {
   
@@ -57,7 +58,7 @@ const DonorSearch = ({ fields, donorsToDisplay, setDonorsToDisplay, setQueryStri
 
     return (
         <>
-            {currentPermission === "administrator" && <Button variant="outlined" onClick={displayAllDonors}>כל התורמים</Button>}
+            {currentPermission === config.HIGH_PERMISSION && <Button variant="outlined" onClick={displayAllDonors}>כל התורמים</Button>}
             <h3>חיפוש תורם</h3>
             <form onSubmit={handleSubmit}>
                 <Box display="flex" alignItems="center" flexWrap="wrap" gap={2}>

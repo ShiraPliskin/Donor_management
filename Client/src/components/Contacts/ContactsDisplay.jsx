@@ -1,8 +1,51 @@
-import { React } from 'react';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Box, Button } from '@mui/material';
+import React, { useState, useEffect } from 'react';
+import { Table, Box, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Select, MenuItem, InputLabel, FormControl } from '@mui/material';
+import { getRequest } from "../Tools/APIRequests";
 import ContactDisplay from './ContactDisplay';
 
-const ContactsDisplay = ({ fields, contactsToDisplay, setContactsToDisplay, selectedContactId, setSelectedContactId, type }) => {
+const ContactsDisplay = ({ fields, contactsToDisplay, setContactsToDisplay, selectedContactId, setSelectedContactId, type, queryString, rowsPerPage }) => {
+
+    const [page, setPage] = useState(0);
+    const [moreContacts, setMoreContacts] = useState([]);
+    const [commentArea, setCommentArea] = useState("");
+    const [disabledShowMore, setDisabledShowMore] = useState(false);
+    const [sortKey, setSortKey] = useState("id");
+
+    useEffect(() => {
+        if (moreContacts.length > 0) {
+            setContactsToDisplay((prevData) => [...prevData, ...moreContacts]);
+            setDisabledShowMore(moreContacts.length < rowsPerPage);
+        }
+    }, [moreContacts]);
+
+    useEffect(() => {
+        if (page !== 0) {
+            setDisabledShowMore((page * rowsPerPage + rowsPerPage) > contactsToDisplay.length);
+        }
+    }, [page, contactsToDisplay]);
+
+    const handleFetchData = async () => {
+        const queryConditions = `${queryString}&page=${page + 2}&sortby=${sortKey}`;
+        await getRequest("contacts", queryConditions, setMoreContacts, setCommentArea, "איש קשר");
+    };
+
+    const handlePrevPage = () => {
+        setPage((prevPage) => Math.max(prevPage - 1, 0));
+        setDisabledShowMore(false);
+    };
+
+    const handleNextPage = async () => {
+        if (contactsToDisplay.length === (page + 1) * rowsPerPage) {
+            await handleFetchData();
+        }
+        setPage((prevPage) => prevPage + 1);
+    };
+
+    const handleChangeSortKey = (e) => {
+        setSortKey(e.target.value);
+        setPage(0);
+        getRequest("contacts", `${queryString}&page=${1}&sortby=${e.target.value}`, setContactsToDisplay, setCommentArea, "תורם");
+    };
 
     return (
         <>
@@ -17,11 +60,25 @@ const ContactsDisplay = ({ fields, contactsToDisplay, setContactsToDisplay, sele
                                     <TableCell sx={{ fontWeight: 'bold', textAlign: 'center' }}>כתובת מייל</TableCell>
                                     <TableCell sx={{ fontWeight: 'bold', textAlign: 'center' }}>טלפון</TableCell>
                                     <TableCell sx={{ fontWeight: 'bold', textAlign: 'center' }}>כתובת</TableCell>
-                                    <TableCell></TableCell>
+                                    <TableCell>
+                                    <FormControl fullWidth>
+                                        <InputLabel>מיון לפי</InputLabel>
+                                        <Select
+                                            value={sortKey}
+                                            onChange={handleChangeSortKey}
+                                            label="מיון לפי"
+                                        >
+                                            <MenuItem value="id">מספר איש קשר</MenuItem>
+                                            <MenuItem value="name">שם</MenuItem>
+                                            <MenuItem value="email">כתובת מייל</MenuItem>
+                                            <MenuItem value="address">כתובת</MenuItem>
+                                        </Select>
+                                    </FormControl>
+                                    </TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {contactsToDisplay.map((contact, index) => (
+                                {contactsToDisplay.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((contact, index) => (
                                     <ContactDisplay
                                         fields={fields}
                                         contact={contact}
@@ -35,10 +92,16 @@ const ContactsDisplay = ({ fields, contactsToDisplay, setContactsToDisplay, sele
                                 ))}
                             </TableBody>
                         </Table>
+                        {contactsToDisplay.length >= rowsPerPage &&
+                        <div style={{ textAlign: 'center', marginTop: '10px' }}>
+                            <button onClick={handlePrevPage} disabled={page === 0}>{'<'}</button>
+                            <button onClick={handleNextPage} disabled={disabledShowMore}>{'>'}</button>
+                            <p>{`${page * rowsPerPage + 1}-${(page * rowsPerPage + rowsPerPage) <= contactsToDisplay.length ? (page * rowsPerPage + rowsPerPage) : (page * rowsPerPage + moreContacts.length)} מתוך ${contactsToDisplay.length}`}</p>
+                        </div>}
                     </TableContainer>
                 </Box>
-            </>
-            )}
+            </> )}
+           <p>{commentArea}</p>
         </>
     );
 };

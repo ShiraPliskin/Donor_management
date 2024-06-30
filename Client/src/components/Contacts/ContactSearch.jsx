@@ -3,15 +3,19 @@ import { getRequest } from "../Tools/APIRequests";
 import { Button, TextField, Box } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import { isEmptyObject } from "../Tools/objectsOperations"
+import { config } from "../config.jsx";
 
-const ContactSearch = ({ fields, contactsToDisplay, setContactsToDisplay }) => {
+const ContactSearch = ({ fields, contactsToDisplay, setContactsToDisplay, setQueryString, rowsPerPage }) => {
 
     const [contactDetails, setContactDetails] = useState({});
     const [donorId, setDonorId] = useState("");
     const [commentArea, setCommentArea] = useState("");
+    const [currentPermission, setCurrentPermission] = useState("")
 
     useEffect(() => {
         setContactDetails(fields);
+        const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+        setCurrentPermission(currentUser.permission);
     }, []);
 
     useEffect(() => {
@@ -22,6 +26,11 @@ const ContactSearch = ({ fields, contactsToDisplay, setContactsToDisplay }) => {
         }
     }, [contactsToDisplay]);
 
+    const displayAllContacts = () => {
+        getRequest("contacts", `?_limit=${rowsPerPage}`, setContactsToDisplay, setCommentArea, "איש קשר");
+        setQueryString(`?_limit=${rowsPerPage}`);
+    }
+
     const handleSubmit = (e) => {
         e.preventDefault();
         setContactsToDisplay([]);
@@ -31,10 +40,11 @@ const ContactSearch = ({ fields, contactsToDisplay, setContactsToDisplay }) => {
                 conditions.push(`${key}=${value}`);
             }
         }
-        const queryString = conditions.length > 0 ? `?filter=${conditions.join(',')}` : "";
-        if (queryString) {
+        const queryURL = conditions.length > 0 ? `?filter=${conditions.join(',')}&_limit=${rowsPerPage}` : "";
+        if (queryURL) {
             getRequest("contacts", queryString, setContactsToDisplay, setCommentArea, "איש קשר");
         }
+        setQueryString(queryURL);
     };
 
     const handleChange = (e) => {
@@ -47,6 +57,7 @@ const ContactSearch = ({ fields, contactsToDisplay, setContactsToDisplay }) => {
 
     return (
         <>
+            {currentPermission === config.HIGH_PERMISSION && <Button variant="outlined" onClick={displayAllContacts}>כל אנשי הקשר</Button>}
             <h3>חיפוש איש קשר</h3>
             <form onSubmit={handleSubmit}>
                 <Box display="flex" alignItems="center" flexWrap="wrap" gap={2}>
