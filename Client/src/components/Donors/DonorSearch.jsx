@@ -4,8 +4,8 @@ import { Button, TextField, Box } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import { isEmptyObject } from "../Tools/objectsOperations"
 
-const DonorSearch = ({ fields, donorsToDisplay, setDonorsToDisplay }) => {
-
+const DonorSearch = ({ fields, donorsToDisplay, setDonorsToDisplay, setQueryString, rowsPerPage }) => {
+  
     const [donorDetails, setDonorDetails] = useState({});
     const [minDonationAmount, setMinDonationAmount] = useState("");
     const [commentArea, setCommentArea] = useState("");
@@ -26,8 +26,8 @@ const DonorSearch = ({ fields, donorsToDisplay, setDonorsToDisplay }) => {
     }, [donorsToDisplay]);
 
     const displayAllDonors = () => {
-        const currentUser = JSON.parse(localStorage.getItem("cirrentUser"));
-        getRequest("donors", "", setDonorsToDisplay, setCommentArea, "תורם");
+        getRequest("donors", `?_limit=${rowsPerPage}`, setDonorsToDisplay, setCommentArea, "תורם");
+        setQueryString(`?_limit=${rowsPerPage}`);
     }
 
     const handleSubmit = (e) => {
@@ -40,10 +40,11 @@ const DonorSearch = ({ fields, donorsToDisplay, setDonorsToDisplay }) => {
             }
         }
         const columnsToDisplay = "id, l_name, f_name, email, phone, address";
-        const queryString = conditions.length > 0 ? `?fields=${columnsToDisplay}&filter=${conditions.join(',')}` : "";
-        if (queryString) {
-            getRequest("donors", queryString, setDonorsToDisplay, setCommentArea, "תורם");
+        const queryConditions = conditions.length > 0 ? `?fields=${columnsToDisplay}&filter=${conditions.join(',')}&_limit=${rowsPerPage}` : "";
+        if (queryConditions) {
+            getRequest("donors", queryConditions, setDonorsToDisplay, setCommentArea, "תורם");
         }
+        setQueryString(queryConditions);
     };
 
     const handleChange = (e) => {

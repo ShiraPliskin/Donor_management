@@ -82,6 +82,7 @@ const DonorDisplay = ({ donor, index, setDonorsToDisplay }) => {
                     table="donors"
                     objectName="תורם"
                     objectState={setDonorsToDisplay}
+                    formOpen={setOpen}
                 />
             }
             {updateSuccessful === "success" && <GenericMessage message={`תורם מספר ${currentDonor.id} עודכן בהצלחה`} type="success" />}

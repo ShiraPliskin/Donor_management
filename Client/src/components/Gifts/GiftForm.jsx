@@ -79,7 +79,6 @@ const GiftForm = ({ fields, giftDetails, setGiftDetails, sendRequest, open, hand
         }
     }, [giftDetails]);
 
-
     const handleSubmit = async (e) => {
         e.preventDefault();
         const requiredFields = ["description"]
@@ -244,6 +243,7 @@ const GiftForm = ({ fields, giftDetails, setGiftDetails, sendRequest, open, hand
                                         labelId="success-level-label"
                                         id="success_level"
                                         name="success_level"
+                                        label="רמת הצלחה"
                                         value={updatedGift.success_level || ""}
                                         onChange={handleChange}
                                         disabled={formType === "display"}
