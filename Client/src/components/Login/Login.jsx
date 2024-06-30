@@ -1,32 +1,23 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import style from "./Login.module.css";
-import { getRequest, postRequest } from "../Tools/APIRequests";
+import { getRequest, getByPostRequest } from "../Tools/APIRequests";
 // import GenericMessage from '../Tools/GenericSuccessMessage'
 
 const Login = () => {
-
   const [comment, setComment] = useState("");
   const [userDetails, setUserDetails] = useState("");
   const [errorMessage, setErrorMessage] = useState(false);
-  const [reqStatus, setReqStatus] = useState("0")
   const [password, setPassword] = useState("");
-
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (userDetails) {
+    if (userDetails[0]) {
       const passwordObject = {"password" : password};
-      postRequest(`register/${userDetails[0].id}`, passwordObject, setReqStatus);
-    } else if (userDetails === null && comment) {
-      setErrorMessage("שם משתמש או סיסמא שגויים");
-    }
+      const isPasswordCorrect = getByPostRequest(`register/${userDetails[0].id}`, passwordObject, setComment);
+      isPasswordCorrect? navigateToHomePage(userDetails): setErrorMessage("שם משתמש או סיסמא שגויים");
+    } 
   }, [userDetails, password, comment]);
-
-  useEffect(() => {
-    if (reqStatus === "success")
-      navigateToHomePage(userDetails);
-  }, [reqStatus]);
 
   const handleFormSubmit = (event) => {
     event.preventDefault();
