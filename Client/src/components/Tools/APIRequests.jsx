@@ -47,9 +47,9 @@ export const getByIdRequest = async (table, id, state, comment) => {
     }
 };
 
-export const putRequest = async (table, updatedObject, setIsSucceed) => {
+export const putRequest = async (table, updatedObject,id, setIsSucceed) => {
     try {
-        const response = await fetch(`http://${config.SERVERPORT}/${table}/${updatedObject.id}`, {
+        const response = await fetch(`http://${config.SERVERPORT}/${table}/${id}`, {
             headers: { 'Content-Type': 'application/json' },
             method: 'PUT',
             body: JSON.stringify(updatedObject)
@@ -73,6 +73,7 @@ export const putRequest = async (table, updatedObject, setIsSucceed) => {
         return false;
     }
 }
+
 
 export const deleteRequest = async (table, id, setIsSucceed) => {
     try {

@@ -47,8 +47,10 @@
 // }
 
 import React, { useState, useEffect } from "react";
-import { useNavigate, Outlet, NavLink, useParams } from "react-router-dom";
+import { useNavigate, Outlet, NavLink, useParams} from "react-router-dom";
 import { AppBar, Toolbar, Typography, Button, Container, Box } from '@mui/material';
+import Link from '@mui/material/Link';
+import { Link as RouterLink } from 'react-router-dom';
 
 export default function Layout() {
 
@@ -70,13 +72,15 @@ export default function Layout() {
         <Container>
           <AppBar position="static">
             <Toolbar>
-              <Typography variant="h6">
+              {/* <Typography variant="h6">
                 {currentUser && currentUser.name}
-              </Typography>
+              </Typography> */}
+              <Link component={RouterLink} style={{ color: 'white' }} to={`users/${currentUser.id}/userProfile`}>{currentUser && currentUser.name}</Link>
               <Box sx={{ flexGrow: 1 }} />
               <Button color="inherit" component={NavLink} to={`users/${currentUser.id}/userManagement`}>ניהול משתמשים</Button>
               <Button color="inherit" component={NavLink} to={`users/${currentUser.id}/donors`}>תורמים</Button>
               <Button color="inherit" component={NavLink} to={`users/${currentUser.id}/contacts`}>אנשי קשר</Button>
+              <Button color="inherit" component={NavLink} to={`users/${currentUser.id}/gifts`}>מתנות</Button>
             </Toolbar>
           </AppBar>
           <Box mt={3}>

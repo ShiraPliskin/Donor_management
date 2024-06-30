@@ -45,7 +45,7 @@ const DonorDisplay = ({ donor, index, setDonorsToDisplay }) => {
     const updateDonorRequest = () => {
         setUpdateSuccessful("");
         const updatedDonor = filterEmptyValues(currentDonor);
-        putRequest("donors", updatedDonor, setUpdateSuccessful);
+        putRequest("donors", updatedDonor,currentDonor.id, setUpdateSuccessful);
     };
 
     return (

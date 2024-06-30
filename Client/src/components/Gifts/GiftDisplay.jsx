@@ -25,7 +25,7 @@ const GiftDisplay = ({ gift, index , setGiftsToDisplay}) => {
 
     const updateGiftRequest = () => {
         const updatedGift = filterEmptyValues(currentGift);
-        putRequest("gifts", updatedGift, setCommentArea);
+        putRequest("gifts", updatedGift,currentGift.id, setCommentArea);
         setGiftsToDisplay((prevGifts) => {
             return prevGifts.map(gift => 
                 gift.id === updatedGift.id ? updatedGift : gift

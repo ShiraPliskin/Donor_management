@@ -24,7 +24,7 @@ const ContactDisplay = ({ fields, contact, index, setContactsToDisplay, selected
 
     const updateContactRequest = () => {
         const updatedContact = filterEmptyValues(currentContact);
-        putRequest("contacts", updatedContact, setUpdateSuccessful);
+        putRequest("contacts", updatedContact,currentContact.id, setUpdateSuccessful);
     };
 
     const handleClickChoose = () => {

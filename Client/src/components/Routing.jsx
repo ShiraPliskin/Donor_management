@@ -44,6 +44,7 @@ import Gifts from "./Gifts/Gifts";
 import Contacts from "./Contacts/Contacts";
 import Layout from "./Layout";
 import Home from "./Home";
+import UserProfile from "./UserProfile";
 
 const Routing = () => {
   const [redirect, setRedirect] = useState(null);
@@ -69,6 +70,7 @@ const Routing = () => {
             <Route path='donors' element={<Donors />} />
             <Route path='contacts' element={<Contacts />} />
             <Route path='gifts' element={<Gifts />} />
+            <Route path='userProfile' element={<UserProfile />} />
           </Route>
         </Route>
         <Route path="*" element={<NotFound />} />

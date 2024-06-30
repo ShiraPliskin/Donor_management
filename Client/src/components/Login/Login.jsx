@@ -7,21 +7,21 @@ const Login = () => {
   const [comment, setComment] = useState("");
   const [userDetails, setUserDetails] = useState("");
   const [password, setPassword] = useState("");
-  const [status,setStatus] = useState("");
+  const [status, setStatus] = useState("");
   const navigate = useNavigate();
 
-  useEffect(()=>{
-    if(status===200)
+  useEffect(() => {
+    if (status === 200)
       navigateToHomePage(userDetails);
-    else if(status===500)
+    else if (status === 500)
       setComment("שם משתמש או סיסמא שגויים");
-  },[status])
+  }, [status])
 
   useEffect(() => {
     if (userDetails[0]) {
-      const passwordObject = {"password" : password};
-      getByPostRequest(`register/${userDetails[0].id}`, passwordObject, setComment,setStatus);
-    } 
+      const passwordObject = { "password": password };
+      getByPostRequest(`register/${userDetails[0].id}`, passwordObject, setComment, setStatus);
+    }
   }, [userDetails]);
 
   const handleFormSubmit = (event) => {
@@ -34,7 +34,7 @@ const Login = () => {
 
   function navigateToHomePage(userDetails) {
     delete userDetails["password"];
-    localStorage.setItem("currentUser", JSON.stringify(userDetails[0]));  
+    localStorage.setItem("currentUser", JSON.stringify(userDetails[0]));
     navigate(`/users/${userDetails[0].id}/home`);
   }
 
