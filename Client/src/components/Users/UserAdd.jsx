@@ -9,7 +9,7 @@ import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { checkValidation } from '../Tools/Validation'
 import GenericMessage from '../Tools/GenericSuccessMessage';
 
-const Register = () => {
+const UserAdd = () => {
     const [open, setOpen] = useState(false)
     const [isPwVerified, setIsPwVerified] = useState(false);
     const [comment, setComment] = useState("");
@@ -242,4 +242,4 @@ const Register = () => {
     );
 };
 
-export default Register;
+export default UserAdd;

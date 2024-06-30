@@ -26,15 +26,15 @@ const Donors = () => {
 
     return (
         <>
+            <DonorAdd
+                fields={fields}
+            />
             <DonorSearch
                 fields={fields}
                 donorsToDisplay={donorsToDisplay}
                 setDonorsToDisplay={setDonorsToDisplay}
                 setQueryString={setQueryString}
                 rowsPerPage={rowsPerPage}
-            />
-             <DonorAdd
-                fields={fields}
             />
             <DonorsDisplay
                 donorsToDisplay={donorsToDisplay}

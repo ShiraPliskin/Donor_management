@@ -6,7 +6,6 @@ import { isEmptyObject } from "../Tools/objectsOperations"
 import { config } from "../config.jsx";
 
 const DonorSearch = ({ fields, donorsToDisplay, setDonorsToDisplay, setQueryString, rowsPerPage }) => {
-    const [displaySeaschForm, setDisplaySeaschForm] = useState(false);
     const [donorDetails, setDonorDetails] = useState({});
     const [minDonationAmount, setMinDonationAmount] = useState("");
     const [commentArea, setCommentArea] = useState("");
@@ -58,10 +57,7 @@ const DonorSearch = ({ fields, donorsToDisplay, setDonorsToDisplay, setQueryStri
 
     return (
         <>
-            {currentPermission === config.HIGH_PERMISSION && <div><Button className="mainButton" variant="contained" onClick={displayAllDonors}>כל התורמים</Button></div>}
-            <div><Button className="mainButton" variant="contained" onClick={() => setDisplaySeaschForm((prev) => !prev)}>חיפוש תורם</Button></div>
-            {displaySeaschForm &&
-                <>
+            {currentPermission === config.HIGH_PERMISSION && <Button className="mainButton" variant="contained" onClick={displayAllDonors}>כל התורמים</Button>}
                     <h3>חיפוש תורם</h3>
                     <form onSubmit={handleSubmit}>
                         <Box display="flex" alignItems="center" flexWrap="wrap" gap={2}>
@@ -142,7 +138,6 @@ const DonorSearch = ({ fields, donorsToDisplay, setDonorsToDisplay, setQueryStri
                         </Box>
                         {<p>{commentArea}</p>}
                     </form>
-                </>}
         </>
     );
 };
