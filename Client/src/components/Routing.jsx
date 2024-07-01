@@ -9,6 +9,7 @@ import Layout from "./Layout";
 import Home from "./Home";
 import UserProfile from "./UserProfile";
 import Users from "./Users/Users";
+// import Donations from "./Donations/Donations";
 
 const Routing = () => {
   const [redirect, setRedirect] = useState(null);
@@ -30,6 +31,7 @@ const Routing = () => {
         <Route element={<Layout />}>
           <Route path='/users/:userId'>
             <Route path='home' element={<Home />} />
+            {/* <Route path='donations' element={<Donations />} /> */}
             <Route path='userManagement' element={<Users />} />
             <Route path='donors' element={<Donors />} />
             <Route path='contacts' element={<Contacts type="contacts"/>} />

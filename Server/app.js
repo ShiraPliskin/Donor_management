@@ -6,12 +6,18 @@ import { usersRouter } from './router/usersRouter.js';
 import { giftsRouter } from './router/giftsRouter.js';
 import { importersRouter } from './router/importersRouter.js';
 import { contactsRouter } from './router/contactsRouter.js';
-// import {logErrors} from './middleware/logError.js'
+import bodyparser from 'body-parser';
 
 const app = express();
-app.use(cors());
+app.use(cors()); // Setting up CORS
+app.use(express.json()); // Parsing incoming JSON requests
+app.use(bodyparser.json());
+app.use(bodyparser.urlencoded({
+    extended: true
+}));
 
-app.use(express.json());
+app.use('/uploads', express.static('uploads')); // Serving static files
+
 app.use('/donors', donorsRouter);
 app.use('/register', registerRouter);
 app.use('/users', usersRouter);
@@ -19,10 +25,8 @@ app.use('/gifts', giftsRouter);
 app.use('/importers', importersRouter);
 app.use('/contacts', contactsRouter);
 
-// app.use(logErrors);
-
-
 app.listen(8080, (err) => {
     if (err) console.error(err);
     console.log("Server listening on PORT", 8080);
 });
+

@@ -28,6 +28,7 @@ const Layout = () => {
               <Link component={RouterLink} style={{ color: 'white' }} to={`users/${currentUser.id}/userProfile`}>{currentUser && currentUser.name}</Link>
               {currentUser.permission === config.HIGH_PERMISSION && <Button color="inherit" component={NavLink} to={`users/${currentUser.id}/userManagement`}>ניהול משתמשים</Button>}
               <Button color="inherit" component={NavLink} to={`users/${currentUser.id}/donors`}>תורמים</Button>
+              <Button color="inherit" component={NavLink} to={`users/${currentUser.id}/donations`}>תרומות</Button>
               <Button color="inherit" component={NavLink} to={`users/${currentUser.id}/contacts`}>אנשי קשר</Button>
               <Button color="inherit" component={NavLink} to={`users/${currentUser.id}/gifts`}>מתנות</Button>
             </Toolbar>

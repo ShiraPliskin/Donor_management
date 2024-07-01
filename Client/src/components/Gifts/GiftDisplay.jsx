@@ -4,6 +4,8 @@ import { TableCell, TableRow, IconButton} from '@mui/material';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 // import DonorForm from './DonorForm';
 import {filterEmptyValues} from "../Tools/objectsOperations"
+import { config } from "../config.jsx";
+import { Image } from '@mui/icons-material';
 
 const GiftDisplay = ({ gift, index , setGiftsToDisplay}) => {
     const [currentGift, setCurrentGift] = useState("");
@@ -44,6 +46,7 @@ const GiftDisplay = ({ gift, index , setGiftsToDisplay}) => {
                         <VisibilityIcon />
                     </IconButton>
                 </TableCell>
+                {/* <Image src={`http://${config.SERVERPORT}/gifts`}></Image> */}
             </TableRow>
             {/* {open && (
                 <GiftForm giftDetails={currentGift} setGiftDetails={setCurrentGift} sendRequest={updateGiftRequest} open={open} handleClose={handleClose} type="display"/>
