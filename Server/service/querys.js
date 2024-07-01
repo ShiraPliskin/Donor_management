@@ -8,31 +8,37 @@ function getByConditionQuery(tableName, queryParams) {
     let page = queryParams.page;
     let sortby = queryParams.sortby;
 
-    let query = `SELECT ${fields} FROM ${db}.${tableName}`;
+    let dataQuery = `SELECT ${fields} FROM ${db}.${tableName}`;
+
+    let countQuery = `SELECT COUNT(*) AS total FROM ${db}.${tableName}`;
 
     if (filter) {
-        query += ' WHERE ';
+        dataQuery += ' WHERE ';
+        countQuery += ' WHERE ';
         const conditionArray = filter.split(',').map(condition => {
             const [key, value] = condition.split('=');
-            return `${key.trim()} = '${value.trim()}'`;
+            const trimmedKey = key.trim();
+            const trimmedValue = value.trim();
+            return `${trimmedKey} = '${trimmedValue}'`;
         });
-        query += conditionArray.join(' AND ');
+        dataQuery += conditionArray.join(' AND ');
+        countQuery += conditionArray.join(' AND ');
     }
 
     if (sortby) {
-        query += ` ORDER BY ${sortby}`;
+        dataQuery += ` ORDER BY ${sortby}`;
     }
 
     if (limit) {
         if (page) {
             const offset = (page - 1) * limit;
-            query += ` LIMIT ${limit} OFFSET ${offset}`;
+            dataQuery += ` LIMIT ${limit} OFFSET ${offset}`;
         } else {
-            query += ` LIMIT ${limit}`;
+            dataQuery += ` LIMIT ${limit}`;
         }
     }
 
-    return query;
+    return { dataQuery, countQuery };
 }
 
 function getByIdQuery(tableName, idKey = "id") {

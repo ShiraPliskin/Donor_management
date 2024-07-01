@@ -4,6 +4,7 @@ import ContactForm from "./ContactForm";
 import { postRequest } from "../Tools/APIRequests";
 import { filterEmptyValues } from "../Tools/objectsOperations"
 import GenericMessage from "../Tools/GenericSuccessMessage";
+import AddIcon from '@mui/icons-material/Add';
 
 const ContactAdd = ({ fields, type, newContactID, setNewContactID }) => {
 
@@ -28,13 +29,16 @@ const ContactAdd = ({ fields, type, newContactID, setNewContactID }) => {
     const addContactRequest = () => {
         setIsSucceed("");
         const newContact = filterEmptyValues(contactDetails);
-        postRequest("contacts", newContact, setIsSucceed, type === "contacts" ? setNewID : setNewContactID );
+        postRequest("contacts", newContact, setIsSucceed, type === "contacts" ? setNewID : setNewContactID);
         handleClose();
     };
 
     return (
         <>
-            {type === "contacts" && <Button variant="outlined" onClick={handleClickOpen}>הוספת איש קשר</Button>}
+            {type === "contacts" &&
+                <Button variant="outlined" onClick={handleClickOpen} sx={{ marginTop: 5 }} endIcon={<AddIcon sx={{ marginRight: 1, marginLeft: -1 }} />}>
+                    הוספת איש קשר
+                </Button>}
             {isSucceed === "success" && <GenericMessage message={`איש קשר מספר ${type === "contacts" ? newID : newContactID} נוסף בהצלחה`} type="success" />}
             {isSucceed === "error" && <GenericMessage message="הוספת איש קשר נכשלה" type="error" />}
             <ContactForm

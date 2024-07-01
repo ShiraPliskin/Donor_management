@@ -4,6 +4,7 @@ import DonorForm from "./DonorForm";
 import { postRequest } from "../Tools/APIRequests";
 import { filterEmptyValues } from "../Tools/objectsOperations"
 import GenericMessage from "../Tools/GenericSuccessMessage";
+import AddIcon from '@mui/icons-material/Add';
 import "../style.css";
 
 const DonorAdd = ({ fields }) => {
@@ -17,7 +18,7 @@ const DonorAdd = ({ fields }) => {
     }, [fields, open]);
 
     const handleClickOpen = () => {
-          setOpen(true);
+        setOpen(true);
     };
 
     const handleClose = () => {
@@ -34,7 +35,9 @@ const DonorAdd = ({ fields }) => {
 
     return (
         <>
-            <Button className="mainButton" variant="contained" onClick={handleClickOpen}>הוספת תורם</Button>
+            <Button variant="outlined" onClick={handleClickOpen} sx={{ marginTop: 5 }} endIcon={<AddIcon sx={{ marginRight: 1 , marginLeft: -1}}/>}>
+            הוספת תורם
+            </Button>
             {isSucceed === "success" && <GenericMessage message={`תורם מספר ${newID} נוסף בהצלחה`} type="success" />}
             {isSucceed === "error" && <GenericMessage message="הוספת תורם נכשלה" type="error" />}
             <DonorForm fields={fields} donorDetails={donorDetails} setDonorDetails={setDonorDetails} sendRequest={addDonorRequest} open={open} handleClose={handleClose} type="add" />

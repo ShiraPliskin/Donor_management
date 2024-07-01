@@ -7,7 +7,7 @@ import { filterEmptyValues } from "../Tools/objectsOperations"
 import GenericDeletion from '../Tools/GenericDeletion';
 import GenericMessage from '../Tools/GenericSuccessMessage';
 
-const DonorDisplay = ({ donor, index, setDonorsToDisplay }) => {
+const DonorDisplay = ({ donor, index, setDonorsToDisplay, setTotal}) => {
 
     const [currentDonor, setCurrentDonor] = useState("");
     const [open, setOpen] = useState(false);
@@ -45,12 +45,12 @@ const DonorDisplay = ({ donor, index, setDonorsToDisplay }) => {
     const updateDonorRequest = () => {
         setUpdateSuccessful("");
         const updatedDonor = filterEmptyValues(currentDonor);
-        putRequest("donors", updatedDonor,currentDonor.id, setUpdateSuccessful);
+        putRequest("donors", updatedDonor, currentDonor.id, setUpdateSuccessful);
     };
 
     return (
         <>
-            <TableRow key={index}>
+            <TableRow sx={{ height: '40px' }} key={index}>
                 <TableCell sx={{ textAlign: 'center' }}>{donor.id}</TableCell>
                 <TableCell sx={{ textAlign: 'center' }}>{donor.l_name}</TableCell>
                 <TableCell sx={{ textAlign: 'center' }}>{donor.f_name}</TableCell>
@@ -83,6 +83,7 @@ const DonorDisplay = ({ donor, index, setDonorsToDisplay }) => {
                     objectName="תורם"
                     objectState={setDonorsToDisplay}
                     formOpen={setOpen}
+                    setTotal={setTotal}
                 />
             }
             {updateSuccessful === "success" && <GenericMessage message={`תורם מספר ${currentDonor.id} עודכן בהצלחה`} type="success" />}
