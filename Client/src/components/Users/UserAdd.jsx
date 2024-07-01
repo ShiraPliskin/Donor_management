@@ -8,8 +8,9 @@ import PersonIcon from '@mui/icons-material/Person';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { checkValidation } from '../Tools/Validation'
 import GenericMessage from '../Tools/GenericSuccessMessage';
+import AddIcon from '@mui/icons-material/Add';
 
-const Register = () => {
+const UserAdd = () => {
     const [open, setOpen] = useState(false)
     const [isPwVerified, setIsPwVerified] = useState(false);
     const [comment, setComment] = useState("");
@@ -49,7 +50,7 @@ const Register = () => {
     }, [userFields.password, userFields.verifyPW]);
 
     useEffect(() => {
-        if(isSucceed === "success"){
+        if (isSucceed === "success") {
             setOpen(false);
         }
     }, [isSucceed]);
@@ -84,7 +85,9 @@ const Register = () => {
 
     return (
         <>
-            <Button variant="outlined" onClick={() => setOpen(true)}>הוספת משתמש</Button>
+            <Button variant="outlined" onClick={() => setOpen(true)} sx={{ marginTop: 5 }} endIcon={<AddIcon sx={{ marginRight: 1, marginLeft: -1 }} />}>
+                הוספת משתמש
+            </Button>
             <Dialog open={open}
                 onClose={(event, reason) => {
                     if (reason !== 'backdropClick' && reason !== 'escapeKeyDown') {
@@ -168,8 +171,8 @@ const Register = () => {
                                     }
                                 }}
                             >
-                                <MenuItem value="secretary">מזכיר</MenuItem>
-                                <MenuItem value="administrator">מנהל</MenuItem>
+                                <MenuItem value="מזכיר">מזכיר</MenuItem>
+                                <MenuItem value="מנהל">מנהל</MenuItem>
                             </Select>
                         </FormControl><br />
                         <TextField
@@ -220,19 +223,18 @@ const Register = () => {
                                     </InputAdornment>
                                 )
                             }} />
-
                     </form>
                 </DialogContent>
                 <DialogActions>
-                <Button onClick={() => setOpen(false)} color="primary">ביטול</Button>
-                        <Button
-                            disabled={!isPwVerified}
-                            variant="contained"
-                            color="primary"
-                            onClick={handleSubmit}
-                        >
-                            הוסף
-                        </Button>
+                    <Button onClick={() => setOpen(false)} color="primary">ביטול</Button>
+                    <Button
+                        disabled={!isPwVerified}
+                        variant="contained"
+                        color="primary"
+                        onClick={handleSubmit}
+                    >
+                        הוסף
+                    </Button>
                 </DialogActions>
                 <p>{comment}</p>
             </Dialog>
@@ -242,4 +244,4 @@ const Register = () => {
     );
 };
 
-export default Register;
+export default UserAdd;

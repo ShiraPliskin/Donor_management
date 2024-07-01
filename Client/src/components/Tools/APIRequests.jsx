@@ -9,19 +9,22 @@ export const getRequest = async (table, conditions, state, comment, object = "")
             throw new Error(`Request failed with status: ${response.status}`);
         }
 
-        const data = await response.json();
-        if (Object.keys(data).length === 0) {
-            return comment(`לא נמצא ${object}`);
+        const responseData = await response.json();
+        if (Object.keys(responseData).length === 0) {
+            comment(`לא נמצא ${object}`);
+            return 0;
         } else {
-            state(data);
-            return true;
+            state(responseData.data); 
+            const total = responseData.total[0]["total"] || responseData.data.length;
+            return total;
         }
     } catch (error) {
         console.error("Error in GetRequest:", error);
         comment(`שגיאת שרת`);
-        return false;
+        return 0 ; 
     }
 };
+
 
 export const getByIdRequest = async (table, id, state, comment) => {
     const url = `http://${config.SERVERPORT}/${table}/${id}}`;
@@ -47,7 +50,7 @@ export const getByIdRequest = async (table, id, state, comment) => {
     }
 };
 
-export const putRequest = async (table, updatedObject,id, setIsSucceed) => {
+export const putRequest = async (table, updatedObject, id, setIsSucceed) => {
     try {
         const response = await fetch(`http://${config.SERVERPORT}/${table}/${id}`, {
             headers: { 'Content-Type': 'application/json' },
@@ -149,7 +152,7 @@ export const getByPostRequest = async (table, newItem, comment,status) => {
     }
 };
 
-export const checkIfExist = async (table, conditions, comment) => {
+export const checkIfExist = async (table, conditions, comment, id) => {
     const url = `http://${config.SERVERPORT}/${table}${conditions ? `${conditions}` : ''}`;
     try {
         const response = await fetch(url);
@@ -158,9 +161,13 @@ export const checkIfExist = async (table, conditions, comment) => {
             throw new Error(`Request failed with status: ${response.status}`);
         }
         const data = await response.json();
+
         if (Object.keys(data).length === 0) {
             return true;
         } else {
+            console.log(data);
+            if(data["data"][0].id === id)
+                return true;
             return comment("כתובת מייל קיימת במערכת.");
         }
     } catch (error) {

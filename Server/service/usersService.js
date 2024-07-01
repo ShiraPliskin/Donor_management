@@ -6,28 +6,28 @@ const registerService = new RegisterService;
 export class UsersService {
 
     async getUsers(queryParams) {
-        const query = getByConditionQuery("users",queryParams);
-        
+        const {dataQuery, countQuery} = getByConditionQuery("users",queryParams);
         const values = Object.values(queryParams);
-        const result = await executeQuery(query, values);
-        return result;
+        const data = await executeQuery(dataQuery, values);
+        const total = await executeQuery(countQuery, values);
+        return { data, total };
     }
 
     async getUserById(id) {
-        const queryUser = getByIdQuery("users","user_id");
+        const queryUser = getByIdQuery("users");
         const result =  await executeQuery(queryUser, [id]);
         return result;
     }
 
     async deleteUser(idKey,idValue) {
-        await registerService.deleteRegister(idValue,"user_id");
+        await registerService.deleteRegister(idValue, "id");
         const queryUser = deleteQuery("users",`${idKey}`);
         const result =  await executeQuery(queryUser, [idValue]);
         return result;
     }
 
     async updateUser(updatedUser, id) {
-        const query = updateQuery("users", updatedUser, "user_id");
+        const query = updateQuery("users", updatedUser, "id");
         const values = Object.values(updatedUser);
         values.push(id);
         console.log(values);

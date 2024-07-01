@@ -2,7 +2,7 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 import { Box, Typography, Button, TextField } from '@mui/material';
 import { NavLink } from 'react-router-dom';
-import { getByPostRequest, putRequest } from './Tools/APIRequests'
+import { getByPostRequest, putRequest } from '../Tools/APIRequests'
 const UserProfile = () => {
     const [currentUser, setCurrentUser] = useState(JSON.parse(localStorage.getItem("currentUser")));
     const [permission, setPermission] = useState("");

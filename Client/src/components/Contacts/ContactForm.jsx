@@ -1,15 +1,16 @@
 import { useState, useEffect } from "react";
-import { Button, TextField, Dialog, DialogActions, DialogContent, DialogTitle, Grid, InputAdornment } from "@mui/material";
+import { Button, TextField, Dialog, DialogActions, DialogContent, DialogTitle, Grid, InputAdornment, IconButton } from "@mui/material";
 import EmailIcon from '@mui/icons-material/Email';
 import PhoneIcon from '@mui/icons-material/Phone';
 import PersonIcon from '@mui/icons-material/Person';
 import HomeIcon from '@mui/icons-material/Home';
 import NoteIcon from '@mui/icons-material/Note';
+import DeleteIcon from '@mui/icons-material/Delete';
 import { checkValidation } from '../Tools/Validation'
 import _isEqual from 'lodash/isEqual';
 import { trimObjectStrings } from "../Tools/objectsOperations"
 
-const ContactForm = ({ fields, contactDetails, setContactDetails, sendRequest, open, handleClose, type }) => {
+const ContactForm = ({ fields, contactDetails, setContactDetails, sendRequest, open, handleClose, type, deleteContact }) => {
 
     const [commentArea, setCommentArea] = useState("");
     const [formType, setFormType] = useState(type);
@@ -234,6 +235,9 @@ const ContactForm = ({ fields, contactDetails, setContactDetails, sendRequest, o
                 <DialogActions>
                     {formType === "display" &&
                         <>
+                            <IconButton onClick={() => { deleteContact() }} color="primary">
+                                <DeleteIcon />
+                            </IconButton>
                             <Button onClick={() => { setFormType("edit") }} color="primary">עריכה</Button>
                             <Button onClick={handleClose} color="primary">סגור</Button>
                         </>}

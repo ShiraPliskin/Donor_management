@@ -7,7 +7,7 @@ import Gifts from "./Gifts/Gifts";
 import Contacts from "./Contacts/Contacts";
 import Layout from "./Layout";
 import Home from "./Home";
-import UserProfile from "./UserProfile";
+import UserProfile from "./Users/UserProfile";
 import Users from "./Users/Users";
 // import Donations from "./Donations/Donations";
 

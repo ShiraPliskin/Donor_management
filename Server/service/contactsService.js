@@ -4,10 +4,11 @@ import {addQuery, updateQuery, getByIdQuery, getByConditionQuery, deleteQuery} f
 export class ContactsService {
 
     async getContacts(queryParams) {
-        const query = getByConditionQuery("contacts", queryParams);
+        const  { dataQuery, countQuery } = getByConditionQuery("contacts", queryParams);
         const values = Object.values(queryParams);
-        const result = await executeQuery(query, values);
-        return result;
+        const data = await executeQuery(dataQuery, values);
+        const total = await executeQuery(countQuery, values);
+        return { data, total };
     }
 
     async getContactById(id) {

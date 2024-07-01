@@ -4,10 +4,11 @@ import {addQuery, updateQuery, getByIdQuery, getByConditionQuery, deleteQuery} f
 export class DonorsService {
 
     async getDonors(queryParams) {
-        const query = getByConditionQuery("donors",queryParams);
+        const  { dataQuery, countQuery } = getByConditionQuery("donors", queryParams);
         const values = Object.values(queryParams);
-        const result = await executeQuery(query, values);
-        return result;
+        const data = await executeQuery(dataQuery, values);
+        const total = await executeQuery(countQuery, values);
+        return { data, total };
     }
 
     async getDonorById(id) {

@@ -4,10 +4,11 @@ import {addQuery, updateQuery, getByIdQuery, getByConditionQuery, deleteQuery} f
 export class ImportersService {
 
     async getImporters(queryParams) {
-        const query = getByConditionQuery("importers", queryParams);
+        const {dataQuery, countQuery} = getByConditionQuery("importers", queryParams);
         const values = Object.values(queryParams);
-        const result = await executeQuery(query, values);
-        return result;
+        const data = await executeQuery(dataQuery, values);
+        const total = await executeQuery(countQuery, values);
+        return { data, total };
     }
 
     async getImporterById(id) {

@@ -5,12 +5,16 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import ContactForm from './ContactForm';
 import { putRequest } from '../Tools/APIRequests';
 import {filterEmptyValues} from "../Tools/objectsOperations"
+import GenericDeletion from '../Tools/GenericDeletion';
+import GenericMessage from '../Tools/GenericSuccessMessage';
 
-const ContactDisplay = ({ fields, contact, index, setContactsToDisplay, selectedContactId, setSelectedContactId, type }) => {
+const ContactDisplay = ({ fields, contact, index, setContactsToDisplay, selectedContactId, setSelectedContactId, type, setTotal }) => {
 
     const [currentContact, setCurrentContact] = useState(contact);
     const [open, setOpen] = useState(false);
     const [updateSuccessful, setUpdateSuccessful] = useState('');
+    const [openDeleteWarning, setOpenDeleteWarning] = useState(false);
+    const [comment, setComment] = useState("");
 
     useEffect(() => {
         if (setContactsToDisplay === "success") {
@@ -38,6 +42,10 @@ const ContactDisplay = ({ fields, contact, index, setContactsToDisplay, selected
     const handleClose = () => {
         setOpen(false);
     };
+
+    const deleteContact = () => {
+        setOpenDeleteWarning(true);
+    }
 
     return (
         <>
@@ -70,11 +78,27 @@ const ContactDisplay = ({ fields, contact, index, setContactsToDisplay, selected
                     contactDetails={currentContact}
                     setContactDetails={setCurrentContact}
                     sendRequest={updateContactRequest}
+                    deleteContact={deleteContact}
                     open={open}
                     handleClose={handleClose}
                     type="display"
                 />
             )}
+             {openDeleteWarning && type==="contacts" &&
+                <GenericDeletion
+                    id={currentContact.id}
+                    warningOpen={openDeleteWarning}
+                    setWarningOpen={setOpenDeleteWarning}
+                    table="contacts"
+                    objectName="איש קשר"
+                    objectState={setContactsToDisplay}
+                    formOpen={setOpen}
+                    setTotal={setTotal}
+                />
+            }
+             {updateSuccessful === "success" && <GenericMessage message={`איש קשר מספר ${currentContact.id} עודכן בהצלחה`} type="success" />}
+             {updateSuccessful === "error" && <GenericMessage message="עדכון איש קשר נכשל" type="error" />}
+       <p>{comment}</p> 
         </>
     );
 };

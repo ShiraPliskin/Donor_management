@@ -23,24 +23,28 @@ const Donors = () => {
     const [donorsToDisplay, setDonorsToDisplay] = useState([]);
     const [queryString, setQueryString] = useState("");
     const [rowsPerPage, setRowsPerPage] = useState(8);
+    const [totalDonorsCount, setTotalDonorsCount] = useState(0);
 
     return (
         <>
+            <DonorAdd
+                fields={fields}
+            />
             <DonorSearch
                 fields={fields}
                 donorsToDisplay={donorsToDisplay}
                 setDonorsToDisplay={setDonorsToDisplay}
                 setQueryString={setQueryString}
                 rowsPerPage={rowsPerPage}
-            />
-             <DonorAdd
-                fields={fields}
+                setTotalDonorsCount={setTotalDonorsCount}
             />
             <DonorsDisplay
                 donorsToDisplay={donorsToDisplay}
                 setDonorsToDisplay={setDonorsToDisplay}
                 queryString={queryString}
                 rowsPerPage={rowsPerPage}
+                totalDonorsCount={totalDonorsCount}
+                setTotalDonorsCount={setTotalDonorsCount}
             />
         </>
     );

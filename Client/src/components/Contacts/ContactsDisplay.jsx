@@ -3,7 +3,7 @@ import { Table, Box, TableBody, TableCell, TableContainer, TableHead, TableRow, 
 import { getRequest } from "../Tools/APIRequests";
 import ContactDisplay from './ContactDisplay';
 
-const ContactsDisplay = ({ fields, contactsToDisplay, setContactsToDisplay, selectedContactId, setSelectedContactId, type, queryString, rowsPerPage }) => {
+const ContactsDisplay = ({ fields, contactsToDisplay, setContactsToDisplay, selectedContactId, setSelectedContactId, type, queryString, rowsPerPage, totalCount, setTotalCount }) => {
 
     const [page, setPage] = useState(0);
     const [moreContacts, setMoreContacts] = useState([]);
@@ -14,19 +14,18 @@ const ContactsDisplay = ({ fields, contactsToDisplay, setContactsToDisplay, sele
     useEffect(() => {
         if (moreContacts.length > 0) {
             setContactsToDisplay((prevData) => [...prevData, ...moreContacts]);
-            setDisabledShowMore(moreContacts.length < rowsPerPage);
+            setDisabledShowMore(moreContacts.length  >= totalCount);
         }
     }, [moreContacts]);
 
     useEffect(() => {
-        if (page !== 0) {
-            setDisabledShowMore((page * rowsPerPage + rowsPerPage) > contactsToDisplay.length);
-        }
-    }, [page, contactsToDisplay]);
+        setDisabledShowMore((page + 1) * rowsPerPage >= totalCount);
+    }, [page, totalCount]);
 
     const handleFetchData = async () => {
         const queryConditions = `${queryString}&page=${page + 2}&sortby=${sortKey}`;
-        await getRequest("contacts", queryConditions, setMoreContacts, setCommentArea, "איש קשר");
+        const total = await getRequest("contacts", queryConditions, setMoreContacts, setCommentArea, "איש קשר");
+        setTotalCount(total);
     };
 
     const handlePrevPage = () => {
@@ -35,24 +34,25 @@ const ContactsDisplay = ({ fields, contactsToDisplay, setContactsToDisplay, sele
     };
 
     const handleNextPage = async () => {
-        if (contactsToDisplay.length === (page + 1) * rowsPerPage) {
+        if ((page + 1) * rowsPerPage === contactsToDisplay.length) {
             await handleFetchData();
         }
         setPage((prevPage) => prevPage + 1);
     };
 
-    const handleChangeSortKey = (e) => {
+    const handleChangeSortKey = async (e) => {
         setSortKey(e.target.value);
         setPage(0);
-        getRequest("contacts", `${queryString}&page=${1}&sortby=${e.target.value}`, setContactsToDisplay, setCommentArea, "תורם");
+        const total = await getRequest("contacts", `${queryString}&page=${1}&sortby=${e.target.value}`, setContactsToDisplay, setCommentArea, "איש קשר");
+        setTotalCount(total);
     };
 
     return (
         <>
             {contactsToDisplay.length > 0 && (<>
                 <Box sx={{ minWidth: 650 }} maxWidth={type === "contacts" ? "xl" : "lg"} >
-                    <TableContainer component={Paper} sx={{ width: '100%', height: '100%' }}>
-                        <Table sx={{ width: '100%', height: '100%' }} aria-label="simple table">
+                    <TableContainer component={Paper} sx={{ width: '100%', height: '100%', marginTop: 5 }}>
+                        <Table sx={{ width: '100%', height: '100%' }} >
                             <TableHead>
                                 <TableRow>
                                     <TableCell sx={{ fontWeight: 'bold', textAlign: 'center' }}>מס' איש קשר</TableCell>
@@ -88,6 +88,7 @@ const ContactsDisplay = ({ fields, contactsToDisplay, setContactsToDisplay, sele
                                         setSelectedContactId={setSelectedContactId}
                                         setContactsToDisplay={setContactsToDisplay}
                                         type={type}
+                                        setTotal={setTotalCount}
                                     />
                                 ))}
                             </TableBody>
@@ -96,7 +97,7 @@ const ContactsDisplay = ({ fields, contactsToDisplay, setContactsToDisplay, sele
                         <div style={{ textAlign: 'center', marginTop: '10px' }}>
                             <button onClick={handlePrevPage} disabled={page === 0}>{'<'}</button>
                             <button onClick={handleNextPage} disabled={disabledShowMore}>{'>'}</button>
-                            <p>{`${page * rowsPerPage + 1}-${(page * rowsPerPage + rowsPerPage) <= contactsToDisplay.length ? (page * rowsPerPage + rowsPerPage) : (page * rowsPerPage + moreContacts.length)} מתוך ${contactsToDisplay.length}`}</p>
+                            <p>{`${page * rowsPerPage + 1}-${(page + 1) * rowsPerPage <= totalCount ? (page + 1) * rowsPerPage : totalCount} מתוך ${totalCount}`}</p>
                         </div>}
                     </TableContainer>
                 </Box>

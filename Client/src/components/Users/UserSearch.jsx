@@ -5,43 +5,43 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import SearchIcon from '@mui/icons-material/Search';
 import { isEmptyObject } from "../Tools/objectsOperations"
 
-const ContactSearch = ({ fields, contactsToDisplay, setContactsToDisplay, setQueryString, rowsPerPage, setTotalCount }) => {
+const UserSearch = ({ fields, usersToDisplay, setUsersToDisplay, setQueryString, rowsPerPage, setTotalCount }) => {
 
-    const [contactDetails, setContactDetails] = useState({});
+    const [userDetails, setUserDetails] = useState({});
     const [donorId, setDonorId] = useState("");
     const [commentArea, setCommentArea] = useState("");
 
     useEffect(() => {
-        setContactDetails(fields);
-        displayAllContacts();
+        setUserDetails(fields);
+        displayAllUsers();
     }, []);
 
     useEffect(() => {
-        if (contactsToDisplay.length === 0 && (!isEmptyObject(contactDetails) || donorId)) {
-            setCommentArea("לא נמצא איש קשר");
+        if (usersToDisplay.length === 0 && (!isEmptyObject(userDetails) || donorId)) {
+            setCommentArea("לא נמצא משתמש");
         } else {
             setCommentArea("");
         }
-    }, [contactsToDisplay]);
+    }, [usersToDisplay]);
 
-    const displayAllContacts = async () => {
-        const total = await getRequest("contacts", `?_limit=${rowsPerPage}`, setContactsToDisplay, setCommentArea, "איש קשר");
+    const displayAllUsers = async () => {
+        const total = await getRequest("users", `?_limit=${rowsPerPage}`, setUsersToDisplay, setCommentArea, "משתמש");
         setTotalCount(total);
         setQueryString(`?_limit=${rowsPerPage}`);
     }
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setContactsToDisplay([]);
+        setUsersToDisplay([]);
         let conditions = [];
-        for (const [key, value] of Object.entries(contactDetails)) {
+        for (const [key, value] of Object.entries(userDetails)) {
             if (value) {
                 conditions.push(`${key}=${value}`);
             }
         }
         const queryURL = conditions.length > 0 ? `?filter=${conditions.join(',')}&_limit=${rowsPerPage}` : "";
         if (queryURL) {
-            const total = await getRequest("contacts", queryURL, setContactsToDisplay, setCommentArea, "איש קשר");
+            const total = await getRequest("users", queryURL, setUsersToDisplay, setCommentArea, "משתמש");
             setTotalCount(total);
         }
         setQueryString(queryURL);
@@ -49,68 +49,55 @@ const ContactSearch = ({ fields, contactsToDisplay, setContactsToDisplay, setQue
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        if (name === "donorId")
-            setDonorId(value);
-        else
-            setContactDetails((prevData) => ({ ...prevData, [name]: value }));
+        setUserDetails((prevData) => ({ ...prevData, [name]: value }));
     };
 
     return (
         <Box display="flex" alignItems="center" justifyContent="space-between">
             <Accordion sx={{ flexGrow: 1 }}>
                 <AccordionSummary expandIcon={<ExpandMoreIcon />} >
-                    <Typography variant="h6">חיפוש איש קשר</Typography>
+                    <Typography variant="h6">חיפוש משתמש</Typography>
                 </AccordionSummary>
                 <AccordionDetails>
                     <form onSubmit={handleSubmit}>
                         <Box display="flex" alignItems="center" flexWrap="wrap" gap={0.5}>
                             <TextField
                                 style={{ width: '150px' }}
-                                label="מס' איש קשר"
+                                label="מס' משתמש"
                                 variant="outlined"
                                 name="id"
-                                value={contactDetails.id}
-                                onChange={handleChange}
-                                size="small"
-                                margin="dense"
-                            />
-                            <TextField
-                                style={{ width: '200px' }}
-                                label="שם"
-                                variant="outlined"
-                                name="name"
-                                value={contactDetails.name}
-                                onChange={handleChange}
-                                size="small"
-                                margin="dense"
-                            />
-                            <TextField
-                                style={{ width: '150px' }}
-                                label="טלפון"
-                                variant="outlined"
-                                name="phone"
-                                value={contactDetails.phone}
+                                value={userDetails.id}
                                 onChange={handleChange}
                                 size="small"
                                 margin="dense"
                             />
                             <TextField
                                 style={{ width: '220px' }}
-                                label="כתובת מייל"
+                                label="שם"
                                 variant="outlined"
-                                name="email"
-                                type="email"
-                                value={contactDetails.email}
+                                name="name"
+                                value={userDetails.name}
                                 onChange={handleChange}
                                 size="small"
                                 margin="dense"
                             />
                             <TextField
-                                style={{ width: '150px' }}
-                                label="מס' תורם"
+                                style={{ width: '250px' }}
+                                label="כתובת מייל"
                                 variant="outlined"
-                                name="donorId"
-                                value={donorId}
+                                name="email"
+                                type="email"
+                                value={userDetails.email}
+                                onChange={handleChange}
+                                size="small"
+                                margin="dense"
+                            />
+                            <TextField
+                                style={{ width: '180px' }}
+                                label="הרשאה"
+                                variant="outlined"
+                                name="permission"
+                                value={userDetails.permission}
                                 onChange={handleChange}
                                 size="small"
                                 margin="dense"
@@ -124,12 +111,12 @@ const ContactSearch = ({ fields, contactsToDisplay, setContactsToDisplay, setQue
                 </AccordionDetails>
             </Accordion>
             <Box display="flex" alignItems="center" margin={'4px'}>
-                <Button variant="contained" onClick={displayAllContacts} className="displayAllButton">
-                    כל אנשי הקשר
+                <Button variant="contained" onClick={displayAllUsers} className="displayAllButton">
+                    כל המשתמשים
                 </Button>
             </Box>
         </Box>
     );
 };
 
-export default ContactSearch;
+export default UserSearch;

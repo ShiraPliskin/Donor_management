@@ -5,10 +5,11 @@ import path from 'path'
 export class GiftsService {
 
     async getGifts(queryParams) {
-        const query = getByConditionQuery("gifts",queryParams);
+        const  { dataQuery, countQuery } = getByConditionQuery("gifts",queryParams);
         const values = Object.values(queryParams);
-        const result = await executeQuery(query, values);
-        return result;
+        const data = await executeQuery(dataQuery, values);
+        const total = await executeQuery(countQuery, values);
+        return { data, total };
     }
 
     async getGiftById(id) {

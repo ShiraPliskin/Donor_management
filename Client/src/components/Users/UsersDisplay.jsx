@@ -1,30 +1,34 @@
 import React, { useState, useEffect } from 'react';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Select, MenuItem, InputLabel, FormControl, Box } from '@mui/material';
 import { getRequest } from "../Tools/APIRequests";
-import DonorDisplay from './DonorDisplay';
+import UserDisplay from './UserDisplay';
 
-const DonorsDisplay = ({ donorsToDisplay, setDonorsToDisplay, queryString, rowsPerPage, totalDonorsCount, setTotalDonorsCount }) => {
+const UsersDisplay = ({ usersToDisplay, setUsersToDisplay, queryString, rowsPerPage, totalCount, setTotalCount }) => {
     const [page, setPage] = useState(0);
-    const [moreDonors, setMoreDonors] = useState([]);
+    const [moreUsers, setMoreUsers] = useState([]);
     const [commentArea, setCommentArea] = useState("");
     const [disabledShowMore, setDisabledShowMore] = useState(false);
     const [sortKey, setSortKey] = useState("id");
 
     useEffect(() => {
-        if (moreDonors.length > 0) {
-            setDonorsToDisplay((prevData) => [...prevData, ...moreDonors]);
-            setDisabledShowMore((page + 1) * rowsPerPage >= totalDonorsCount);
-        }
-    }, [moreDonors]);
+        console.log("usersToDisplay ", usersToDisplay)
+    }, [usersToDisplay]);
 
     useEffect(() => {
-        setDisabledShowMore((page + 1) * rowsPerPage >= totalDonorsCount);
-    }, [page, totalDonorsCount]);
+        if (moreUsers.length > 0) {
+            setUsersToDisplay((prevData) => [...prevData, ...moreUsers]);
+            setDisabledShowMore((page + 1) * rowsPerPage >= totalCount);
+        }
+    }, [moreUsers]);
+
+    useEffect(() => {
+        setDisabledShowMore((page + 1) * rowsPerPage >= totalCount);
+    }, [page, totalCount]);
 
     const handleFetchData = async () => {
         const queryConditions = `${queryString}&page=${page + 2}&sortby=${sortKey}`;
-        const total = await getRequest("donors", queryConditions, setMoreDonors, setCommentArea, "תורם");
-        setTotalDonorsCount(total);
+        const total = await getRequest("users", queryConditions, setMoreUsers, setCommentArea, "משתמש");
+        setTotalCount(total);
     };
 
     const handlePrevPage = () => {
@@ -33,7 +37,7 @@ const DonorsDisplay = ({ donorsToDisplay, setDonorsToDisplay, queryString, rowsP
     };
 
     const handleNextPage = async () => {
-        if ((page + 1) * rowsPerPage === donorsToDisplay.length) {
+        if ((page + 1) * rowsPerPage === usersToDisplay.length) {
             await handleFetchData();
         }
         setPage((prevPage) => prevPage + 1);
@@ -42,24 +46,22 @@ const DonorsDisplay = ({ donorsToDisplay, setDonorsToDisplay, queryString, rowsP
     const handleChangeSortKey = async (e) => {
         setSortKey(e.target.value);
         setPage(0);
-        const total = await getRequest("donors", `${queryString}&page=${1}&sortby=${e.target.value}`, setDonorsToDisplay, setCommentArea, "תורם")
-        setTotalDonorsCount(total);
+        const total = await getRequest("users", `${queryString}&page=${1}&sortby=${e.target.value}`, setUsersToDisplay, setCommentArea, "משתמש")
+        setTotalCount(total);
     };
 
     return (
         <>
-            {donorsToDisplay.length > 0 && (
+           {usersToDisplay.length > 0 && (
            <Box sx={{ minWidth: 650 }} maxWidth={"xl"} >
                 <TableContainer component={Paper} sx={{marginTop: 5 }}>
                     <Table sx={{ minWidth: 650}}>
                         <TableHead>
                             <TableRow>
-                                <TableCell sx={{ fontWeight: 'bold', textAlign: 'center' }}>מס' תורם</TableCell>
-                                <TableCell sx={{ fontWeight: 'bold', textAlign: 'center' }}>שם משפחה</TableCell>
-                                <TableCell sx={{ fontWeight: 'bold', textAlign: 'center' }}>שם פרטי</TableCell>
+                                <TableCell sx={{ fontWeight: 'bold', textAlign: 'center' }}>מס' משתמש</TableCell>
+                                <TableCell sx={{ fontWeight: 'bold', textAlign: 'center' }}>שם</TableCell>
                                 <TableCell sx={{ fontWeight: 'bold', textAlign: 'center' }}>כתובת מייל</TableCell>
-                                <TableCell sx={{ fontWeight: 'bold', textAlign: 'center' }}>טלפון</TableCell>
-                                <TableCell sx={{ fontWeight: 'bold', textAlign: 'center' }}>כתובת</TableCell>
+                                <TableCell sx={{ fontWeight: 'bold', textAlign: 'center' }}>הרשאה</TableCell>
                                 <TableCell>
                                     <FormControl fullWidth>
                                         <InputLabel>מיון לפי</InputLabel>
@@ -68,27 +70,26 @@ const DonorsDisplay = ({ donorsToDisplay, setDonorsToDisplay, queryString, rowsP
                                             onChange={handleChangeSortKey}
                                             label="מיון לפי"
                                         >
-                                            <MenuItem value="id">מספר תורם</MenuItem>
-                                            <MenuItem value="f_name">שם פרטי</MenuItem>
-                                            <MenuItem value="l_name">שם משפחה</MenuItem>
+                                            <MenuItem value="id">מספר משתמש</MenuItem>
+                                            <MenuItem value="name">שם</MenuItem>
                                             <MenuItem value="email">כתובת מייל</MenuItem>
-                                            <MenuItem value="address">כתובת</MenuItem>
+                                            <MenuItem value="permission">הרשאה</MenuItem>
                                         </Select>
                                     </FormControl>
                                 </TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {donorsToDisplay.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((donor, index) => (
-                                <DonorDisplay key={index} donor={donor} index={index} setDonorsToDisplay={setDonorsToDisplay} setTotal={setTotalDonorsCount}/>
+                            {usersToDisplay.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((user, index) => (
+                                <UserDisplay key={index} user={user} index={index} setUsersToDisplay={setUsersToDisplay} setTotal={setTotalCount}/>
                             ))}
                         </TableBody>
                     </Table>
-                    {donorsToDisplay.length >= rowsPerPage &&
+                    {usersToDisplay.length >= rowsPerPage &&
                         <div style={{ textAlign: 'center', marginTop: '10px' }}>
                             <button onClick={handlePrevPage} disabled={page === 0}>{'<'}</button>
                             <button onClick={handleNextPage} disabled={disabledShowMore}>{'>'}</button>
-                            <p>{`${page * rowsPerPage + 1}-${(page + 1) * rowsPerPage <= totalDonorsCount ? (page + 1) * rowsPerPage : totalDonorsCount} מתוך ${totalDonorsCount}`}</p>
+                            <p>{`${page * rowsPerPage + 1}-${(page + 1) * rowsPerPage <= totalCount ? (page + 1) * rowsPerPage : totalCount} מתוך ${totalCount}`}</p>
                         </div>}
                 </TableContainer>
                 </Box>
@@ -98,4 +99,4 @@ const DonorsDisplay = ({ donorsToDisplay, setDonorsToDisplay, queryString, rowsP
     );
 };
 
-export default DonorsDisplay;
+export default UsersDisplay;
