@@ -1,6 +1,8 @@
 import { executeQuery } from './db.js'
 import {addQuery, updateQuery, getByIdQuery, getByConditionQuery, deleteQuery} from './querys.js'
+import { GiftsService } from './giftsService.js'; 
 
+const giftsService = new GiftsService;
 export class ImportersService {
 
     async getImporters(queryParams) {
@@ -18,6 +20,7 @@ export class ImportersService {
     }
 
     async deleteImporter(idKey, idValue) {
+        await giftsService.deleteGift("importer_id", idValue);
         const query = deleteQuery("importers", `${idKey}`);
         const result =  await executeQuery(query, [idValue]);
         return result;

@@ -1,5 +1,9 @@
 import { executeQuery } from './db.js'
-import {addQuery, updateQuery, getByIdQuery, getByConditionQuery, deleteQuery} from './querys.js'
+import {addQuery, updateQuery, getByIdQuery, getByConditionQuery, deleteQuery,patchQuery} from './querys.js'
+import { DonationsService} from './donationsService.js'
+import { GiftsDeliveryService} from './giftsDeliveryService.js'
+const giftsDeliveryService = new GiftsDeliveryService;
+const donationsService = new DonationsService;
 
 export class DonorsService {
 
@@ -18,6 +22,8 @@ export class DonorsService {
     }
 
     async deleteDonor(idKey,idValue) {
+        await giftsDeliveryService.deleteGiftDelivery("donor_id", idValue);
+        await donationsService.deleteDonation("donor_id", idValue);
         const query = deleteQuery("donors", `${idKey}`);
         const result =  await executeQuery(query, [idValue]);
         return result;
@@ -30,6 +36,14 @@ export class DonorsService {
         const result = await executeQuery(query, values);
         return result;
     }
+
+    async patchDonor(updatedFields,id) {
+        const query = patchQuery("donors", updatedFields, "id");
+        const values = Object.values(updatedFields);
+        values.push(id);
+        const result = await executeQuery(query, values);
+        return result;
+    }  
 
     async addDonor(newItem) {
         const values = Object.values(newItem);

@@ -76,10 +76,24 @@ function addQuery(table_name, newObj) {
     return query;
 }
 
+function patchQuery(table_name, queryParams, idKey) {
+    let query = `UPDATE ${db}.${table_name} SET `;
+    const conditions = [];
+    for (const key in queryParams) {
+        if (key !== idKey) {
+            conditions.push(`${key} = ?`);
+        }
+    }
+    query += conditions.join(', ');
+    query += ` WHERE ${idKey} = ?`;
+    return query;
+}
+
 export {
     getByConditionQuery,
     getByIdQuery,
     deleteQuery,
     updateQuery,
-    addQuery
+    addQuery,
+    patchQuery
 }
