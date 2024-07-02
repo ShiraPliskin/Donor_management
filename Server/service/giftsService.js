@@ -32,29 +32,6 @@ export class GiftsService {
         return result;
     }
 
-    async uploadImage(file) {
-        const storage = multer.diskStorage({
-            destination: (req, file, cb) => {
-                cb(null, './images');
-            },
-            filename: (req, file, cb) => {
-                cb(null, file.fieldname + "_" + Date.now() + path.extname(file.originalname));
-            }
-        });
-        
-        const upload = multer({ storage: storage });
-
-        return new Promise((resolve, reject) => {
-            upload.single('image')(file, null, async (err) => {
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve(file.filename);
-                }
-            });
-        });
-    }
-
     async addGift(newItem, imgSrc) {
         const queryProduct = addQuery("gifts", [...Object.keys(newItem), 'img']);
         const result = await executeQuery(queryProduct, [...Object.values(newItem), imgSrc]);

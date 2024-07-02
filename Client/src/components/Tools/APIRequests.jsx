@@ -162,12 +162,9 @@ export const checkIfExist = async (table, conditions, comment, id) => {
         }
         const data = await response.json();
 
-        if (Object.keys(data).length === 0) {
+        if (Object.keys(data["data"]).length === 0) {
             return true;
-        } else {
-            console.log(data);
-            if(data["data"][0].id === id)
-                return true;
+        } else {           
             return comment("כתובת מייל קיימת במערכת.");
         }
     } catch (error) {

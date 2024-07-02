@@ -13,7 +13,7 @@ const Gifts = () => {
         storage_space: '',
         general_cost: '',
         gift_cost: '',
-        importer_id: '',
+        importer_id: '1',
         success_level: '',
         remarks: ''
     };

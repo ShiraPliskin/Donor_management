@@ -5,7 +5,7 @@ const Home = ()=>{
     
     return (
         <>
-            <Typography variant="h1" align="center">כולל צילו של היכל </Typography>
+            <Typography variant="h3" align="center">כולל צילו של היכל </Typography>
         </>
     )
 }

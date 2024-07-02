@@ -5,10 +5,11 @@ import dateFormat from 'dateformat';
 export class DonationsService {
     
     async getDonations(queryParams) {
-        const query = getByConditionQuery("donations",queryParams);
+        const {dataQuery, countQuery} = getByConditionQuery("donations",queryParams);
         const values = Object.values(queryParams);
-        const result = await executeQuery(query, values);
-        return result;
+        const data = await executeQuery(dataQuery, values);
+        const total = await executeQuery(countQuery, values);
+        return { data, total };
     }
 
     async getDonationById(id) {

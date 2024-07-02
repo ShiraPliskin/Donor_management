@@ -9,14 +9,14 @@ import { contactsRouter } from './router/contactsRouter.js';
 import bodyparser from 'body-parser';
 
 const app = express();
-app.use(cors()); // Setting up CORS
-app.use(express.json()); // Parsing incoming JSON requests
+app.use(cors()); 
+app.use(express.json()); 
 app.use(bodyparser.json());
 app.use(bodyparser.urlencoded({
     extended: true
 }));
 
-app.use('/uploads', express.static('uploads')); // Serving static files
+app.use('/uploads', express.static('uploads'));
 
 app.use('/donors', donorsRouter);
 app.use('/register', registerRouter);

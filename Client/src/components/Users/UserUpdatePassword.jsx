@@ -1,18 +1,18 @@
 import { useState, React, useEffect } from "react";
-import { Button, Dialog, DialogContent, Grid, TextField, InputAdornment, IconButton, DialogActions, DialogTitle} from "@mui/material";
+import { Button, Dialog, DialogContent, Grid, TextField, InputAdornment, IconButton, DialogActions, DialogTitle } from "@mui/material";
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { checkValidation } from '../Tools/Validation'
 
-const UserUpdatePassword = ({open, handleClose, id}) => {
-    // const [open, setOpen] = useState(true);
-    // const [commentArea, setCommentArea] = useState("");
+const UserUpdatePassword = ({ open, handleClose, id, type }) => {
     const [isPwVerified, setIsPwVerified] = useState(false);
 
     const passwordObject = {
+        currentPassword: '',
         password: '',
         verifyPW: '',
     }
     const errorObject = {
+        currentPassword: false,
         password: false,
         verifyPW: false,
     }
@@ -30,13 +30,17 @@ const UserUpdatePassword = ({open, handleClose, id}) => {
         setIsPwVerified(passwords.password !== "" && passwords.password === passwords.verifyPW);
     }, [passwords.password, passwords.verifyPW]);
 
+    const checkCurrentPassword = () => {
+
+    }
+    
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const requiredFields = ["password", "verifyPW"];
+        const requiredFields = type === "userProfile" ? ["currentPassword", "password", "verifyPW"] : ["password", "verifyPW"];
         const isValid = checkValidation(passwords, setError, setHelperText, requiredFields);
         if (!isValid)
             return
-        
+        checkCurrentPassword()
     };
 
     const handleChange = (e) => {
@@ -59,11 +63,39 @@ const UserUpdatePassword = ({open, handleClose, id}) => {
         >
             <DialogTitle>שינוי סיסמא</DialogTitle>
             <DialogContent>
+                {type==="userProfile" &&
+                <Grid item xs={12} sm={12}>
+                    <TextField
+                        fullWidth
+                        required
+                        name="currentPassword"
+                        label="סיסמא נוכחית"
+                        variant="outlined"
+                        size="small"
+                        type={showPasswords.currentPassword ? 'text' : 'password'}
+                        value={passwords.currentPassword || ""}
+                        margin="dense"
+                        error={error.currentPassword}
+                        helperText={helperText.currentPassword}
+                        onChange={handleChange}
+                        InputProps={{
+                            startAdornment: (
+                                <InputAdornment position="start">
+                                    <IconButton
+                                        onClick={() => { setShowPasswords((prevData) => ({ ...prevData, currentPassword: !prevData.currentPassword })) }}
+                                        edge="start"
+                                    >
+                                        {showPasswords.currentPassword ? <VisibilityOff /> : <Visibility />}
+                                    </IconButton>
+                                </InputAdornment>
+                            )
+                        }} />
+                </Grid> }
                 <Grid item xs={12} sm={12}>
                     <Grid item xs={12} sm={12}>
                         <TextField
                             fullWidth
-                            required
+                            requiredshowPasswords
                             name="password"
                             label="סיסמה חדשה"
                             variant="outlined"

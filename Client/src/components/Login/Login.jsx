@@ -11,6 +11,13 @@ const Login = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("currentUser"));
+    if (user) {
+      navigate(`/users/${user.id}/home`);
+    }
+  }, []);
+
+  useEffect(() => {
     if (status === 200)
       navigateToHomePage(userDetails);
     else if (status === 500)
