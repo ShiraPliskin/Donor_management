@@ -1,22 +1,17 @@
 import { useState, useEffect } from "react";
 import { Button, TextField, Dialog, DialogActions, DialogContent, DialogTitle, Grid, InputAdornment, IconButton } from "@mui/material";
-import EmailIcon from '@mui/icons-material/Email';
-import PhoneIcon from '@mui/icons-material/Phone';
-import PersonIcon from '@mui/icons-material/Person';
-import HomeIcon from '@mui/icons-material/Home';
-import PeopleIcon from '@mui/icons-material/People';
-import WorkIcon from '@mui/icons-material/Work';
-import DescriptionIcon from '@mui/icons-material/Description';
-import NoteIcon from '@mui/icons-material/Note';
-import EventIcon from '@mui/icons-material/Event';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { checkValidation } from '../Tools/Validation'
+import { checkValidation } from '../Tools/Validation';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import _isEqual from 'lodash/isEqual';
-import ContactDonorForm from "../Contacts/ContactDonorForm";
+import dayjs from 'dayjs';
+// import ContactDonorForm from "../Contacts/ContactDonorForm";
 import { trimObjectStrings } from "../Tools/objectsOperations"
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
-
-const DonationForm = ({ fields, donationDetails, setDonationDetails, sendRequest, open, handleClose, type, deleteDonor }) => {
+import EditCalendarIcon from '@mui/icons-material/EditCalendar';
+const DonationForm = ({ fields, donationDetails, setDonationDetails, sendRequest, open, handleClose, type, deleteDonation }) => {
 
     const [commentArea, setCommentArea] = useState("");
     const [formType, setFormType] = useState(type);
@@ -26,13 +21,15 @@ const DonationForm = ({ fields, donationDetails, setDonationDetails, sendRequest
     const errorObject = {
         date: false,
         payment_method: false,
-        amount: false
+        amount: false,
+        donor_id: false
     };
 
     const helperTextObject = {
         date: "",
         payment_method: "",
-        amount: ""
+        amount: "",
+        donor_id: "1"
     };
 
     const [error, setError] = useState(errorObject);
@@ -71,9 +68,11 @@ const DonationForm = ({ fields, donationDetails, setDonationDetails, sendRequest
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        const selectedDate = new Date(updateDonation.date);
+        const today = new Date();
         const requiredFields = ["amount", "payment_method", "date"];
         const isValid = checkValidation(updateDonation, setError, setHelperText, requiredFields);
-        if (isValid) {
+        if (isValid &&  selectedDate <= today) {
             setDonationDetails(updateDonation);
             if (type !== "add") {
                 setFormType("display");
@@ -81,13 +80,25 @@ const DonationForm = ({ fields, donationDetails, setDonationDetails, sendRequest
         }
     };
 
+    // const handleChange = (e) => {
+    //     const { name, value } = e.target;
+    //     setUpdateDonation((prevData) => ({ ...prevData, [name]: value }));
+    //     setError((prevData) => ({ ...prevData, [name]: false }));
+    //     setHelperText((prevData) => ({ ...prevData, [name]: '' }));
+    // };
     const handleChange = (e) => {
         const { name, value } = e.target;
+        const selectedDate = new Date(value);
+        const today = new Date();
         setUpdateDonation((prevData) => ({ ...prevData, [name]: value }));
         setError((prevData) => ({ ...prevData, [name]: false }));
         setHelperText((prevData) => ({ ...prevData, [name]: '' }));
+        if (selectedDate > today)
+        {
+            setError((prevData) => ({ ...prevData, [name]: true }));
+            setHelperText((prevData) => ({ ...prevData, [name]: 'אין אפשרות לבחור תאריכים עתידיים' }));
+        }
     };
-
     return (
         <>
             <Dialog open={open}
@@ -114,9 +125,9 @@ const DonationForm = ({ fields, donationDetails, setDonationDetails, sendRequest
                                     type="text"
                                     fullWidth
                                     required={formType !== "display"}
-                                    error={error.l_name}
-                                    helperText={helperText.l_name}
-                                    value={updateDonation.l_name || ""}
+                                    error={error.amount}
+                                    helperText={helperText.amount}
+                                    value={updateDonation.amount || ""}
                                     onChange={handleChange}
                                     inputProps={{
                                         maxLength: 20,
@@ -140,7 +151,7 @@ const DonationForm = ({ fields, donationDetails, setDonationDetails, sendRequest
                                     type="text"
                                     fullWidth
                                     required={formType !== "display"}
-                                    error={error.f_name}
+                                    error={error.payment_method}
                                     helperText={helperText.payment_method}
                                     value={updateDonation.payment_method || ""}
                                     onChange={handleChange}
@@ -158,31 +169,24 @@ const DonationForm = ({ fields, donationDetails, setDonationDetails, sendRequest
                             </Grid>
                             <Grid item xs={12} sm={3}>
                                 <TextField
-                                    disabled={formType === "display"}
-                                    size="small"
-                                    margin="dense"
-                                    name="date"
                                     label="תאריך מתן התרומה"
-                                    type="text"
-                                    fullWidth
-                                    value={updateDonation.date || ""}
+                                    InputLabelProps={{ shrink: true, required: true }}
+                                    onChange={(e) => handleChange({ target: { name: "date", value: e.target.value } })}
+                                    value={updateDonation.date ? dayjs(updateDonation.date).format('YYYY-MM-DD') : ''}
+                                    type="date"
+                                    size="small"
+                                    disabled={formType === "display"}
+                                    margin="dense"
+                                    renderInput={(params) => <TextField {...params} />}
+                                    inputProps={{
+                                        maxLength: 10,
+                                    }}
                                     error={error.date}
                                     helperText={helperText.date}
-                                    onChange={handleChange}
-                                    inputProps={{
-                                        maxLength: 20,
-                                    }}
-                                    InputProps={{
-                                        startAdornment: (
-                                            <InputAdornment position="start">
-                                                <PersonIcon />
-                                            </InputAdornment>
-                                        ),
-                                    }}
                                 />
                             </Grid>
 
-                            <ContactDonorForm type={formType} setUpdateDonation={setUpdateDonation} updateDonation={updateDonation} />
+                            {/* <ContactDonorForm type={formType} setUpdateDonation={setUpdateDonation} updateDonation={updateDonation} /> */}
                         </Grid>
                         {commentArea}
                     </form>
@@ -190,7 +194,7 @@ const DonationForm = ({ fields, donationDetails, setDonationDetails, sendRequest
                 <DialogActions>
                     {formType === "display" &&
                         <>
-                            <IconButton onClick={() => { deleteDonor() }} color="primary">
+                            <IconButton onClick={() => { deleteDonation() }} color="primary">
                                 <DeleteIcon />
                             </IconButton>
                             <Button onClick={() => { setFormType("edit") }} color="primary">עריכה</Button>
