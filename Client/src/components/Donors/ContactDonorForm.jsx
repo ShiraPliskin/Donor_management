@@ -4,6 +4,7 @@ import PersonIcon from '@mui/icons-material/Person';
 import IconButton from '@mui/material/IconButton';
 import EditIcon from '@mui/icons-material/Edit';
 import ContactsOptionsForm from "./ContactsOptionsForm";
+import PersonSearchIcon from '@mui/icons-material/PersonSearch';
 
 const ContactDonorForm = ({ type, setUpdatedDonor, updatedDonor }) => {
 
@@ -16,10 +17,6 @@ const ContactDonorForm = ({ type, setUpdatedDonor, updatedDonor }) => {
     const handleClose = () => {
         setOpenOptionsForm(false);
     };
-
-    useEffect(() => {
-        console.log("updatedDonor ", updatedDonor)
-    }, [updatedDonor]);
 
     return (<>
         <Grid item xs={12} sm={6}>
@@ -51,7 +48,7 @@ const ContactDonorForm = ({ type, setUpdatedDonor, updatedDonor }) => {
                         endAdornment: (
                             type !== "display" && <InputAdornment position="end">
                                 <IconButton onClick={handleOpen}>
-                                    <EditIcon />
+                                    <PersonSearchIcon style={{ color: 'black' }}/>
                                 </IconButton>
                             </InputAdornment>
                         ),

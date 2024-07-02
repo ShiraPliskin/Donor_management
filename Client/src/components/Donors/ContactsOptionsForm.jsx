@@ -2,8 +2,8 @@ import { useState, useEffect } from "react";
 import { Button, Dialog, DialogContent, Grid, Box } from "@mui/material";
 import PersonIcon from '@mui/icons-material/Person';
 import PeopleIcon from '@mui/icons-material/People';
-import Contacts from "./Contacts";
-import ContactAdd from "./ContactAdd";
+import Contacts from "../Contacts/Contacts";
+import ContactAdd from "../Contacts/ContactAdd";
 
 const ContactsOptionsForm = ({ openOptionsForm, closeOptionsForm, setUpdatedDonor }) => {
 

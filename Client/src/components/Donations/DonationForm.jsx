@@ -1,13 +1,15 @@
 import { useState, useEffect } from "react";
-import { Button, TextField, Dialog, DialogActions, DialogContent, DialogTitle, Grid, InputAdornment, IconButton } from "@mui/material";
+import { Button, TextField, Dialog, DialogActions, DialogContent, Box, DialogTitle, Grid, InputAdornment, IconButton, InputLabel, Select, MenuItem, FormControl } from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
 import { checkValidation } from '../Tools/Validation';
 import _isEqual from 'lodash/isEqual';
 import dayjs from 'dayjs';
-// import ContactDonorForm from "../Contacts/ContactDonorForm";
 import { trimObjectStrings } from "../Tools/objectsOperations"
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
-import EditCalendarIcon from '@mui/icons-material/EditCalendar';
+import PaymentIcon from '@mui/icons-material/Payment';
+import ChooseDonorButton from "./ChooseDonorButton";
+import { red } from "@mui/material/colors";
+
 const DonationForm = ({ fields, donationDetails, setDonationDetails, sendRequest, open, handleClose, type, deleteDonation }) => {
 
     const [commentArea, setCommentArea] = useState("");
@@ -19,14 +21,12 @@ const DonationForm = ({ fields, donationDetails, setDonationDetails, sendRequest
         date: false,
         payment_method: false,
         amount: false,
-        donor_id: false
     };
 
     const helperTextObject = {
         date: "",
         payment_method: "",
         amount: "",
-        donor_id: "1"
     };
 
     const [error, setError] = useState(errorObject);
@@ -65,11 +65,15 @@ const DonationForm = ({ fields, donationDetails, setDonationDetails, sendRequest
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        if(!updateDonation.donor_id){
+            setCommentArea("לא נבחר תורם.");
+            return;
+        }
         const selectedDate = new Date(updateDonation.date);
         const today = new Date();
         const requiredFields = ["amount", "payment_method", "date"];
         const isValid = checkValidation(updateDonation, setError, setHelperText, requiredFields);
-        if (isValid &&  selectedDate <= today) {
+        if (isValid && selectedDate <= today) {
             setDonationDetails(updateDonation);
             if (type !== "add") {
                 setFormType("display");
@@ -77,12 +81,6 @@ const DonationForm = ({ fields, donationDetails, setDonationDetails, sendRequest
         }
     };
 
-    // const handleChange = (e) => {
-    //     const { name, value } = e.target;
-    //     setUpdateDonation((prevData) => ({ ...prevData, [name]: value }));
-    //     setError((prevData) => ({ ...prevData, [name]: false }));
-    //     setHelperText((prevData) => ({ ...prevData, [name]: '' }));
-    // };
     const handleChange = (e) => {
         const { name, value } = e.target;
         const selectedDate = new Date(value);
@@ -90,8 +88,7 @@ const DonationForm = ({ fields, donationDetails, setDonationDetails, sendRequest
         setUpdateDonation((prevData) => ({ ...prevData, [name]: value }));
         setError((prevData) => ({ ...prevData, [name]: false }));
         setHelperText((prevData) => ({ ...prevData, [name]: '' }));
-        if (selectedDate > today)
-        {
+        if (selectedDate > today) {
             setError((prevData) => ({ ...prevData, [name]: true }));
             setHelperText((prevData) => ({ ...prevData, [name]: 'אין אפשרות לבחור תאריכים עתידיים' }));
         }
@@ -105,30 +102,29 @@ const DonationForm = ({ fields, donationDetails, setDonationDetails, sendRequest
                     }
                 }}
                 disableEscapeKeyDown
+                maxWidth={"xs"}
             >
                 {formType === "display" && <DialogTitle>תרומה מספר {donationDetails.id}</DialogTitle>}
                 {formType === "add" && <DialogTitle>הוספת תרומה</DialogTitle>}
                 {formType === "edit" && <DialogTitle>עדכון תרומה מספר {donationDetails.id}</DialogTitle>}
                 <DialogContent>
                     <form onSubmit={handleSubmit}>
-                        <Grid container spacing={3}>
-                            <Grid item xs={12} sm={4}>
+                        <Grid container spacing={2} width={250} justifyContent="center" alignItems="center">
+                            <ChooseDonorButton type={formType} setUpdateDonation={setUpdateDonation} updatedDonation={updateDonation} setComment={setCommentArea}/>
+                            <Grid item xs={12} sm={12}>
                                 <TextField
                                     disabled={formType === "display"}
                                     size="small"
                                     margin="dense"
                                     name="amount"
                                     label="סכום התרומה"
-                                    type="text"
+                                    type="number"
                                     fullWidth
                                     required={formType !== "display"}
                                     error={error.amount}
                                     helperText={helperText.amount}
                                     value={updateDonation.amount || ""}
                                     onChange={handleChange}
-                                    inputProps={{
-                                        maxLength: 20,
-                                    }}
                                     InputProps={{
                                         startAdornment: (
                                             <InputAdornment position="start">
@@ -138,36 +134,67 @@ const DonationForm = ({ fields, donationDetails, setDonationDetails, sendRequest
                                     }}
                                 />
                             </Grid>
-                            <Grid item xs={12} sm={4}>
+                            <Grid item xs={12} sm={12}>
+                                {formType !== "display" &&
+                                    <FormControl
+                                        fullWidth
+                                        margin="dense"
+                                        size="small"
+                                    >
+                                        <InputLabel id="payment_method-label">שיטת התשלום</InputLabel>
+                                        <Select
+                                            labelId="payment_method-label"
+                                            id="payment_method"
+                                            name="payment_method"
+                                            label="שיטת התשלום"
+                                            error={error.payment_method}
+                                            helperText={helperText.payment_method}
+                                            value={updateDonation.payment_method || ""}
+                                            required
+                                            onChange={handleChange}
+                                            startAdornment={
+                                                <InputAdornment position="start">
+                                                    <PaymentIcon />
+                                                </InputAdornment>
+                                            }
+                                            sx={{
+                                                '& .MuiSelect-icon': {
+                                                    left: 10,
+                                                    right: 'auto',
+                                                }
+                                            }}
+                                        >
+                                            <MenuItem value="מספר אשראי">מספר אשראי</MenuItem>
+                                            <MenuItem value="העברה בנקאית">העברה בנקאית</MenuItem>
+                                            <MenuItem value="צ'ק">צ'ק</MenuItem>
+                                            <MenuItem value="מזומן">מזומן</MenuItem>
+                                        </Select>
+                                    </FormControl>}
+                                {formType === "display" &&
+                                    <TextField
+                                        disabled
+                                        size="small"
+                                        margin="dense"
+                                        name="payment_method"
+                                        label="שיטת התשלום"
+                                        type="text"
+                                        fullWidth
+                                        value={updateDonation.payment_method || ""}
+                                        onChange={handleChange}
+                                        InputProps={{
+                                            startAdornment: (
+                                                <InputAdornment position="start">
+                                                    <PaymentIcon />
+                                                </InputAdornment>
+                                            ),
+                                        }}
+                                    />}
+                            </Grid>
+                            <Grid item xs={12} sm={12}>
                                 <TextField
-                                    disabled={formType === "display"}
-                                    size="small"
-                                    margin="dense"
-                                    name="payment_method"
-                                    label="שיטת התשלום"
-                                    type="text"
                                     fullWidth
-                                    required={formType !== "display"}
-                                    error={error.payment_method}
-                                    helperText={helperText.payment_method}
-                                    value={updateDonation.payment_method || ""}
-                                    onChange={handleChange}
-                                    inputProps={{
-                                        maxLength: 20,
-                                    }}
-                                    InputProps={{
-                                        startAdornment: (
-                                            <InputAdornment position="start">
-                                                <AttachMoneyIcon />
-                                            </InputAdornment>
-                                        ),
-                                    }}
-                                />
-                            </Grid>
-                            <Grid item xs={12} sm={3}>
-                                <TextField
+                                    InputLabelProps={{ shrink: true, required: formType !== "display" }}
                                     label="תאריך מתן התרומה"
-                                    InputLabelProps={{ shrink: true, required: true }}
                                     onChange={(e) => handleChange({ target: { name: "date", value: e.target.value } })}
                                     value={updateDonation.date ? dayjs(updateDonation.date).format('YYYY-MM-DD') : ''}
                                     type="date"
@@ -175,17 +202,12 @@ const DonationForm = ({ fields, donationDetails, setDonationDetails, sendRequest
                                     disabled={formType === "display"}
                                     margin="dense"
                                     renderInput={(params) => <TextField {...params} />}
-                                    inputProps={{
-                                        maxLength: 10,
-                                    }}
                                     error={error.date}
                                     helperText={helperText.date}
                                 />
                             </Grid>
-
-                            {/* <ContactDonorForm type={formType} setUpdateDonation={setUpdateDonation} updateDonation={updateDonation} /> */}
                         </Grid>
-                        {commentArea}
+                        {commentArea && <Box marginTop={2} color={"red"}>{commentArea}</Box>}
                     </form>
                 </DialogContent>
                 <DialogActions>

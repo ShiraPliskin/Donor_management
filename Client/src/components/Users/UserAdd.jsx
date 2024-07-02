@@ -4,7 +4,7 @@ import UserForm from "./UserForm";
 import { postRequest } from "../Tools/APIRequests";
 import { filterEmptyValues } from "../Tools/objectsOperations"
 import GenericMessage from "../Tools/GenericSuccessMessage";
-import AddIcon from '@mui/icons-material/Add';
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import "../style.css";
 
 const UserAdd = ({ fields }) => {
@@ -35,7 +35,7 @@ const UserAdd = ({ fields }) => {
 
     return (
         <>
-            <Button variant="outlined" onClick={handleClickOpen} sx={{ marginTop: 5 }} endIcon={<AddIcon sx={{ marginRight: 1 , marginLeft: -1}}/>}>
+            <Button variant="outlined" onClick={handleClickOpen} sx={{ marginTop: 5 }} endIcon={<PersonAddIcon sx={{ marginRight: 1 , marginLeft: -1}}/>}>
             הוספת משתמש
             </Button>
             {isSucceed === "success" && <GenericMessage message={`תורם מספר ${newID} נוסף בהצלחה`} type="success" />}

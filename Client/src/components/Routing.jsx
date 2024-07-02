@@ -33,7 +33,7 @@ const Routing = () => {
             <Route path='home' element={<Home />} />
             <Route path='donations' element={<Donations />} />
             <Route path='userManagement' element={<Users />} />
-            <Route path='donors' element={<Donors />} />
+            <Route path='donors' element={<Donors type="donors"/>} />
             <Route path='contacts' element={<Contacts type="contacts"/>} />
             <Route path='gifts' element={<Gifts />} />
             <Route path='userProfile' element={<UserProfile />} />

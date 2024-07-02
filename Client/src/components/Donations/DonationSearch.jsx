@@ -60,7 +60,7 @@ const DonationSearch = ({ fields, donationsToDisplay, setDonationsToDisplay, set
             <Box display="flex" alignItems="center" justifyContent="space-between">
                 <Accordion sx={{ flexGrow: 1 }}>
                     <AccordionSummary expandIcon={<ExpandMoreIcon />} >
-                        <Typography variant="h6">חיפוש תורם</Typography>
+                        <Typography variant="h6">חיפוש תרומה</Typography>
                     </AccordionSummary>
                     <AccordionDetails>
                         <form onSubmit={handleSubmit}>
@@ -73,7 +73,6 @@ const DonationSearch = ({ fields, donationsToDisplay, setDonationsToDisplay, set
                                     value={donationDetails.id}
                                     onChange={handleChange}
                                     size="small"
-                                    margin="none"
                                 />
                                 <TextField
                                     style={{ width: '130px' }}
@@ -83,7 +82,6 @@ const DonationSearch = ({ fields, donationsToDisplay, setDonationsToDisplay, set
                                     value={donationDetails.donor_id}
                                     onChange={handleChange}
                                     size="small"
-                                    margin="none"
                                 />
                                 <TextField
                                     style={{ width: '130px' }}
@@ -93,17 +91,15 @@ const DonationSearch = ({ fields, donationsToDisplay, setDonationsToDisplay, set
                                     value={donationDetails.amount}
                                     onChange={handleChange}
                                     size="small"
-                                    margin="none"
                                 />
                                 <TextField
                                     style={{ width: '170px' }}
-                                    label="תאריך התרומה"
                                     variant="outlined"
                                     name="date"
+                                    type="date"
                                     value={donationDetails.date}
                                     onChange={handleChange}
                                     size="small"
-                                    margin="dense"
                                 />
                                 <TextField
                                     style={{ width: '90px' }}
@@ -113,7 +109,6 @@ const DonationSearch = ({ fields, donationsToDisplay, setDonationsToDisplay, set
                                     value={donationDetails.minDonationAmount}
                                     onChange={handleChange}
                                     size="small"
-                                    margin="dense"
                                 />
                                 <Button variant="contained" color="primary" type="submit" endIcon={<SearchIcon sx={{ marginRight: 1, marginLeft: -1 }} />}>
                                     חפש

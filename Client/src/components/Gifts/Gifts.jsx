@@ -28,7 +28,8 @@ const Gifts = () => {
             <GiftAdd
                 fields={fields}
             />
-            <GiftSearch fields={fields}
+            <GiftSearch 
+                fields={fields}
                 giftsToDisplay={giftsToDisplay}
                 setGiftsToDisplay={setGiftsToDisplay}
                 setQueryString={setQueryString}

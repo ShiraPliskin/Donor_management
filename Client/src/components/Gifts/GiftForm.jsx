@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Button, TextField, Dialog, DialogActions, DialogContent, DialogTitle, Grid, InputAdornment, Select, MenuItem, FormControl, InputLabel, Card, CardMedia, CardContent, Typography } from "@mui/material";
+import { Button, TextField, Dialog, DialogActions, DialogContent, DialogTitle, Grid, InputAdornment, Select, MenuItem, FormControl, InputLabel} from "@mui/material";
 import PeopleIcon from '@mui/icons-material/People';
 import DescriptionIcon from '@mui/icons-material/Description';
 import NoteIcon from '@mui/icons-material/Note';
@@ -10,6 +10,8 @@ import _isEqual from 'lodash/isEqual';
 import _ from 'lodash';
 import ImporterGiftForm from "../Importers/ImporterGiftForm";
 import FileUpload from "./FileUpload";
+import GiftImg from "./GiftImg";
+import GiftDelivery from "./GiftDelivery";
 
 const GiftForm = ({ fields, giftDetails, setGiftDetails, sendRequest, open, handleClose, type }) => {
 
@@ -44,8 +46,6 @@ const GiftForm = ({ fields, giftDetails, setGiftDetails, sendRequest, open, hand
 
     const [error, setError] = useState(errorObject);
     const [helperText, setHelperText] = useState(helperTextObject);
-
-    const [openImg, setOpenImg] = useState(false);
 
     useEffect(() => {
         setCommentArea("");
@@ -116,7 +116,7 @@ const GiftForm = ({ fields, giftDetails, setGiftDetails, sendRequest, open, hand
                 {formType === "edit" && <DialogTitle>עדכון מתנה מספר {giftDetails.id}</DialogTitle>}
                 <DialogContent>
                     <form onSubmit={handleSubmit}>
-                        <Grid container spacing={3}>
+                        <Grid container spacing={3} justifyContent={"center"}>
                             <Grid item xs={12} sm={12}>
                                 <TextField
                                     disabled={formType === "display"}
@@ -149,7 +149,7 @@ const GiftForm = ({ fields, giftDetails, setGiftDetails, sendRequest, open, hand
                                     size="small"
                                     margin="dense"
                                     name="amount"
-                                    label="כמות"
+                                    label="כמות במלאי"
                                     type="number"
                                     required={formType !== "display"}
                                     fullWidth
@@ -236,7 +236,6 @@ const GiftForm = ({ fields, giftDetails, setGiftDetails, sendRequest, open, hand
                                     }}
                                 />
                             </Grid>
-                            {/* <ImporterGiftForm type={formType} setUpdatedGift={setUpdatedGift} updatedGift={updatedGift} /> */}
                             <Grid item xs={12} sm={6}>
                                 <FormControl
                                     fullWidth
@@ -297,20 +296,10 @@ const GiftForm = ({ fields, giftDetails, setGiftDetails, sendRequest, open, hand
                                     }}
                                 />
                             </Grid>
-                            {formType !== "display" && <FileUpload updatedGift={updatedGift} setUpdatedGift={setUpdatedGift} />}
-                            {updatedGift.img &&
-                                <Grid item xs={12} sm={6}>
-                                    <Card>
-                                        <CardMedia
-                                            component="img"
-                                            height="auto"
-                                            image={updatedGift.img}
-                                            alt="תמונה"
-                                            onClick={()=>{setOpenImg(true)}}
-                                        />
-                                    </Card>
-                                </Grid>
-                            }
+                            {formType !== "display" && <FileUpload updatedGift={updatedGift} setUpdatedGift={setUpdatedGift} />}  
+
+                            <GiftImg imgUrl={updatedGift.img}/>
+                            {formType === "display" && <GiftDelivery gift={updatedGift}/> }
                         </Grid>
                         {commentArea}
                     </form>
@@ -332,20 +321,6 @@ const GiftForm = ({ fields, giftDetails, setGiftDetails, sendRequest, open, hand
                             <Button onClick={handleSubmit} color="primary">הוסף</Button>
                         </>}
                 </DialogActions>
-            </Dialog>
-            <Dialog
-                open={openImg}
-                onClose={()=>{setOpenImg(false)}}
-                maxWidth="md"
-                fullWidth
-            >
-                <DialogContent>
-                    <img
-                        src={updatedGift.img}
-                        alt="תמונה מוגדלת"
-                        style={{ width: '100%'}}
-                    />
-                </DialogContent>
             </Dialog>
         </>
     );
