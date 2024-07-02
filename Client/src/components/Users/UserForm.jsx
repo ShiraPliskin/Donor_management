@@ -18,10 +18,8 @@ const UserForm = ({ fields, userDetails, setUserDetails, sendRequest, open, hand
     const [formType, setFormType] = useState(type);
     const [updatedUser, setUpdatedUser] = useState({ ...userDetails, currentPassword: "" });
     const [userChanged, setUserChanged] = useState(false);
-    // const [showCurrentPassword, setShowCurrentPassword] = useState(false);
-    // const [changePW, setChangePW] = useState(false);
     const [openUpdatePWForm, setOpenUpdatePWForm] = useState(false);
-    
+
     const errorObject = {
         name: false,
         email: false,
@@ -47,9 +45,13 @@ const UserForm = ({ fields, userDetails, setUserDetails, sendRequest, open, hand
     }, [updatedUser]);
 
     const undoEdit = () => {
-        setFormType("display");
         setUpdatedUser(userDetails);
-        setChangePW(false);
+        if(useType === "administration"){
+            setFormType("display");
+        }
+        else{
+            handleClose();
+        }
     }
 
     const undoAdd = () => {
@@ -71,10 +73,6 @@ const UserForm = ({ fields, userDetails, setUserDetails, sendRequest, open, hand
         }
     }, [userDetails]);
 
-    const handleClosePWForm = () => {
-        setOpenUpdatePWForm(false);
-    };
-
     const checkIsUserExist = async (user) => {
         let isNew = true;
         if (updatedUser.email !== userDetails.email) {
@@ -90,7 +88,6 @@ const UserForm = ({ fields, userDetails, setUserDetails, sendRequest, open, hand
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
         const requiredFields =
             formType === "add" ? ["name", "email", "password", "verifyPW"] :
                 formType === "edit" ? ["name", "email"] :
@@ -180,147 +177,64 @@ const UserForm = ({ fields, userDetails, setUserDetails, sendRequest, open, hand
                                     }}
                                 />
                             </Grid>
-                                <Grid item xs={12} sm={12}>
-                                    {formType !== "display" &&
-                                        <FormControl
-                                            fullWidth
-                                            margin="dense"
-                                            size="small"
-                                        >
-                                            <InputLabel id="permission-label">הרשאה</InputLabel>
-                                            <Select
-                                                labelId="permission-label"
-                                                id="permission"
-                                                name="permission"
-                                                label="הרשאה"
-                                                error={error.permission}
-                                                helperText={helperText.permission}
-                                                value={updatedUser.permission}
-                                                required
-                                                onChange={handleChange}
-                                                startAdornment={
-                                                    <InputAdornment position="start">
-                                                        <CheckCircleIcon />
-                                                    </InputAdornment>
-                                                }
-                                                sx={{
-                                                    '& .MuiSelect-icon': {
-                                                        left: 10,
-                                                        right: 'auto',
-                                                    }
-                                                }}
-                                            >
-                                                <MenuItem value="secretary">מזכיר</MenuItem>
-                                                <MenuItem value="administrator">מנהל</MenuItem>
-                                            </Select>
-                                        </FormControl>}
-                                    {formType === "display" &&
-                                        <TextField
-                                            disabled
-                                            size="small"
-                                            margin="dense"
+                            {useType === "administration" && <Grid item xs={12} sm={12}>
+                                {formType !== "display" &&
+                                    <FormControl
+                                        fullWidth
+                                        margin="dense"
+                                        size="small"
+                                    >
+                                        <InputLabel id="permission-label">הרשאה</InputLabel>
+                                        <Select
+                                            labelId="permission-label"
+                                            id="permission"
                                             name="permission"
                                             label="הרשאה"
-                                            type="text"
-                                            fullWidth
-                                            value={updatedUser.permission || ""}
+                                            error={error.permission}
+                                            helperText={helperText.permission}
+                                            value={updatedUser.permission}
+                                            required
                                             onChange={handleChange}
-                                            InputProps={{
-                                                startAdornment: (
-                                                    <InputAdornment position="start">
-                                                        <AccountCircleIcon />
-                                                    </InputAdornment>
-                                                ),
+                                            startAdornment={
+                                                <InputAdornment position="start">
+                                                    <CheckCircleIcon />
+                                                </InputAdornment>
+                                            }
+                                            sx={{
+                                                '& .MuiSelect-icon': {
+                                                    left: 10,
+                                                    right: 'auto',
+                                                }
                                             }}
-                                        />}
-                                </Grid>
-                            {formType !== "add" && <Grid item xs={12} sm={12}>
+                                        >
+                                            <MenuItem value="secretary">מזכיר</MenuItem>
+                                            <MenuItem value="administrator">מנהל</MenuItem>
+                                        </Select>
+                                    </FormControl>}
+                                {formType === "display" &&
+                                    <TextField
+                                        disabled
+                                        size="small"
+                                        margin="dense"
+                                        name="permission"
+                                        label="הרשאה"
+                                        type="text"
+                                        fullWidth
+                                        value={updatedUser.permission || ""}
+                                        onChange={handleChange}
+                                        InputProps={{
+                                            startAdornment: (
+                                                <InputAdornment position="start">
+                                                    <AccountCircleIcon />
+                                                </InputAdornment>
+                                            ),
+                                        }}
+                                    />}
+                            </Grid>}
+                            {formType !== "add" && useType === "administration" && <Grid item xs={12} sm={12}>
                                 <Button onClick={() => setOpenUpdatePWForm(true)} fullWidth variant="outlined">שינוי סיסמא</Button>
                             </Grid>}
-                            {openUpdatePWForm && <UserUpdatePassword open={openUpdatePWForm} handleClose={handleClosePW} id={userDetails.id}/>}
-                            {/* {changePW && formType === "display" &&
-                                <Grid item xs={12} sm={12}>
-                                    <TextField
-                                        fullWidth
-                                        required
-                                        name="currentPassword"
-                                        label="סיסמא נוכחית"
-                                        variant="outlined"
-                                        size="small"
-                                        type={showCurrentPassword ? 'text' : 'password'}
-                                        value={updatedUser.currentPassword || ""}
-                                        margin="dense"
-                                        error={error.currentPassword}
-                                        helperText={helperText.currentPassword}
-                                        onChange={handleChange}
-                                        InputProps={{
-                                            startAdornment: (
-                                                <InputAdornment position="start">
-                                                    <IconButton
-                                                        onClick={() => { setShowCurrentPassword(prev => !prev) }}
-                                                        edge="start"
-                                                    >
-                                                        {showCurrentPassword ? <VisibilityOff /> : <Visibility />}
-                                                    </IconButton>
-                                                </InputAdornment>
-                                            )
-                                        }} />
-                                </Grid>} */}
-                            {/* {formType === "add" || (changePW && formType === "display") &&
-                                <><Grid item xs={12} sm={12}>
-                                    <TextField
-                                        fullWidth
-                                        name="password"
-                                        label="סיסמה"
-                                        variant="outlined"
-                                        size="small"
-                                        required
-                                        type={showPassword ? 'text' : 'password'}
-                                        value={updatedUser.password || ""}
-                                        margin="dense"
-                                        error={error.password}
-                                        helperText={helperText.password}
-                                        onChange={handleChange}
-                                        InputProps={{
-                                            startAdornment: (
-                                                <InputAdornment position="start">
-                                                    <IconButton
-                                                        onClick={() => { setShowPassword(prev => !prev) }}
-                                                        edge="start"
-                                                    >
-                                                        {showPassword ? <VisibilityOff /> : <Visibility />}
-                                                    </IconButton>
-                                                </InputAdornment>
-                                            )
-                                        }} />
-                                </Grid>
-                                    <Grid item xs={12} sm={12}>
-                                        <TextField
-                                            fullWidth
-                                            name="verifyPW"
-                                            label="אימות סיסמה"
-                                            variant="outlined"
-                                            size="small"
-                                            type={showVerifyPassword ? 'text' : 'password'}
-                                            error={error.verifyPW}
-                                            helperText={helperText.verifyPW}
-                                            required
-                                            value={updatedUser.verifyPW || ""}
-                                            margin="dense"
-                                            onChange={handleChange}
-                                            InputProps={{
-                                                startAdornment: (
-                                                    <InputAdornment position="start">
-                                                        <IconButton
-                                                            onClick={() => { setShowVerifyPassword(prev => !prev) }}
-                                                            edge="start"
-                                                        >
-                                                            {showVerifyPassword ? <VisibilityOff /> : <Visibility />}
-                                                        </IconButton>
-                                                    </InputAdornment>
-                                                )
-                                            }} />
-                                    </Grid></>} */}
+                            {openUpdatePWForm && <UserUpdatePassword open={openUpdatePWForm} handleClose={handleClosePW} id={userDetails.id} type="administration"/>}
                         </Grid>
                         {commentArea}
                     </form>

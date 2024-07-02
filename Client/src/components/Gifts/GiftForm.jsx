@@ -9,6 +9,7 @@ import { checkValidation } from '../Tools/Validation'
 import _isEqual from 'lodash/isEqual';
 import _ from 'lodash';
 import ImporterGiftForm from "../Importers/ImporterGiftForm";
+import  FileUpload from "./FileUpload";
 
 const GiftForm = ({ fields, giftDetails, setGiftDetails, sendRequest, open, handleClose, type }) => {
 
@@ -81,7 +82,7 @@ const GiftForm = ({ fields, giftDetails, setGiftDetails, sendRequest, open, hand
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const requiredFields = ["description"]
+        const requiredFields = ["description", "amount", "importer_id", "gift_cost"];
         const isValid = checkValidation(updatedGift, setError, setHelperText, requiredFields);
         if (isValid) {
             setGiftDetails(updatedGift);
@@ -121,6 +122,7 @@ const GiftForm = ({ fields, giftDetails, setGiftDetails, sendRequest, open, hand
                                     margin="dense"
                                     name="description"
                                     label="תיאור המתנה"
+                                    required={formType !== "display"}
                                     type="text"
                                     fullWidth
                                     value={updatedGift.description || ""}
@@ -147,6 +149,7 @@ const GiftForm = ({ fields, giftDetails, setGiftDetails, sendRequest, open, hand
                                     name="amount"
                                     label="כמות"
                                     type="number"
+                                    required={formType !== "display"}
                                     fullWidth
                                     value={updatedGift.amount || ""}
                                     error={error.amount}
@@ -169,6 +172,7 @@ const GiftForm = ({ fields, giftDetails, setGiftDetails, sendRequest, open, hand
                                     name="gift_cost"
                                     label="עלות כל יחידה"
                                     type="number"
+                                    required={formType !== "display"}
                                     fullWidth
                                     value={updatedGift.gift_cost || ""}
                                     error={error.gift_cost}
@@ -291,6 +295,7 @@ const GiftForm = ({ fields, giftDetails, setGiftDetails, sendRequest, open, hand
                                     }}
                                 />
                             </Grid>
+                            <FileUpload updatedGift={updatedGift} setUpdatedGift={setUpdatedGift}/>
                         </Grid>
                         {commentArea}
                     </form>

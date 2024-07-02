@@ -5,7 +5,7 @@ import dateFormat from 'dateformat';
 export class DonationsService {
     
     async getDonations(queryParams) {
-        const  { dataQuery, countQuery } = getByConditionQuery("donations",queryParams);
+        const {dataQuery, countQuery} = getByConditionQuery("donations",queryParams);
         const values = Object.values(queryParams);
         const data = await executeQuery(dataQuery, values);
         const total = await executeQuery(countQuery, values);

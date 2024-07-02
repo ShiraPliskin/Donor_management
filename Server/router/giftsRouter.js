@@ -20,7 +20,7 @@ const upload = multer({ storage: storage }).single('image');
 const productsRouter = express.Router();
 giftsRouter.get('/', giftsController.getGifts)
 giftsRouter.get("/:id", giftsController.getGiftById)
-giftsRouter.post("/",upload, giftsController.addGift)
+giftsRouter.post("/", upload, giftsController.addGift)
 giftsRouter.delete("/:id", giftsController.deleteGift)
 giftsRouter.put("/:id", giftsController.updateGift)
 
