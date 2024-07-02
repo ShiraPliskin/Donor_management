@@ -1,18 +1,12 @@
 import { useState, useEffect } from "react";
 import { Button, TextField, Dialog, DialogActions, DialogContent, DialogTitle, Grid, InputAdornment, IconButton } from "@mui/material";
-import EmailIcon from '@mui/icons-material/Email';
-import PhoneIcon from '@mui/icons-material/Phone';
-import PersonIcon from '@mui/icons-material/Person';
-import HomeIcon from '@mui/icons-material/Home';
-import PeopleIcon from '@mui/icons-material/People';
-import WorkIcon from '@mui/icons-material/Work';
-import DescriptionIcon from '@mui/icons-material/Description';
-import NoteIcon from '@mui/icons-material/Note';
-import EventIcon from '@mui/icons-material/Event';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { checkValidation } from '../Tools/Validation';
-import { DatePicker } from "@mui/lab";
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import _isEqual from 'lodash/isEqual';
+import dayjs from 'dayjs';
 // import ContactDonorForm from "../Contacts/ContactDonorForm";
 import { trimObjectStrings } from "../Tools/objectsOperations"
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
@@ -74,9 +68,11 @@ const DonationForm = ({ fields, donationDetails, setDonationDetails, sendRequest
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        const selectedDate = new Date(updateDonation.date);
+        const today = new Date();
         const requiredFields = ["amount", "payment_method", "date"];
         const isValid = checkValidation(updateDonation, setError, setHelperText, requiredFields);
-        if (isValid) {
+        if (isValid &&  selectedDate <= today) {
             setDonationDetails(updateDonation);
             if (type !== "add") {
                 setFormType("display");
@@ -84,11 +80,24 @@ const DonationForm = ({ fields, donationDetails, setDonationDetails, sendRequest
         }
     };
 
+    // const handleChange = (e) => {
+    //     const { name, value } = e.target;
+    //     setUpdateDonation((prevData) => ({ ...prevData, [name]: value }));
+    //     setError((prevData) => ({ ...prevData, [name]: false }));
+    //     setHelperText((prevData) => ({ ...prevData, [name]: '' }));
+    // };
     const handleChange = (e) => {
         const { name, value } = e.target;
+        const selectedDate = new Date(value);
+        const today = new Date();
         setUpdateDonation((prevData) => ({ ...prevData, [name]: value }));
         setError((prevData) => ({ ...prevData, [name]: false }));
         setHelperText((prevData) => ({ ...prevData, [name]: '' }));
+        if (selectedDate > today)
+        {
+            setError((prevData) => ({ ...prevData, [name]: true }));
+            setHelperText((prevData) => ({ ...prevData, [name]: 'אין אפשרות לבחור תאריכים עתידיים' }));
+        }
     };
     return (
         <>
@@ -142,7 +151,7 @@ const DonationForm = ({ fields, donationDetails, setDonationDetails, sendRequest
                                     type="text"
                                     fullWidth
                                     required={formType !== "display"}
-                                    error={error.f_name}
+                                    error={error.payment_method}
                                     helperText={helperText.payment_method}
                                     value={updateDonation.payment_method || ""}
                                     onChange={handleChange}
@@ -159,26 +168,21 @@ const DonationForm = ({ fields, donationDetails, setDonationDetails, sendRequest
                                 />
                             </Grid>
                             <Grid item xs={12} sm={3}>
-                                <DatePicker
+                                <TextField
+                                    label="תאריך מתן התרומה"
+                                    InputLabelProps={{ shrink: true, required: true }}
+                                    onChange={(e) => handleChange({ target: { name: "date", value: e.target.value } })}
+                                    value={updateDonation.date ? dayjs(updateDonation.date).format('YYYY-MM-DD') : ''}
+                                    type="date"
+                                    size="small"
                                     disabled={formType === "display"}
                                     margin="dense"
-                                    label="תאריך מתן התרומה"
-                                    value={updateDonation.date || null}
-                                    onChange={(newValue) => handleChange({ target: { name: "date", value: newValue } })}
                                     renderInput={(params) => <TextField {...params} />}
-                                    fullWidth
+                                    inputProps={{
+                                        maxLength: 10,
+                                    }}
                                     error={error.date}
                                     helperText={helperText.date}
-                                    inputProps={{
-                                        maxLength: 20,
-                                    }}
-                                    InputProps={{
-                                        startAdornment: (
-                                            <InputAdornment position="start">
-                                                <EditCalendarIcon />
-                                            </InputAdornment>
-                                        ),
-                                    }}
                                 />
                             </Grid>
 

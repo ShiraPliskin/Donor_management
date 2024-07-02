@@ -4,6 +4,8 @@ import DonationForm from "./DonationForm";
 import { postRequest } from "../Tools/APIRequests";
 import { filterEmptyValues } from "../Tools/objectsOperations"
 import GenericMessage from "../Tools/GenericSuccessMessage";
+import AddIcon from '@mui/icons-material/Add';
+
 import "../style.css";
 
 const DonationAdd = ({ fields }) => {
@@ -34,7 +36,7 @@ const DonationAdd = ({ fields }) => {
 
     return (
         <>
-            <Button className="mainButton" variant="contained" onClick={handleClickOpen}>הוספת תרומה</Button>
+            <Button className="mainButton" variant="outlined" sx={{ marginTop: 5 }} onClick={handleClickOpen}endIcon={<AddIcon sx={{ marginRight: 1, marginLeft: -1 }} />}>הוספת תרומה</Button>
             {isSucceed === "success" && <GenericMessage message={`תרומה מספר ${newID} נוספה בהצלחה`} type="success" />}
             {isSucceed === "error" && <GenericMessage message="הוספת התרומה נכשלה" type="error" />}
             <DonationForm fields={fields} donationDetails={donationDetails} setDonationDetails={setDonationDetails} sendRequest={addDonationRequest} open={open} handleClose={handleClose} type="add" />
