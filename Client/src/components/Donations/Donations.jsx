@@ -37,6 +37,7 @@ const Donations = () => {
                 setDonationsToDisplay={setDonationsToDisplay}
                 queryString={queryString}
                 rowsPerPage={rowsPerPage}
+                totalDonationsCount={totalDonorsCount}
                 setTotalDonorsCount={setTotalDonorsCount}
             />
         </>
