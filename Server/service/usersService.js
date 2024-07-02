@@ -20,7 +20,7 @@ export class UsersService {
     }
 
     async deleteUser(idKey,idValue) {
-        await registerService.deleteRegister(idValue, "id");
+        await registerService.deleteRegister(idValue, "user_id");
         const queryUser = deleteQuery("users",`${idKey}`);
         const result =  await executeQuery(queryUser, [idValue]);
         return result;

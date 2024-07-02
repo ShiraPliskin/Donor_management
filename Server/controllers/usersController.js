@@ -48,7 +48,7 @@ export class UsersController {
     async deleteUser(req, res, next) {
         try {
             const userService = new UsersService();
-            await userService.deleteUser("user_id",req.params.id);
+            await userService.deleteUser("id",req.params.id);
             return res.status(200).json({ status: 200, data: req.params.id });
         }
         catch (ex) {
