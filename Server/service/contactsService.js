@@ -1,10 +1,11 @@
 import { executeQuery } from './db.js'
-import {addQuery, updateQuery, getByIdQuery, getByConditionQuery, deleteQuery} from './querys.js'
-
+import { addQuery, updateQuery, getByIdQuery, getByConditionQuery, deleteQuery } from './querys.js'
+import { DonorsService } from './donorsService.js'
+const donorsService = new DonorsService
 export class ContactsService {
 
     async getContacts(queryParams) {
-        const  { dataQuery, countQuery } = getByConditionQuery("contacts", queryParams);
+        const { dataQuery, countQuery } = getByConditionQuery("contacts", queryParams);
         const values = Object.values(queryParams);
         const data = await executeQuery(dataQuery, values);
         const total = await executeQuery(countQuery, values);
@@ -13,13 +14,18 @@ export class ContactsService {
 
     async getContactById(id) {
         const queryPost = getByIdQuery("contacts");
-        const result =  await executeQuery(queryPost, [id]);
+        const result = await executeQuery(queryPost, [id]);
         return result;
     }
 
     async deleteContact(idKey, idValue) {
+        const donors = await donorsService.getDonors({ filter: `contact_id=${idValue}` });
+        for (const donor of donors.data) {
+            console.log("donor  " + donors.data.id);
+            await donorsService.patchDonor({ contact_id: null }, donor.id);
+        }
         const query = deleteQuery("contacts", `${idKey}`);
-        const result =  await executeQuery(query, [idValue]);
+        const result = await executeQuery(query, [idValue]);
         return result;
     }
 
@@ -34,7 +40,7 @@ export class ContactsService {
     async addContact(newItem) {
         const values = Object.values(newItem);
         const queryUser = addQuery("contacts", newItem);
-        const result =  await executeQuery(queryUser, values);
+        const result = await executeQuery(queryUser, values);
         return result;
     }
 }
