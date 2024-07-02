@@ -6,6 +6,7 @@ import { usersRouter } from './router/usersRouter.js';
 import { giftsRouter } from './router/giftsRouter.js';
 import { importersRouter } from './router/importersRouter.js';
 import { contactsRouter } from './router/contactsRouter.js';
+import { donationsRouter } from './router/donationsRouter.js';
 import bodyparser from 'body-parser';
 
 const app = express();
@@ -19,6 +20,7 @@ app.use(bodyparser.urlencoded({
 app.use('/uploads', express.static('uploads')); // Serving static files
 
 app.use('/donors', donorsRouter);
+app.use('/donations', donationsRouter);
 app.use('/register', registerRouter);
 app.use('/users', usersRouter);
 app.use('/gifts', giftsRouter);

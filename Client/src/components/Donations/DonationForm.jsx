@@ -10,13 +10,14 @@ import DescriptionIcon from '@mui/icons-material/Description';
 import NoteIcon from '@mui/icons-material/Note';
 import EventIcon from '@mui/icons-material/Event';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { checkValidation } from '../Tools/Validation'
+import { checkValidation } from '../Tools/Validation';
+import { DatePicker } from "@mui/lab";
 import _isEqual from 'lodash/isEqual';
-import ContactDonorForm from "../Contacts/ContactDonorForm";
+// import ContactDonorForm from "../Contacts/ContactDonorForm";
 import { trimObjectStrings } from "../Tools/objectsOperations"
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
-
-const DonationForm = ({ fields, donationDetails, setDonationDetails, sendRequest, open, handleClose, type, deleteDonor }) => {
+import EditCalendarIcon from '@mui/icons-material/EditCalendar';
+const DonationForm = ({ fields, donationDetails, setDonationDetails, sendRequest, open, handleClose, type, deleteDonation }) => {
 
     const [commentArea, setCommentArea] = useState("");
     const [formType, setFormType] = useState(type);
@@ -26,13 +27,15 @@ const DonationForm = ({ fields, donationDetails, setDonationDetails, sendRequest
     const errorObject = {
         date: false,
         payment_method: false,
-        amount: false
+        amount: false,
+        donor_id: false
     };
 
     const helperTextObject = {
         date: "",
         payment_method: "",
-        amount: ""
+        amount: "",
+        donor_id: "1"
     };
 
     const [error, setError] = useState(errorObject);
@@ -87,7 +90,6 @@ const DonationForm = ({ fields, donationDetails, setDonationDetails, sendRequest
         setError((prevData) => ({ ...prevData, [name]: false }));
         setHelperText((prevData) => ({ ...prevData, [name]: '' }));
     };
-
     return (
         <>
             <Dialog open={open}
@@ -114,9 +116,9 @@ const DonationForm = ({ fields, donationDetails, setDonationDetails, sendRequest
                                     type="text"
                                     fullWidth
                                     required={formType !== "display"}
-                                    error={error.l_name}
-                                    helperText={helperText.l_name}
-                                    value={updateDonation.l_name || ""}
+                                    error={error.amount}
+                                    helperText={helperText.amount}
+                                    value={updateDonation.amount || ""}
                                     onChange={handleChange}
                                     inputProps={{
                                         maxLength: 20,
@@ -157,32 +159,30 @@ const DonationForm = ({ fields, donationDetails, setDonationDetails, sendRequest
                                 />
                             </Grid>
                             <Grid item xs={12} sm={3}>
-                                <TextField
+                                <DatePicker
                                     disabled={formType === "display"}
-                                    size="small"
                                     margin="dense"
-                                    name="date"
                                     label="תאריך מתן התרומה"
-                                    type="text"
+                                    value={updateDonation.date || null}
+                                    onChange={(newValue) => handleChange({ target: { name: "date", value: newValue } })}
+                                    renderInput={(params) => <TextField {...params} />}
                                     fullWidth
-                                    value={updateDonation.date || ""}
                                     error={error.date}
                                     helperText={helperText.date}
-                                    onChange={handleChange}
                                     inputProps={{
                                         maxLength: 20,
                                     }}
                                     InputProps={{
                                         startAdornment: (
                                             <InputAdornment position="start">
-                                                <PersonIcon />
+                                                <EditCalendarIcon />
                                             </InputAdornment>
                                         ),
                                     }}
                                 />
                             </Grid>
 
-                            <ContactDonorForm type={formType} setUpdateDonation={setUpdateDonation} updateDonation={updateDonation} />
+                            {/* <ContactDonorForm type={formType} setUpdateDonation={setUpdateDonation} updateDonation={updateDonation} /> */}
                         </Grid>
                         {commentArea}
                     </form>
@@ -190,7 +190,7 @@ const DonationForm = ({ fields, donationDetails, setDonationDetails, sendRequest
                 <DialogActions>
                     {formType === "display" &&
                         <>
-                            <IconButton onClick={() => { deleteDonor() }} color="primary">
+                            <IconButton onClick={() => { deleteDonation() }} color="primary">
                                 <DeleteIcon />
                             </IconButton>
                             <Button onClick={() => { setFormType("edit") }} color="primary">עריכה</Button>

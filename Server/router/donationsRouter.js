@@ -1,5 +1,5 @@
 import express from "express";
-import { DonationsController } from '../controllers/donationsControllers.jsx'
+import { DonationsController } from '../controllers/donationsControllers.js'
 const donationsRouter = express.Router();
 
 const donationsController = new DonationsController();

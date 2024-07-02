@@ -1,13 +1,13 @@
 import { useState } from "react";
-import DonorSearch from "./DonorSearch";
-import DonorsDisplay from "./DonorsDisplay";
+// import DonorSearch from "./DonorSearch";
+// import DonorsDisplay from "./DonorsDisplay";
 import DonationAdd from "./DonationAdd"
 
 const Donations = () => {
 
     const fields = {
         id: '',
-        donor_id: '',
+        donor_id: '1',
         amount: '',
         payment_method: '',
         date: ''
@@ -19,22 +19,22 @@ const Donations = () => {
 
     return (
         <>
-            <DonorSearch
+            {/* <DonorSearch
                 fields={fields}
                 donationsToDisplay={donationsToDisplay}
                 setDonationsToDisplay={setDonationsToDisplay}
                 setQueryString={setQueryString}
                 rowsPerPage={rowsPerPage}
-            />
+            /> */}
              <DonationAdd
                 fields={fields}
             />
-            <DonorsDisplay
+            {/* <DonorsDisplay
                 donationsToDisplay={donationsToDisplay}
                 setDonationsToDisplay={setDonationsToDisplay}
                 queryString={queryString}
                 rowsPerPage={rowsPerPage}
-            />
+            /> */}
         </>
     );
 };
