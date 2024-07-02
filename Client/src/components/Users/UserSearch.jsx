@@ -53,7 +53,7 @@ const UserSearch = ({ fields, usersToDisplay, setUsersToDisplay, setQueryString,
     };
 
     return (
-        <Box display="flex" alignItems="center" justifyContent="space-between">
+        <><Box display="flex" alignItems="center" justifyContent="space-between">
             <Accordion sx={{ flexGrow: 1 }}>
                 <AccordionSummary expandIcon={<ExpandMoreIcon />} >
                     <Typography variant="h6">חיפוש משתמש</Typography>
@@ -106,7 +106,6 @@ const UserSearch = ({ fields, usersToDisplay, setUsersToDisplay, setQueryString,
                                 חפש
                             </Button>
                         </Box>
-                        {<p>{commentArea}</p>}
                     </form>
                 </AccordionDetails>
             </Accordion>
@@ -116,6 +115,7 @@ const UserSearch = ({ fields, usersToDisplay, setUsersToDisplay, setQueryString,
                 </Button>
             </Box>
         </Box>
+            {<p>{commentArea}</p>}</>
     );
 };
 

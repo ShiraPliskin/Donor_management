@@ -24,7 +24,7 @@ export const checkValidation = (objectDetails, error, helperText, requiredFields
 
   const checkRequieredFields = () => {
     for (const field of requiredFields) {
-      if (objectDetails[field].trim() === '') {
+      if (objectDetails[field].toString().trim() === '') {
         error(prevError => ({ ...prevError, [field]: true }));
         helperText(prevHelperText => ({ ...prevHelperText, [field]: "זהו שדה חובה." }));
         isValid = false;

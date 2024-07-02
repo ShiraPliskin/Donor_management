@@ -1,10 +1,9 @@
-import express from "express";
-import { GiftsController } from '../controllers/giftsController.js'
+import express from 'express';
 import path from 'path';
 import multer from 'multer';
+import { GiftsController } from '../controllers/giftsController.js';
 
 const giftsRouter = express.Router();
-
 const giftsController = new GiftsController();
 
 const storage = multer.diskStorage({
@@ -17,13 +16,11 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage: storage }).single('image');
 
-const productsRouter = express.Router();
-giftsRouter.get('/', giftsController.getGifts)
-giftsRouter.get("/:id", giftsController.getGiftById)
-giftsRouter.post("/", upload, giftsController.addGift)
-giftsRouter.delete("/:id", giftsController.deleteGift)
-giftsRouter.put("/:id", giftsController.updateGift)
+giftsRouter.get('/', giftsController.getGifts);
+giftsRouter.get("/:id", giftsController.getGiftById);
+giftsRouter.post("/upload", upload, giftsController.uploadImage);
+giftsRouter.post("/", giftsController.addGift);
+giftsRouter.delete("/:id", giftsController.deleteGift);
+giftsRouter.put("/:id", giftsController.updateGift);
 
-export{
-    giftsRouter
-}
+export { giftsRouter };

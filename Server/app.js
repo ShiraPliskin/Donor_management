@@ -9,13 +9,10 @@ import { contactsRouter } from './router/contactsRouter.js';
 import bodyparser from 'body-parser';
 
 const app = express();
-app.use(cors()); 
-app.use(express.json()); 
+app.use(cors());
+app.use(express.json());
 app.use(bodyparser.json());
-app.use(bodyparser.urlencoded({
-    extended: true
-}));
-
+app.use(bodyparser.urlencoded({ extended: true }));
 app.use('/uploads', express.static('uploads'));
 
 app.use('/donors', donorsRouter);
@@ -29,4 +26,3 @@ app.listen(8080, (err) => {
     if (err) console.error(err);
     console.log("Server listening on PORT", 8080);
 });
-

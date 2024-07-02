@@ -11,10 +11,6 @@ const UsersDisplay = ({ usersToDisplay, setUsersToDisplay, queryString, rowsPerP
     const [sortKey, setSortKey] = useState("id");
 
     useEffect(() => {
-        console.log("usersToDisplay ", usersToDisplay)
-    }, [usersToDisplay]);
-
-    useEffect(() => {
         if (moreUsers.length > 0) {
             setUsersToDisplay((prevData) => [...prevData, ...moreUsers]);
             setDisabledShowMore((page + 1) * rowsPerPage >= totalCount);

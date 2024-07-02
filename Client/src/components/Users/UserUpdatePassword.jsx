@@ -2,8 +2,10 @@ import { useState, React, useEffect } from "react";
 import { Button, Dialog, DialogContent, Grid, TextField, InputAdornment, IconButton, DialogActions, DialogTitle } from "@mui/material";
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { checkValidation } from '../Tools/Validation'
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import EditIcon from '@mui/icons-material/Edit';
 
-const UserUpdatePassword = ({ open, handleClose, id, type }) => {
+const UserUpdatePassword = ({ open, handleClose, id, useType, formType, addPWSucceed, setAddPWSucceed, setUpdatedUser }) => {
     const [isPwVerified, setIsPwVerified] = useState(false);
 
     const passwordObject = {
@@ -27,20 +29,33 @@ const UserUpdatePassword = ({ open, handleClose, id, type }) => {
     }, [open]);
 
     useEffect(() => {
-        setIsPwVerified(passwords.password !== "" && passwords.password === passwords.verifyPW);
+        setIsPwVerified(IsVerify);
     }, [passwords.password, passwords.verifyPW]);
 
     const checkCurrentPassword = () => {
-
+        
     }
+
+    const IsVerify = () => {return passwords.password !== "" && passwords.password === passwords.verifyPW}
     
+    const handleEditPassword = () => {
+        setAddPWSucceed(false);
+        setIsPwVerified(IsVerify);
+    }
+
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const requiredFields = type === "userProfile" ? ["currentPassword", "password", "verifyPW"] : ["password", "verifyPW"];
+        const requiredFields = useType === "userProfile" ? ["currentPassword", "password", "verifyPW"] : ["password", "verifyPW"];
         const isValid = checkValidation(passwords, setError, setHelperText, requiredFields);
         if (!isValid)
             return
-        checkCurrentPassword()
+        if (useType === "userProfile") {
+            checkCurrentPassword();
+        }
+        if (formType === "add") {
+            setAddPWSucceed(true);
+            setUpdatedUser((prev) => ({ ...prev, password: passwords.password }));
+        }
     };
 
     const handleChange = (e) => {
@@ -50,48 +65,117 @@ const UserUpdatePassword = ({ open, handleClose, id, type }) => {
         setHelperText((prevData) => ({ ...prevData, [name]: '' }));
     };
 
-    return (
-        <Dialog
-            open={open}
-            onClose={(event, reason) => {
-                if (reason !== 'backdropClick' && reason !== 'escapeKeyDown') {
-                    setOpen(false);
+    return (<>
+        {formType === "add" && <>
+            <Grid item xs={12} sm={5}>
+                <TextField
+                    disabled={addPWSucceed}
+                    fullWidth
+                    requiredshowPasswords
+                    name="password"
+                    label="סיסמה"
+                    variant="outlined"
+                    size="small"
+                    type={showPasswords.password ? 'text' : 'password'}
+                    value={passwords.password || ""}
+                    margin="dense"
+                    error={error.password}
+                    helperText={helperText.password}
+                    onChange={handleChange}
+                    InputProps={{
+                        startAdornment: (
+                            <InputAdornment position="start">
+                                <IconButton
+                                    onClick={() => { setShowPasswords((prevData) => ({ ...prevData, password: !prevData.password })) }}
+                                    edge="start"
+                                >
+                                    {showPasswords.password ? <VisibilityOff /> : <Visibility />}
+                                </IconButton>
+                            </InputAdornment>
+                        )
+                    }} />
+            </Grid>
+            <Grid item xs={12} sm={5}>
+                <TextField
+                    fullWidth
+                    disabled={addPWSucceed}
+                    name="verifyPW"
+                    label="אימות סיסמה"
+                    variant="outlined"
+                    size="small"
+                    type={showPasswords.verifyPW ? 'text' : 'password'}
+                    error={error.verifyPW}
+                    helperText={helperText.verifyPW}
+                    required
+                    value={passwords.verifyPW || ""}
+                    margin="dense"
+                    onChange={handleChange}
+                    InputProps={{
+                        startAdornment: (
+                            <InputAdornment position="start">
+                                <IconButton
+                                    onClick={() => { setShowPasswords((prevData) => ({ ...prevData, verifyPW: !prevData.verifyPW })) }}
+                                    edge="start"
+                                >
+                                    {showPasswords.verifyPW ? <VisibilityOff /> : <Visibility />}
+                                </IconButton>
+                            </InputAdornment>
+                        )
+                    }} />
+            </Grid>
+            <Grid item xs={12} sm={2}>
+                {addPWSucceed ?
+                    <IconButton onClick={handleEditPassword}>
+                        <EditIcon style={{ fontSize: 30 }} />
+                    </IconButton>
+                    :
+                    <IconButton disabled={!isPwVerified} onClick={handleSubmit}>
+                        <CheckCircleOutlineIcon style={{ fontSize: 40, color: isPwVerified ? 'green' : 'gray' }} />
+                    </IconButton>
                 }
-            }}
-            disableEscapeKeyDown
-            maxWidth="lg"
-        >
-            <DialogTitle>שינוי סיסמא</DialogTitle>
-            <DialogContent>
-                {type==="userProfile" &&
-                <Grid item xs={12} sm={12}>
-                    <TextField
-                        fullWidth
-                        required
-                        name="currentPassword"
-                        label="סיסמא נוכחית"
-                        variant="outlined"
-                        size="small"
-                        type={showPasswords.currentPassword ? 'text' : 'password'}
-                        value={passwords.currentPassword || ""}
-                        margin="dense"
-                        error={error.currentPassword}
-                        helperText={helperText.currentPassword}
-                        onChange={handleChange}
-                        InputProps={{
-                            startAdornment: (
-                                <InputAdornment position="start">
-                                    <IconButton
-                                        onClick={() => { setShowPasswords((prevData) => ({ ...prevData, currentPassword: !prevData.currentPassword })) }}
-                                        edge="start"
-                                    >
-                                        {showPasswords.currentPassword ? <VisibilityOff /> : <Visibility />}
-                                    </IconButton>
-                                </InputAdornment>
-                            )
-                        }} />
-                </Grid> }
-                <Grid item xs={12} sm={12}>
+            </Grid>
+        </>}
+        {formType === "update" &&
+            <Dialog
+                open={open}
+                onClose={(event, reason) => {
+                    if (reason !== 'backdropClick' && reason !== 'escapeKeyDown') {
+                        setOpen(false);
+                    }
+                }}
+                disableEscapeKeyDown
+                maxWidth="lg"
+            >
+                <DialogTitle>שינוי סיסמא</DialogTitle>
+                <DialogContent>
+                    {useType === "userProfile" &&
+                        <Grid item xs={12} sm={12}>
+                            <TextField
+                                fullWidth
+                                required
+                                name="currentPassword"
+                                label="סיסמא נוכחית"
+                                variant="outlined"
+                                size="small"
+                                type={showPasswords.currentPassword ? 'text' : 'password'}
+                                value={passwords.currentPassword || ""}
+                                margin="dense"
+                                error={error.currentPassword}
+                                helperText={helperText.currentPassword}
+                                onChange={handleChange}
+                                InputProps={{
+                                    startAdornment: (
+                                        <InputAdornment position="start">
+                                            <IconButton
+                                                onClick={() => { setShowPasswords((prevData) => ({ ...prevData, currentPassword: !prevData.currentPassword })) }}
+                                                edge="start"
+                                            >
+                                                {showPasswords.currentPassword ? <VisibilityOff /> : <Visibility />}
+                                            </IconButton>
+                                        </InputAdornment>
+                                    )
+                                }} />
+                        </Grid>}
                     <Grid item xs={12} sm={12}>
                         <TextField
                             fullWidth
@@ -146,15 +230,13 @@ const UserUpdatePassword = ({ open, handleClose, id, type }) => {
                                 )
                             }} />
                     </Grid>
-                </Grid>
-            </DialogContent>
-            <DialogActions>
-                <Button onClick={handleClose}>ביטול</Button>
-                <Button disabled={!isPwVerified} onClick={handleSubmit} sx={{ marginRight: 2 }}>שמירה</Button>
-            </DialogActions>
-        </Dialog>
-
-    );
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleClose}>ביטול</Button>
+                    <Button disabled={!isPwVerified} onClick={handleSubmit} sx={{ marginRight: 2 }}>שמירה</Button>
+                </DialogActions>
+            </Dialog>}
+    </>);
 };
 
 export default UserUpdatePassword;

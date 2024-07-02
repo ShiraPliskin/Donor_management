@@ -84,7 +84,7 @@ const UserProfile = () => {
                     <Button onClick={() => setOpenUpdatePWForm(true)} fullWidth variant="outlined">שינוי סיסמה</Button>
                 </Box>
             </Box>
-            {openUpdatePWForm && <UserUpdatePassword open={openUpdatePWForm} handleClose={handleClosePW} id={currentUser.id} type="userProfile" />}
+            {openUpdatePWForm && <UserUpdatePassword open={openUpdatePWForm} handleClose={handleClosePW} id={currentUser.id} formType="update" useType="userProfile" />}
             {openEditForm &&
                 <UserForm
                     userDetails={currentUser}

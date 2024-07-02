@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Button, TextField, Dialog, DialogActions, DialogContent, DialogTitle, Grid, InputAdornment, Select, MenuItem, FormControl, InputLabel } from "@mui/material";
+import { Button, TextField, Dialog, DialogActions, DialogContent, DialogTitle, Grid, InputAdornment, Select, MenuItem, FormControl, InputLabel, Card, CardMedia, CardContent, Typography } from "@mui/material";
 import PeopleIcon from '@mui/icons-material/People';
 import DescriptionIcon from '@mui/icons-material/Description';
 import NoteIcon from '@mui/icons-material/Note';
@@ -9,7 +9,7 @@ import { checkValidation } from '../Tools/Validation'
 import _isEqual from 'lodash/isEqual';
 import _ from 'lodash';
 import ImporterGiftForm from "../Importers/ImporterGiftForm";
-import  FileUpload from "./FileUpload";
+import FileUpload from "./FileUpload";
 
 const GiftForm = ({ fields, giftDetails, setGiftDetails, sendRequest, open, handleClose, type }) => {
 
@@ -44,6 +44,8 @@ const GiftForm = ({ fields, giftDetails, setGiftDetails, sendRequest, open, hand
 
     const [error, setError] = useState(errorObject);
     const [helperText, setHelperText] = useState(helperTextObject);
+
+    const [openImg, setOpenImg] = useState(false);
 
     useEffect(() => {
         setCommentArea("");
@@ -295,7 +297,20 @@ const GiftForm = ({ fields, giftDetails, setGiftDetails, sendRequest, open, hand
                                     }}
                                 />
                             </Grid>
-                            <FileUpload updatedGift={updatedGift} setUpdatedGift={setUpdatedGift}/>
+                            {formType !== "display" && <FileUpload updatedGift={updatedGift} setUpdatedGift={setUpdatedGift} />}
+                            {updatedGift.img &&
+                                <Grid item xs={12} sm={6}>
+                                    <Card>
+                                        <CardMedia
+                                            component="img"
+                                            height="auto"
+                                            image={updatedGift.img}
+                                            alt="תמונה"
+                                            onClick={()=>{setOpenImg(true)}}
+                                        />
+                                    </Card>
+                                </Grid>
+                            }
                         </Grid>
                         {commentArea}
                     </form>
@@ -317,6 +332,20 @@ const GiftForm = ({ fields, giftDetails, setGiftDetails, sendRequest, open, hand
                             <Button onClick={handleSubmit} color="primary">הוסף</Button>
                         </>}
                 </DialogActions>
+            </Dialog>
+            <Dialog
+                open={openImg}
+                onClose={()=>{setOpenImg(false)}}
+                maxWidth="md"
+                fullWidth
+            >
+                <DialogContent>
+                    <img
+                        src={updatedGift.img}
+                        alt="תמונה מוגדלת"
+                        style={{ width: '100%'}}
+                    />
+                </DialogContent>
             </Dialog>
         </>
     );

@@ -29,7 +29,7 @@ const DonorSearch = ({ fields, donorsToDisplay, setDonorsToDisplay, setQueryStri
         setQueryString(`?_limit=${rowsPerPage}`);
     }
 
-    const handleSubmit = async(e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         setDonorsToDisplay([]);
         let conditions = [];
@@ -56,99 +56,99 @@ const DonorSearch = ({ fields, donorsToDisplay, setDonorsToDisplay, setQueryStri
     };
 
     return (
-        <Box display="flex" alignItems="center" justifyContent="space-between">
-        <Accordion sx={{ flexGrow: 1 }}>
-            <AccordionSummary expandIcon={<ExpandMoreIcon />} >
-                <Typography variant="h6">חיפוש תורם</Typography>
-            </AccordionSummary>
-            <AccordionDetails>
-                <form onSubmit={handleSubmit}>
-                    <Box display="flex" alignItems="center" flexWrap="wrap" gap={0.5}>
-                        <TextField
-                            style={{ width: '85px' }}
-                            label="מס' תורם"
-                            variant="outlined"
-                            name="id"
-                            value={donorDetails.id}
-                            onChange={handleChange}
-                            size="small"
-                            margin="none"
-                        />
-                        <TextField
-                            style={{ width: '130px' }}
-                            label="שם משפחה"
-                            variant="outlined"
-                            name="l_name"
-                            value={donorDetails.l_name}
-                            onChange={handleChange}
-                            size="small"
-                            margin="none"
-                        />
-                        <TextField
-                            style={{ width: '130px' }}
-                            label="שם פרטי"
-                            variant="outlined"
-                            name="f_name"
-                            value={donorDetails.f_name}
-                            onChange={handleChange}
-                            size="small"
-                            margin="none"
-                        />
-                        <TextField
-                            style={{ width: '125px' }}
-                            label="טלפון"
-                            variant="outlined"
-                            name="phone"
-                            value={donorDetails.phone}
-                            onChange={handleChange}
-                            size="small"
-                            margin="dense"
-                        />
-                        <TextField
-                            style={{ width: '170px' }}
-                            label="כתובת מייל"
-                            variant="outlined"
-                            name="email"
-                            type="email"
-                            value={donorDetails.email}
-                            onChange={handleChange}
-                            size="small"
-                            margin="dense"
-                        />
-                        <TextField
-                            style={{ width: '160px' }}
-                            label="כתובת"
-                            variant="outlined"
-                            name="address"
-                            value={donorDetails.address}
-                            onChange={handleChange}
-                            size="small"
-                            margin="dense"
-                        />
-                        <TextField
-                            style={{ width: '90px' }}
-                            label="גובה תרומה מינימלי"
-                            variant="outlined"
-                            name="minDonationAmount"
-                            value={donorDetails.minDonationAmount}
-                            onChange={handleChange}
-                            size="small"
-                            margin="dense"
-                        />
-                        <Button variant="contained" color="primary" type="submit" endIcon={<SearchIcon sx={{ marginRight: 1 , marginLeft: -1}}/>}>
-                            חפש
-                        </Button>
-                    </Box>
-                    {<p>{commentArea}</p>}
-                </form>
-            </AccordionDetails>
-        </Accordion>
-        <Box display="flex" alignItems="center" margin={'4px'}>
-            <Button variant="contained" onClick={displayAllDonors} className="displayAllButton">
-                כל התורמים 
-            </Button>
+        <><Box display="flex" alignItems="center" justifyContent="space-between">
+            <Accordion sx={{ flexGrow: 1 }}>
+                <AccordionSummary expandIcon={<ExpandMoreIcon />} >
+                    <Typography variant="h6">חיפוש תורם</Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                    <form onSubmit={handleSubmit}>
+                        <Box display="flex" alignItems="center" flexWrap="wrap" gap={0.5}>
+                            <TextField
+                                style={{ width: '85px' }}
+                                label="מס' תורם"
+                                variant="outlined"
+                                name="id"
+                                value={donorDetails.id}
+                                onChange={handleChange}
+                                size="small"
+                                margin="none"
+                            />
+                            <TextField
+                                style={{ width: '130px' }}
+                                label="שם משפחה"
+                                variant="outlined"
+                                name="l_name"
+                                value={donorDetails.l_name}
+                                onChange={handleChange}
+                                size="small"
+                                margin="none"
+                            />
+                            <TextField
+                                style={{ width: '130px' }}
+                                label="שם פרטי"
+                                variant="outlined"
+                                name="f_name"
+                                value={donorDetails.f_name}
+                                onChange={handleChange}
+                                size="small"
+                                margin="none"
+                            />
+                            <TextField
+                                style={{ width: '125px' }}
+                                label="טלפון"
+                                variant="outlined"
+                                name="phone"
+                                value={donorDetails.phone}
+                                onChange={handleChange}
+                                size="small"
+                                margin="dense"
+                            />
+                            <TextField
+                                style={{ width: '170px' }}
+                                label="כתובת מייל"
+                                variant="outlined"
+                                name="email"
+                                type="email"
+                                value={donorDetails.email}
+                                onChange={handleChange}
+                                size="small"
+                                margin="dense"
+                            />
+                            <TextField
+                                style={{ width: '160px' }}
+                                label="כתובת"
+                                variant="outlined"
+                                name="address"
+                                value={donorDetails.address}
+                                onChange={handleChange}
+                                size="small"
+                                margin="dense"
+                            />
+                            <TextField
+                                style={{ width: '90px' }}
+                                label="גובה תרומה מינימלי"
+                                variant="outlined"
+                                name="minDonationAmount"
+                                value={donorDetails.minDonationAmount}
+                                onChange={handleChange}
+                                size="small"
+                                margin="dense"
+                            />
+                            <Button variant="contained" color="primary" type="submit" endIcon={<SearchIcon sx={{ marginRight: 1, marginLeft: -1 }} />}>
+                                חפש
+                            </Button>
+                        </Box>
+                    </form>
+                </AccordionDetails>
+            </Accordion>
+            <Box display="flex" alignItems="center" margin={'4px'}>
+                <Button variant="contained" onClick={displayAllDonors} className="displayAllButton">
+                    כל התורמים
+                </Button>
+            </Box>
         </Box>
-    </Box>
+        {<p>{commentArea}</p>}</>
     );
 };
 

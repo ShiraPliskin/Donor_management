@@ -56,7 +56,7 @@ const ContactSearch = ({ fields, contactsToDisplay, setContactsToDisplay, setQue
     };
 
     return (
-        <Box display="flex" alignItems="center" justifyContent="space-between">
+        <><Box display="flex" alignItems="center" justifyContent="space-between">
             <Accordion sx={{ flexGrow: 1 }}>
                 <AccordionSummary expandIcon={<ExpandMoreIcon />} >
                     <Typography variant="h6">חיפוש איש קשר</Typography>
@@ -119,7 +119,6 @@ const ContactSearch = ({ fields, contactsToDisplay, setContactsToDisplay, setQue
                                 חפש
                             </Button>
                         </Box>
-                        {<p>{commentArea}</p>}
                     </form>
                 </AccordionDetails>
             </Accordion>
@@ -129,6 +128,7 @@ const ContactSearch = ({ fields, contactsToDisplay, setContactsToDisplay, setQue
                 </Button>
             </Box>
         </Box>
+        {<p>{commentArea}</p>}</>
     );
 };
 

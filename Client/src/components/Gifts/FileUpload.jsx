@@ -1,5 +1,8 @@
-import { Button, Grid, CircularProgress } from '@mui/material';
+import { Button, Grid, CircularProgress, IconButton, Typography } from '@mui/material';
 import React, { useState } from 'react';
+import { config } from "../config.jsx";
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import FileUploadIcon from '@mui/icons-material/FileUpload';
 
 const FileUpload = ({ updatedGift, setUpdatedGift }) => {
     const [file, setFile] = useState(null);
@@ -9,41 +12,35 @@ const FileUpload = ({ updatedGift, setUpdatedGift }) => {
         setFile(e.target.files[0]);
     };
 
-    // const handleUpload = async () => {
-    //     if (!file) {
-    //         return;
-    //     }
-
-    //     setLoading(true);
-    //     const formData = new FormData();
-    //     formData.append('image', file);
-    //     const updatedData = { ...updatedGift };
-    //     updatedData.img = formData;
-    //     setUpdatedGift(updatedData);
-    //     console.log(updatedData)
-    //     setLoading(false);
-    // };
-
     const handleUpload = async () => {
         if (!file) {
             return;
         }
-    
+
         setLoading(true);
-    
+
         try {
             const formData = new FormData();
             formData.append('image', file);
-    
-            // Update updatedGift state with the file data (file object or URL/path)
+
+            const response = await fetch(`http://${config.SERVERPORT}/gifts/upload`, {
+                method: 'POST',
+                body: formData,
+            });
+
+            if (!response.ok) {
+                throw new Error(`Request failed with status: ${response.status}`);
+            }
+
+            const data = await response.json();
+
             const updatedData = {
                 ...updatedGift,
-                img: file // or formData depending on your needs
+                img: data.filePath,
             };
-    
-            // Update state
+
             setUpdatedGift(updatedData);
-            console.log(updatedData);
+            console.log(updatedData.img);
         } catch (error) {
             console.error('Error handling upload:', error);
         } finally {
@@ -53,14 +50,36 @@ const FileUpload = ({ updatedGift, setUpdatedGift }) => {
 
     return (
         <Grid item xs={12} sm={12}>
+            <Typography variant="body1" color="textSecondary" display="inline">
+            </Typography>
             <input
-                type='file'
+                accept="image/*"
+                id="file-input"
+                type="file"
+                style={{ display: 'none' }}
                 onChange={handleFile}
                 disabled={loading}
             />
-            <Button onClick={handleUpload} disabled={!file || loading}>
-                {loading ? <CircularProgress size={24} /> : 'בחירת התמונה'}
-            </Button>
+            <label htmlFor="file-input">
+                <Button
+                    color="primary"
+                    aria-label="upload picture"
+                    component="span"
+                    disabled={loading}
+                    endIcon={<FileUploadIcon sx={{ marginRight: 1, marginLeft: -1 }} />}
+                >
+                    העלאת תמונה
+                </Button>
+            </label>
+            {loading && <CircularProgress size={24} />}
+            {file && !loading && <>
+                <Typography variant="body2" color="textSecondary">
+                    קובץ נבחר: {file.name}
+                    <Button sx={{ marginRight: 1 }} variant="outlined" color="primary" onClick={handleUpload} >
+                        שמירה
+                    </Button>
+                </Typography>
+            </>}
         </Grid>
     );
 };

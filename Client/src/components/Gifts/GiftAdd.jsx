@@ -4,6 +4,7 @@ import { postRequest } from "../Tools/APIRequests";
 import { filterEmptyValues } from "../Tools/objectsOperations"
 import GenericMessage from "../Tools/GenericSuccessMessage";
 import GiftForm from "./GiftForm";
+import AddIcon from '@mui/icons-material/Add';
 
 const GiftAdd = ({ fields }) => {
     const [giftDetails, setGiftDetails] = useState(fields);
@@ -16,7 +17,7 @@ const GiftAdd = ({ fields }) => {
     }, [fields, open]);
 
     const handleClickOpen = () => {
-          setOpen(true);
+        setOpen(true);
     };
 
     const handleClose = () => {
@@ -33,7 +34,9 @@ const GiftAdd = ({ fields }) => {
 
     return (
         <>
-            <Button variant="outlined" onClick={handleClickOpen}>הוספת מתנה</Button>
+            <Button variant="outlined" onClick={handleClickOpen} sx={{ marginTop: 5 }} endIcon={<AddIcon sx={{ marginRight: 1, marginLeft: -1 }} />}>
+                הוספת מתנה
+            </Button>
             {isSucceed === "success" && <GenericMessage message={`מתנה מספר ${newID} נוסף בהצלחה`} type="success" />}
             {isSucceed === "error" && <GenericMessage message="הוספת מתנה נכשלה" type="error" />}
             <GiftForm fields={fields} giftDetails={giftDetails} setGiftDetails={setGiftDetails} sendRequest={addGiftRequest} open={open} handleClose={handleClose} type="add" />

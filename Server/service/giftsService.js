@@ -1,11 +1,9 @@
-import { executeQuery } from './db.js'
-import {addQuery, updateQuery, getByIdQuery, getByConditionQuery, deleteQuery} from './querys.js'
-import multer from 'multer'
-import path from 'path'
-export class GiftsService {
+import { executeQuery } from './db.js';
+import { addQuery, updateQuery, getByIdQuery, getByConditionQuery, deleteQuery } from './querys.js';
 
+export class GiftsService {
     async getGifts(queryParams) {
-        const  { dataQuery, countQuery } = getByConditionQuery("gifts",queryParams);
+        const { dataQuery, countQuery } = getByConditionQuery("gifts", queryParams);
         const values = Object.values(queryParams);
         const data = await executeQuery(dataQuery, values);
         const total = await executeQuery(countQuery, values);
@@ -14,13 +12,13 @@ export class GiftsService {
 
     async getGiftById(id) {
         const queryPost = getByIdQuery("gifts");
-        const result =  await executeQuery(queryPost, [id]);
+        const result = await executeQuery(queryPost, [id]);
         return result;
     }
 
     async deleteGift(idKey, idValue) {
         const query = deleteQuery("gifts", `${idKey}`);
-        const result =  await executeQuery(query, [idValue]);
+        const result = await executeQuery(query, [idValue]);
         return result;
     }
 
@@ -32,11 +30,10 @@ export class GiftsService {
         return result;
     }
 
-    async addGift(newItem, imgSrc) {
-        const queryProduct = addQuery("gifts", [...Object.keys(newItem), 'img']);
-        const result = await executeQuery(queryProduct, [...Object.values(newItem), imgSrc]);
+    async addGift(newItem) {
+        const values = Object.values(newItem);
+        const query = addQuery("gifts", newItem);
+        const result =  await executeQuery(query, values);
         return result;
     }
 }
-
-

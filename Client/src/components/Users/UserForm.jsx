@@ -3,7 +3,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { checkValidation } from '../Tools/Validation'
 import _isEqual from 'lodash/isEqual';
 import { trimObjectStrings } from "../Tools/objectsOperations"
-import { Button, TextField, Dialog, DialogActions, DialogContent, DialogTitle, Grid, InputAdornment, Select, MenuItem, FormControl, InputLabel, IconButton } from "@mui/material";
+import { Button, TextField, Dialog, DialogActions, DialogContent, DialogTitle, Grid, InputAdornment, Select, MenuItem, FormControl, InputLabel, IconButton, Box } from "@mui/material";
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import EmailIcon from '@mui/icons-material/Email';
 import PersonIcon from '@mui/icons-material/Person';
@@ -16,9 +16,10 @@ const UserForm = ({ fields, userDetails, setUserDetails, sendRequest, open, hand
 
     const [commentArea, setCommentArea] = useState("");
     const [formType, setFormType] = useState(type);
-    const [updatedUser, setUpdatedUser] = useState({ ...userDetails, currentPassword: "" });
+    const [updatedUser, setUpdatedUser] = useState(userDetails);
     const [userChanged, setUserChanged] = useState(false);
     const [openUpdatePWForm, setOpenUpdatePWForm] = useState(false);
+    const [addPasswordSucceed, setAddPasswordSucceed] = useState(false);
 
     const errorObject = {
         name: false,
@@ -46,16 +47,17 @@ const UserForm = ({ fields, userDetails, setUserDetails, sendRequest, open, hand
 
     const undoEdit = () => {
         setUpdatedUser(userDetails);
-        if(useType === "administration"){
+        if (useType === "administration") {
             setFormType("display");
         }
-        else{
+        else {
             handleClose();
         }
     }
 
     const undoAdd = () => {
         setUpdatedUser(userDetails);
+        setAddPasswordSucceed(false);
         handleClose();
     }
 
@@ -80,6 +82,7 @@ const UserForm = ({ fields, userDetails, setUserDetails, sendRequest, open, hand
         }
         if (isNew) {
             setUserDetails(updatedUser);
+            setAddPasswordSucceed(false);
             if (type !== "add") {
                 setFormType("display");
             }
@@ -88,11 +91,7 @@ const UserForm = ({ fields, userDetails, setUserDetails, sendRequest, open, hand
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const requiredFields =
-            formType === "add" ? ["name", "email", "password", "verifyPW"] :
-                formType === "edit" ? ["name", "email"] :
-                    ["password", "verifyPW", "currentPassword"];
-
+        const requiredFields = ["name", "email"];
         const isValid = checkValidation(updatedUser, setError, setHelperText, requiredFields);
         if (!isValid)
             return
@@ -231,12 +230,21 @@ const UserForm = ({ fields, userDetails, setUserDetails, sendRequest, open, hand
                                         }}
                                     />}
                             </Grid>}
-                            {formType !== "add" && useType === "administration" && <Grid item xs={12} sm={12}>
+                            {formType === "display" && useType === "administration" && <Grid item xs={12} sm={12}>
                                 <Button onClick={() => setOpenUpdatePWForm(true)} fullWidth variant="outlined">שינוי סיסמא</Button>
                             </Grid>}
-                            {openUpdatePWForm && <UserUpdatePassword open={openUpdatePWForm} handleClose={handleClosePW} id={userDetails.id} type="administration"/>}
+                            {(openUpdatePWForm || formType === "add") && <UserUpdatePassword
+                                open={openUpdatePWForm}
+                                handleClose={handleClosePW}
+                                id={userDetails.id}
+                                formType={formType === "add" ? "add" : "update"}
+                                useType="administration"
+                                addPWSucceed={addPasswordSucceed}
+                                setAddPWSucceed={setAddPasswordSucceed}
+                                setUpdatedUser={setUpdatedUser}
+                            />}
                         </Grid>
-                        {commentArea}
+                        {commentArea && <Box marginTop={3}>{commentArea}</Box>}
                     </form>
                 </DialogContent>
                 <DialogActions>
@@ -257,7 +265,7 @@ const UserForm = ({ fields, userDetails, setUserDetails, sendRequest, open, hand
                     {formType === "add" &&
                         <>
                             <Button onClick={() => undoAdd()} color="primary">ביטול</Button>
-                            <Button onClick={handleSubmit} color="primary">הוסף</Button>
+                            <Button disabled={!addPasswordSucceed} onClick={handleSubmit} color="primary">הוסף</Button>
                         </>}
                 </DialogActions>
             </Dialog>
