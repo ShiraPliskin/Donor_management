@@ -1,8 +1,21 @@
 import { cwd } from 'process';
 import { RegisterService } from '../service/registerService.js';
+import jwt from 'jsonwebtoken';
 import crypto from 'crypto';
 import { error } from 'console';
 export class RegisterController {
+    ///בשביל התוקן = דוגמה
+    // const hashedPassword = await bcrypt.hash(password, 10);
+    //             const response = await registerService.addUser({ ...req.body, password: hashedPassword });
+                
+    //             //req.body.id = response.body.id;
+    //             const token = jwt.sign(
+    //                 { username: req.body.username, id: req.body.id, email: req.body.email },
+    //                 process.env.JWT_SECRET,
+    //                 { expiresIn: '1h' }
+    //             );
+
+    //             res.status(201).json({ id: response.userResult.id, token: token });
 
     // async getRegister(req, res,next) {
     //     try {
