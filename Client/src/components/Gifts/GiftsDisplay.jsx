@@ -67,9 +67,9 @@ const GiftsDisplay = ({ giftsToDisplay, setGiftsToDisplay, queryString, rowsPerP
                                             label="מיון לפי"
                                         >
                                             <MenuItem value="id">מספר מתנה</MenuItem>
-                                            <MenuItem value="f_name">תיאור</MenuItem>
-                                            <MenuItem value="l_name">עלות המתנה</MenuItem>
-                                            <MenuItem value="email">כמות במלאי</MenuItem>
+                                            <MenuItem value="description">תיאור</MenuItem>
+                                            <MenuItem value="gift_cost">עלות המתנה</MenuItem>
+                                            <MenuItem value="amount">כמות במלאי</MenuItem>
                                         </Select>
                                     </FormControl>
                                 </TableCell>

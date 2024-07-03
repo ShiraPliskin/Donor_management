@@ -5,7 +5,6 @@ import { postRequest } from "../Tools/APIRequests";
 import { filterEmptyValues } from "../Tools/objectsOperations"
 import GenericMessage from "../Tools/GenericSuccessMessage";
 import AddIcon from '@mui/icons-material/Add';
-
 import "../style.css";
 
 const DonationAdd = ({ fields }) => {

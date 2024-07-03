@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Select, MenuItem, InputLabel, FormControl, Box } from '@mui/material';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Select, MenuItem, InputLabel, FormControl, Box, Button } from '@mui/material';
 import { getRequest } from "../Tools/APIRequests";
+import TouchAppIcon from '@mui/icons-material/TouchApp';
+import ClearIcon from '@mui/icons-material/Clear';
 import DonorDisplay from './DonorDisplay';
 
-const DonorsDisplay = ({ donorsToDisplay, setDonorsToDisplay, queryString, rowsPerPage, totalDonorsCount, setTotalDonorsCount }) => {
+const DonorsDisplay = ({ donorsToDisplay, setDonorsToDisplay, queryString, rowsPerPage, totalDonorsCount, setTotalDonorsCount, selectedDonorId, setSelectedDonorId, type }) => {
     const [page, setPage] = useState(0);
     const [moreDonors, setMoreDonors] = useState([]);
     const [commentArea, setCommentArea] = useState("");
@@ -20,6 +22,14 @@ const DonorsDisplay = ({ donorsToDisplay, setDonorsToDisplay, queryString, rowsP
     useEffect(() => {
         setDisabledShowMore((page + 1) * rowsPerPage >= totalDonorsCount);
     }, [page, totalDonorsCount]);
+    
+    const selectAllDonors = () => {
+        setSelectedDonorId(donorsToDisplay.map(donor => donor.id));
+    }
+
+    const clearAllDonors = () => {
+        setSelectedDonorId([]);
+    }
 
     const handleFetchData = async () => {
         const queryConditions = `${queryString}&page=${page + 2}&sortby=${sortKey}`;
@@ -49,48 +59,66 @@ const DonorsDisplay = ({ donorsToDisplay, setDonorsToDisplay, queryString, rowsP
     return (
         <>
             {donorsToDisplay.length > 0 && (
-           <Box sx={{ minWidth: 650 }} maxWidth={"xl"} >
-                <TableContainer component={Paper} sx={{marginTop: 5 }}>
-                    <Table sx={{ minWidth: 650}}>
-                        <TableHead>
-                            <TableRow>
-                                <TableCell sx={{ fontWeight: 'bold', textAlign: 'center' }}>מס' תורם</TableCell>
-                                <TableCell sx={{ fontWeight: 'bold', textAlign: 'center' }}>שם משפחה</TableCell>
-                                <TableCell sx={{ fontWeight: 'bold', textAlign: 'center' }}>שם פרטי</TableCell>
-                                <TableCell sx={{ fontWeight: 'bold', textAlign: 'center' }}>כתובת מייל</TableCell>
-                                <TableCell sx={{ fontWeight: 'bold', textAlign: 'center' }}>טלפון</TableCell>
-                                <TableCell sx={{ fontWeight: 'bold', textAlign: 'center' }}>כתובת</TableCell>
-                                <TableCell>
-                                    <FormControl fullWidth>
-                                        <InputLabel>מיון לפי</InputLabel>
-                                        <Select
-                                            value={sortKey}
-                                            onChange={handleChangeSortKey}
-                                            label="מיון לפי"
-                                        >
-                                            <MenuItem value="id">מספר תורם</MenuItem>
-                                            <MenuItem value="f_name">שם פרטי</MenuItem>
-                                            <MenuItem value="l_name">שם משפחה</MenuItem>
-                                            <MenuItem value="email">כתובת מייל</MenuItem>
-                                            <MenuItem value="address">כתובת</MenuItem>
-                                        </Select>
-                                    </FormControl>
-                                </TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {donorsToDisplay.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((donor, index) => (
-                                <DonorDisplay key={index} donor={donor} index={index} setDonorsToDisplay={setDonorsToDisplay} setTotal={setTotalDonorsCount}/>
-                            ))}
-                        </TableBody>
-                    </Table>
-                    {donorsToDisplay.length >= rowsPerPage &&
-                        <div style={{ textAlign: 'center', marginTop: '10px' }}>
-                            <button onClick={handlePrevPage} disabled={page === 0}>{'<'}</button>
-                            <button onClick={handleNextPage} disabled={disabledShowMore}>{'>'}</button>
-                            <p>{`${page * rowsPerPage + 1}-${(page + 1) * rowsPerPage <= totalDonorsCount ? (page + 1) * rowsPerPage : totalDonorsCount} מתוך ${totalDonorsCount}`}</p>
-                        </div>}
-                </TableContainer>
+                <Box sx={{ minWidth: 650 }} maxWidth={"xl"} >
+                    <TableContainer component={Paper} sx={{ marginTop: 5 }}>
+                        <Table sx={{ minWidth: 650 }}>
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell sx={{ fontWeight: 'bold', textAlign: 'center' }}>מס' תורם</TableCell>
+                                    <TableCell sx={{ fontWeight: 'bold', textAlign: 'center' }}>שם משפחה</TableCell>
+                                    <TableCell sx={{ fontWeight: 'bold', textAlign: 'center' }}>שם פרטי</TableCell>
+                                    <TableCell sx={{ fontWeight: 'bold', textAlign: 'center' }}>כתובת מייל</TableCell>
+                                    <TableCell sx={{ fontWeight: 'bold', textAlign: 'center' }}>טלפון</TableCell>
+                                    <TableCell sx={{ fontWeight: 'bold', textAlign: 'center' }}>כתובת</TableCell>
+                                    <TableCell sx={{ textAlign: 'center' }}>
+                                        <FormControl>
+                                            <InputLabel>מיון לפי</InputLabel>
+                                            <Select
+                                                value={sortKey}
+                                                onChange={handleChangeSortKey}
+                                                label="מיון לפי"
+                                            >
+                                                <MenuItem value="id">מספר תורם</MenuItem>
+                                                <MenuItem value="f_name">שם פרטי</MenuItem>
+                                                <MenuItem value="l_name">שם משפחה</MenuItem>
+                                                <MenuItem value="email">כתובת מייל</MenuItem>
+                                                <MenuItem value="address">כתובת</MenuItem>
+                                            </Select>
+                                        </FormControl>
+                                        {type==="gifts" &&
+                                        <Box>
+                                        <Button onClick={selectAllDonors} variant="contained" endIcon={<TouchAppIcon sx={{ marginRight: 0.5, marginLeft: -1 }}/>} sx={{ mt: 2 }}>
+                                        בחר הכל
+                                        </Button>
+                                        <Button onClick={clearAllDonors} variant="contained" disabled={selectedDonorId.length===0} endIcon={<ClearIcon sx={{ marginRight: 0.5, marginLeft: -1 }}/>} sx={{ mt: 2, mr: 2 }}>
+                                         נקה 
+                                        </Button>
+                                        </Box>}
+                                    </TableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {donorsToDisplay.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((donor, index) => (
+                                    <DonorDisplay
+                                        key={index}
+                                        donor={donor}
+                                        index={index}
+                                        setDonorsToDisplay={setDonorsToDisplay}
+                                        setTotal={setTotalDonorsCount}
+                                        selectedDonorId={selectedDonorId}
+                                        setSelectedDonorId={setSelectedDonorId}
+                                        type={type}
+                                    />
+                                ))}
+                            </TableBody>
+                        </Table>
+                        {donorsToDisplay.length >= rowsPerPage &&
+                            <div style={{ textAlign: 'center', marginTop: '10px' }}>
+                                <button onClick={handlePrevPage} disabled={page === 0}>{'<'}</button>
+                                <button onClick={handleNextPage} disabled={disabledShowMore}>{'>'}</button>
+                                <p>{`${page * rowsPerPage + 1}-${(page + 1) * rowsPerPage <= totalDonorsCount ? (page + 1) * rowsPerPage : totalDonorsCount} מתוך ${totalDonorsCount}`}</p>
+                            </div>}
+                    </TableContainer>
                 </Box>
             )}
             <p>{commentArea}</p>

@@ -3,7 +3,7 @@ import DonorAdd from "./DonorAdd";
 import DonorSearch from "./DonorSearch";
 import DonorsDisplay from "./DonorsDisplay";
 
-const Donors = () => {
+const Donors = ({type, selectedDonorId, setSelectedDonorId}) => {
 
     const fields = {
         id: '',
@@ -27,9 +27,9 @@ const Donors = () => {
 
     return (
         <>
-            <DonorAdd
+            {type === "donors" && <DonorAdd
                 fields={fields}
-            />
+            />}
             <DonorSearch
                 fields={fields}
                 donorsToDisplay={donorsToDisplay}
@@ -45,6 +45,9 @@ const Donors = () => {
                 rowsPerPage={rowsPerPage}
                 totalDonorsCount={totalDonorsCount}
                 setTotalDonorsCount={setTotalDonorsCount}
+                selectedDonorId={selectedDonorId}
+                setSelectedDonorId={setSelectedDonorId}
+                type={type}
             />
         </>
     );

@@ -116,7 +116,7 @@ const UserForm = ({ fields, userDetails, setUserDetails, sendRequest, open, hand
                 }}
                 disableEscapeKeyDown
                 fullWidth
-                maxWidth="xs"
+                maxWidth={"xs"}
             >
                 {formType === "display" && <DialogTitle>משתמש מספר {userDetails.id}</DialogTitle>}
                 {formType === "add" && <DialogTitle>הוספת משתמש</DialogTitle>}
@@ -244,7 +244,7 @@ const UserForm = ({ fields, userDetails, setUserDetails, sendRequest, open, hand
                                 setUpdatedUser={setUpdatedUser}
                             />}
                         </Grid>
-                        {commentArea && <Box marginTop={3}>{commentArea}</Box>}
+                        {commentArea && <Box marginTop={2} color={"red"}>{commentArea}</Box>}
                     </form>
                 </DialogContent>
                 <DialogActions>

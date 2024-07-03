@@ -7,7 +7,7 @@ const Donations = () => {
 
     const fields = {
         id: '',
-        donor_id: '1',
+        donor_id: '',
         amount: '',
         payment_method: '',
         date: ''
@@ -16,7 +16,7 @@ const Donations = () => {
     const [donationsToDisplay, setDonationsToDisplay] = useState([]);
     const [queryString, setQueryString] = useState("");
     const [rowsPerPage, setRowsPerPage] = useState(8);
-    const [totalDonorsCount, setTotalDonorsCount] = useState(0);
+    const [totalDonatiosCount, setTotalDonationsCount] = useState(0);
 
     return (
         <>
@@ -29,7 +29,7 @@ const Donations = () => {
                 setDonationsToDisplay={setDonationsToDisplay}
                 setQueryString={setQueryString}
                 rowsPerPage={rowsPerPage}
-                setTotalDonorsCount={setTotalDonorsCount}
+                setTotalDonationsCount={setTotalDonationsCount}
             />
 
             <DonationsDisplay
@@ -37,8 +37,8 @@ const Donations = () => {
                 setDonationsToDisplay={setDonationsToDisplay}
                 queryString={queryString}
                 rowsPerPage={rowsPerPage}
-                totalDonationsCount={totalDonorsCount}
-                setTotalDonorsCount={setTotalDonorsCount}
+                totalDonationsCount={totalDonatiosCount}
+                setTotalDonationsCount={setTotalDonationsCount}
             />
         </>
     );

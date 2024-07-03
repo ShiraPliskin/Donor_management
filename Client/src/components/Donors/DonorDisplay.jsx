@@ -6,8 +6,9 @@ import DonorForm from './DonorForm';
 import { filterEmptyValues } from "../Tools/objectsOperations"
 import GenericDeletion from '../Tools/GenericDeletion';
 import GenericMessage from '../Tools/GenericSuccessMessage';
+import Checkbox from "@mui/material/Checkbox";
 
-const DonorDisplay = ({ donor, index, setDonorsToDisplay, setTotal}) => {
+const DonorDisplay = ({ donor, index, setDonorsToDisplay, setTotal, selectedDonorId, setSelectedDonorId, type }) => {
 
     const [currentDonor, setCurrentDonor] = useState("");
     const [open, setOpen] = useState(false);
@@ -27,6 +28,13 @@ const DonorDisplay = ({ donor, index, setDonorsToDisplay, setTotal}) => {
 
     const getDonorDetails = async () => {
         await getByIdRequest("donors", donor.id, setCurrentDonor, setComment);
+    };
+
+    const handleClickChoose = () => {
+        if (type === "donations")
+            setSelectedDonorId((prevId) => (prevId[0] === donor.id ? [] : [donor.id]));
+        if (type === "gifts")
+            setSelectedDonorId((prevId) => prevId.includes(donor.id) ? (prevId.filter(donorId => donorId !== donor.id)) : [...prevId, donor.id]);
     };
 
     const handleClickOpen = async () => {
@@ -58,9 +66,20 @@ const DonorDisplay = ({ donor, index, setDonorsToDisplay, setTotal}) => {
                 <TableCell sx={{ textAlign: 'center' }}>{donor.phone}</TableCell>
                 <TableCell sx={{ textAlign: 'center' }}>{donor.address}</TableCell>
                 <TableCell sx={{ textAlign: 'center' }}>
-                    <IconButton onClick={handleClickOpen}>
-                        <VisibilityIcon />
-                    </IconButton>
+                    {type === "donors" ?
+                        <IconButton onClick={handleClickOpen}>
+                            <VisibilityIcon />
+                        </IconButton>
+                        :
+                        <IconButton onClick={handleClickChoose}>
+                            <Checkbox
+                                checked={selectedDonorId.includes(donor.id)}
+                                checkedIcon={<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>}
+                                icon={<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect></svg>}
+                                inputProps={{ 'aria-label': 'Checkbox' }}
+                            />
+                        </IconButton>
+                    }
                 </TableCell>
             </TableRow>
             {open && (
@@ -88,7 +107,7 @@ const DonorDisplay = ({ donor, index, setDonorsToDisplay, setTotal}) => {
             }
             {updateSuccessful === "success" && <GenericMessage message={`תורם מספר ${currentDonor.id} עודכן בהצלחה`} type="success" />}
             {updateSuccessful === "error" && <GenericMessage message="עדכון תורם נכשל" type="error" />}
-            <p>{comment}</p> 
+            <p>{comment}</p>
         </>
     );
 };

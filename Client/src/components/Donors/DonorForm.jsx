@@ -12,7 +12,7 @@ import EventIcon from '@mui/icons-material/Event';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { checkValidation } from '../Tools/Validation'
 import _isEqual from 'lodash/isEqual';
-import ContactDonorForm from "../Contacts/ContactDonorForm";
+import ContactDonorForm from "./ContactDonorForm";
 import { trimObjectStrings } from "../Tools/objectsOperations"
 
 const DonorForm = ({ fields, donorDetails, setDonorDetails, sendRequest, open, handleClose, type, deleteDonor}) => {
