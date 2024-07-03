@@ -299,7 +299,7 @@ const GiftForm = ({ fields, giftDetails, setGiftDetails, sendRequest, open, hand
                             {formType !== "display" && <FileUpload updatedGift={updatedGift} setUpdatedGift={setUpdatedGift} />}  
 
                             <GiftImg imgUrl={updatedGift.img}/>
-                            {formType === "display" && <GiftDelivery gift={updatedGift}/> }
+                            {formType === "display" && updatedGift.amount > 0 && <GiftDelivery gift={updatedGift}/> }
                         </Grid>
                         {commentArea}
                     </form>
