@@ -68,12 +68,20 @@ function addQuery(table_name, newObj) {
     let values = [];
     for (const key in newObj) {
         keys.push(`${key}`);
-        values.push("?")
+        values.push("?");
     }
     query += "(" + keys.join(', ') + ")";
     query += "VALUES";
     query += "(" + values.join(', ') + ")";
     return query;
+}
+
+function addManyItemsQuery(tableName, numItems) {
+    const placeholders = Array(numItems)
+        .fill('(?, ?, ?)')
+        .join(', ');
+
+    return `INSERT INTO ${tableName} (donor_id, gift_id, date) VALUES ${placeholders}`;
 }
 
 function patchQuery(table_name, queryParams, idKey) {
@@ -95,5 +103,6 @@ export {
     deleteQuery,
     updateQuery,
     addQuery,
+    addManyItemsQuery,
     patchQuery
 }

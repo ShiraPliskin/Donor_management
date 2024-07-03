@@ -327,7 +327,7 @@ const DonorForm = ({ fields, donorDetails, setDonorDetails, sendRequest, open, h
                                     color="info"
                                     style={{ height: '40px' }}
                                     startIcon={<EventIcon sx={{ marginLeft: 1 }} />}
-                                >תאריכים מיוחדים
+                                >מתנות
                                 </Button>
                             </Grid>
                             <Grid item xs={12} sm={12}>

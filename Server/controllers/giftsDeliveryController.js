@@ -63,7 +63,7 @@ export class GiftsDeliveryController {
         try {
             const giftsDeliveryService = new GiftsDeliveryService();
             const resultItem = await giftsDeliveryService.addGiftDelivery(req.body);
-            res.status(200).json({ insertId: resultItem.insertId });
+            res.status(200).json({ status: 200 });
 
         }
         catch (ex) {

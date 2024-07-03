@@ -1,16 +1,20 @@
 import React, { useState } from "react";
-import { Dialog, DialogContent, Grid, Button, DialogTitle, Box, TextField } from "@mui/material";
+import { Dialog, DialogContent, Grid, Button, DialogTitle, Box, TextField, Typography } from "@mui/material";
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import dayjs from 'dayjs';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import Donors from "../Donors/Donors";
+import { postRequest } from "../Tools/APIRequests";
+import GenericMessage from "../Tools/GenericSuccessMessage";
 
 const GiftDelivery = ({ gift }) => {
     const [openDeliveryForm, setOpenDeliveryForm] = useState(false);
     const [openWarning, setOpenWarning] = useState(false);
     const [openDateSelection, setOpenDateSelection] = useState(false);
+
     const [selectedDonorId, setSelectedDonorId] = useState([]);
     const [selectedDate, setSelectedDate] = useState(new Date());
+    const [isSucceed, setIsSucceed] = useState('');
 
     const handleOpen = () => {
         setOpenDeliveryForm(true);
@@ -29,14 +33,22 @@ const GiftDelivery = ({ gift }) => {
         setOpenDateSelection(true);
     }
 
-    const handleSave = () => {
+    const handleDateChanged = (e) => {
+        setSelectedDate(e.target.value);
+    }
 
+    const handleSave = () => {
+            setIsSucceed("");
+            const newDelivery = {donor_id: selectedDonorId, gift_id: gift.id, date: selectedDate};
+            postRequest("giftsDelivery", newDelivery, setIsSucceed);
+            setOpenDateSelection();
+            handleClose();
     }
 
     return (
         <>
             <Grid item xs={12} sm={12}>
-                <Button variant="contained" onClick={handleOpen} fullWidth endIcon={<LocalShippingIcon sx={{ marginRight: 2 }} />}>
+                <Button variant="contained" onClick={handleOpen} fullWidth startIcon={<LocalShippingIcon sx={{ marginLeft: 1.5 }} />}>
                     מסירת מתנה
                 </Button>
             </Grid>
@@ -50,7 +62,11 @@ const GiftDelivery = ({ gift }) => {
                 disableEscapeKeyDown
                 maxWidth="lg"
             >
-                <DialogTitle sx={{ bgcolor: 'lightblue' }}>בחירת תורמים עבור מסירת מתנה: {gift.description}</DialogTitle>
+                <DialogTitle sx={{ bgcolor: 'lightblue', fontWeight: 'bold', marginBottom: '5px' }}>בחר תורמים עבור מסירת: "{gift.description}"
+                    <Typography sx={{ fontSize: '1.2rem' }}>
+                        {selectedDonorId.length} תורמים נבחרו
+                    </Typography>
+                </DialogTitle>
                 <DialogContent>
                     <Donors
                         type="gifts"
@@ -93,12 +109,12 @@ const GiftDelivery = ({ gift }) => {
                 disableEscapeKeyDown
                 maxWidth="sm"
             >
-                <DialogTitle sx={{ bgcolor: 'lightblue' }}>בחירת תאריך עבור מסירת מתנה: {gift.description}</DialogTitle>
+                <DialogTitle sx={{ bgcolor: 'lightblue' }}>בחר תאריך עבור מסירת: "{gift.description}"</DialogTitle>
                 <DialogContent sx={{ marginTop: '20px' }}>
                     <TextField
                         fullWidth
                         InputLabelProps={{ shrink: true }}
-                        onChange={(e) => handleChange({ target: { name: "date", value: e.target.value } })}
+                        onChange={handleDateChanged}
                         value={dayjs(selectedDate).format('YYYY-MM-DD')}
                         type="date"
                         size="small"
@@ -111,6 +127,8 @@ const GiftDelivery = ({ gift }) => {
                     </Box>
                 </DialogContent>
             </Dialog>
+            {isSucceed === "success" && <GenericMessage message={`מסירת "${gift.description}" עודכנה בהצלחה`} type="success" />}
+            {isSucceed === "error" && <GenericMessage message={`עדכון מסירת "${gift.description}" נכשל`} type="error" />}
         </>
     );
 };

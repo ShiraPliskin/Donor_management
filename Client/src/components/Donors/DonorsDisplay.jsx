@@ -88,9 +88,10 @@ const DonorsDisplay = ({ donorsToDisplay, setDonorsToDisplay, queryString, rowsP
                                     <TableCell sx={{ textAlign: 'center' }}>
                                         {type === "gifts" &&
                                             <Box>
-                                                <Typography sx={{ fontWeight: 'bold', fontSize: '1.2rem' }}>
+                                                {/* <Typography sx={{ fontWeight: 'bold', fontSize: '1.2rem' }}>
                                                     {selectedDonorId.length} פריטים נבחרו
-                                                </Typography>                                                <Button onClick={selectAllDonors} variant="contained" endIcon={<TouchAppIcon sx={{ marginRight: 0.5, marginLeft: -1 }} />} sx={{ mt: 2 }}>
+                                                </Typography>    */}
+                                                 <Button onClick={selectAllDonors} variant="contained" endIcon={<TouchAppIcon sx={{ marginRight: 0.5, marginLeft: -1 }} />} sx={{ mt: 2 }}>
                                                     בחר הכל
                                                 </Button>
                                                 <Button onClick={clearAllDonors} variant="contained" disabled={selectedDonorId.length === 0} endIcon={<ClearIcon sx={{ marginRight: 0.5, marginLeft: -1 }} />} sx={{ mt: 2, mr: 2 }}>
