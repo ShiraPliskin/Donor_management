@@ -7,10 +7,8 @@ export class UsersController {
 
     async getUsers(req, res, next) {
         try {
-            console.log("getUsers")
             const userService = new UsersService();
             const resultItems = await userService.getUsers(req.query);
-            console.log("result from getUser  "+resultItems);
             return res.json(resultItems);
         }
         catch (ex) {
