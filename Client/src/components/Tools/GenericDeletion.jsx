@@ -10,6 +10,7 @@ const GenericDeletion = ({ id, warningOpen, setWarningOpen, table, objectName, o
     const [isChecked, setIsChecked] = useState('');
 
     useEffect(() => {
+        console.log("isSucceed ", isSucceed);
         if (isSucceed === "deletedSuccessfully") {
             objectState((prev) => {
                 return prev.filter(obj => obj.id !== id);
