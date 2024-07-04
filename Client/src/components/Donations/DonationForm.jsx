@@ -63,11 +63,9 @@ const DonationForm = ({ fields, donationDetails, setDonationDetails, sendRequest
             setCommentArea("לא נבחר תורם.");
             return;
         }
-        const selectedDate = new Date(updateDonation.date);
-        const today = new Date();
         const requiredFields = ["amount", "payment_method", "date"];
         const isValid = checkValidation(updateDonation, setError, setHelperText, requiredFields);
-        if (isValid && selectedDate <= today) {
+        if (isValid) {
             setDonationDetails(updateDonation);
             if (type !== "add") {
                 setFormType("display");
@@ -81,6 +79,7 @@ const DonationForm = ({ fields, donationDetails, setDonationDetails, sendRequest
         setError((prevData) => ({ ...prevData, [name]: false }));
         setHelperText((prevData) => ({ ...prevData, [name]: '' }));
     };
+
     return (
         <>
             <Dialog open={open}
