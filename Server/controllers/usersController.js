@@ -1,8 +1,5 @@
 import { UsersService } from '../service/usersService.js'
-import jwt from 'jsonwebtoken';
-// const token = jwt.sign({ id: user.id, username: user.username, email: user.email }, process.env.JWT_SECRET, { expiresIn: '1h' });
-//             res.cookie('token', token, { httpOnly: true, secure: true, maxAge: 259200000 });
-//             res.json({ message: 'Login successful', token: token });
+
 export class UsersController {
 
     async getUsers(req, res, next) {
@@ -21,10 +18,8 @@ export class UsersController {
 
     async getUsersForLogin(req, res, next) {
         try {
-            console.log("getUsersForLogin")
             const userService = new UsersService();
             const resultItems = await userService.getUsers(req.query,"yes");
-            console.log("result from getUser  "+resultItems);
             return res.cookie("token", resultItems.token, { httpOnly: true, secure: true })
                 .json(resultItems );
         }

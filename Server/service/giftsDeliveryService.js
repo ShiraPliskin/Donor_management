@@ -1,20 +1,18 @@
 import { executeQuery } from './db.js'
-import {updateQuery, getByIdQuery, getByConditionQuery, deleteQuery} from '../queries/genericQueries.js'
-import {addGiftDeliveryQuery} from '../queries/giftDeliveryQuery.js'
+import {updateQuery, deleteQuery} from '../queries/genericQueries.js'
+import {addGiftDeliveryQuery, getByGiftIdQuery, getByDonorIdQuery} from '../queries/giftDeliveryQuery.js'
 
 export class GiftsDeliveryService {
 
-    async getGiftsDelivery(queryParams) {
-        const  { dataQuery, countQuery } = getByConditionQuery("gift_delivery", queryParams);
-        const values = Object.values(queryParams);
-        const data = await executeQuery(dataQuery, values);
-        const total = await executeQuery(countQuery, values);
-        return { data, total };
+    async getGiftDeliveryByDonorId(id) {
+        const query = getByDonorIdQuery();
+        const result = await executeQuery(query, [id]);
+        return result;
     }
 
-    async getGiftDeliveryById(id) {
-        const query = getByIdQuery("gift_delivery");
-        const result =  await executeQuery(query, [id]);
+    async getGiftDeliveryByGiftId(id) {
+        const query = getByGiftIdQuery();
+        const result = await executeQuery(query, [id]);
         return result;
     }
 
@@ -36,7 +34,7 @@ export class GiftsDeliveryService {
         const donorIds = newItem.donor_id;
         const giftId = newItem.gift_id;
         const date = newItem.date;
-        const query = addGiftDeliveryQuery("gift_delivery", donorIds.length);
+        const query = addGiftDeliveryQuery(donorIds.length);
                 const values = donorIds.reduce((acc, donorId) => {
             acc.push(donorId, giftId, date);
             return acc;

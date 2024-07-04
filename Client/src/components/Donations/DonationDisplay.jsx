@@ -14,7 +14,6 @@ const DonationDisplay = ({ donation, index, setDonationsToDisplay, setTotal}) =>
     const [open, setOpen] = useState(false);
     const [openDeleteWarning, setOpenDeleteWarning] = useState(false);
     const [updateSuccessful, setUpdateSuccessful] = useState('');
-    const [comment, setComment] = useState("");
 
     useEffect(() => {
         if (updateSuccessful === "success") {
@@ -26,12 +25,7 @@ const DonationDisplay = ({ donation, index, setDonationsToDisplay, setTotal}) =>
         }
     }, [updateSuccessful]);
 
-    const getDonationDetails = async () => {
-        await getByIdRequest("donations", donation.id, setCurrentDonation, setComment);
-    };
-
     const handleClickOpen = async () => {
-        await getDonationDetails();
         setOpen(true);
     };
 
@@ -82,13 +76,11 @@ const DonationDisplay = ({ donation, index, setDonationsToDisplay, setTotal}) =>
                     table="donations"
                     objectName="תרומה"
                     objectState={setDonationsToDisplay}
-                    formOpen={setOpen}
                     setTotal={setTotal}
                 />
             }
             {updateSuccessful === "success" && <GenericMessage message={`תרומה מספר ${currentDonation.id} עןדכנה בהצלחה`} type="success" />}
             {updateSuccessful === "error" && <GenericMessage message="עדכון תרומה נכשל" type="error" />}
-            <p>{comment}</p> 
         </>
     );
 };

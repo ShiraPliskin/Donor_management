@@ -2,17 +2,28 @@ import { executeQuery } from './db.js'
 import {addQuery, updateQuery, getByIdQuery, getByConditionQuery, deleteQuery,patchQuery} from '../queries/genericQueries.js'
 import { DonationsService} from './donationsService.js'
 import { GiftsDeliveryService} from './giftsDeliveryService.js'
+import { getByInactiveFromDate } from '../queries/donorsQuery.js';
+
 const giftsDeliveryService = new GiftsDeliveryService;
 const donationsService = new DonationsService;
 
 export class DonorsService {
 
     async getDonors(queryParams) {
-        const  { dataQuery, countQuery } = getByConditionQuery("donors", queryParams);
         const values = Object.values(queryParams);
-        const data = await executeQuery(dataQuery, values);
-        const total = await executeQuery(countQuery, values);
-        return { data, total };
+        if (queryParams.filter && queryParams.filter.split('=')[0] === "inactiveFromDate"){
+            const { dataQuery, countQuery } = getByInactiveFromDate(queryParams);
+            const data = await executeQuery(dataQuery, values);
+            const total = await executeQuery(countQuery, values);
+            return { data, total };
+        }
+        else {
+            const { dataQuery, countQuery } = getByConditionQuery("donors", queryParams);
+            const data = await executeQuery(dataQuery, values);
+            const total = await executeQuery(countQuery, values);
+            return { data, total };
+        }
+       
     }
 
     async getDonorById(id) {

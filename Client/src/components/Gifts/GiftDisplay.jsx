@@ -80,7 +80,6 @@ const GiftDisplay = ({ gift, index, setGiftsToDisplay, setTotal}) => {
                     table="gifts"
                     objectName="מתנה"
                     objectState={setGiftsToDisplay}
-                    formOpen={setOpen}
                     setTotal={setTotal}
                 />
             }

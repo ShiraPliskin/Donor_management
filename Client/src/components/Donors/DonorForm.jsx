@@ -14,8 +14,10 @@ import { checkValidation } from '../Tools/Validation'
 import _isEqual from 'lodash/isEqual';
 import ContactDonorForm from "./ContactDonorForm";
 import { trimObjectStrings } from "../Tools/objectsOperations"
+import DonorGifts from "./DonorGifts";
+import DonorDonations from "./DonorDonations";
 
-const DonorForm = ({ fields, donorDetails, setDonorDetails, sendRequest, open, handleClose, type, deleteDonor}) => {
+const DonorForm = ({ fields, donorDetails, setDonorDetails, sendRequest, open, handleClose, type, deleteDonor }) => {
 
     const [commentArea, setCommentArea] = useState("");
     const [formType, setFormType] = useState(type);
@@ -315,21 +317,10 @@ const DonorForm = ({ fields, donorDetails, setDonorDetails, sendRequest, open, h
                                 />
                             </Grid>
                             <ContactDonorForm type={formType} setUpdatedDonor={setUpdatedDonor} updatedDonor={updatedDonor} />
-                            <Grid item xs={12} sm={6}>
-                                <Button
-                                    fullWidth
-                                    variant="outlined"
-                                    color="info"
-                                    style={{ height: '40px' }}
-                                    startIcon={<EventIcon sx={{ marginLeft: 1 }} />}
-                                >מתנות
-                                </Button>
-                            </Grid>
-                            <Grid item xs={12} sm={12}>
+                            <Grid item xs={12} sm={9}>
                                 <TextField
                                     disabled={formType === "display"}
                                     size="small"
-                                    margin="dense"
                                     name="introduction_description"
                                     label="תיאור הכרות"
                                     type="text"
@@ -375,6 +366,9 @@ const DonorForm = ({ fields, donorDetails, setDonorDetails, sendRequest, open, h
                                     }}
                                 />
                             </Grid>
+                            {formType === "display" &&
+                                <><DonorGifts donorDetails={donorDetails} />
+                                    <DonorDonations donorDetails={donorDetails} /></>}
                         </Grid>
                         {commentArea}
                     </form>

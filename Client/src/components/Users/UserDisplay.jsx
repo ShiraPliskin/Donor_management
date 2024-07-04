@@ -8,7 +8,6 @@ import GenericMessage from '../Tools/GenericSuccessMessage';
 import UserForm from './UserForm';
 
 const UserDisplay = ({ user, index, setUsersToDisplay, setTotal}) => {
-
     const [currentUser, setCurrentUser] = useState(user);
     const [open, setOpen] = useState(false);
     const [openDeleteWarning, setOpenDeleteWarning] = useState(false);
@@ -75,7 +74,6 @@ const UserDisplay = ({ user, index, setUsersToDisplay, setTotal}) => {
                     table="users"
                     objectName="משתמש"
                     objectState={setUsersToDisplay}
-                    formOpen={setOpen}
                     setTotal={setTotal}
                 />
             }

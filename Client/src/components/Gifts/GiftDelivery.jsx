@@ -33,7 +33,7 @@ const GiftDelivery = ({ gift }) => {
         setOpenDateSelection(true);
     }
 
-    const backToDonors = () => { 
+    const backToDonors = () => {
         setSelectedDate(new Date());
         setOpenDateSelection(false);
     }
@@ -53,8 +53,16 @@ const GiftDelivery = ({ gift }) => {
 
     return (
         <>
-            <Grid item xs={12} sm={12}>
-                <Button variant="contained" onClick={handleOpen} fullWidth startIcon={<LocalShippingIcon sx={{ marginLeft: 1.5 }} />}>
+            <Grid item xs={12} sm={6}>
+                <Button
+                    variant="contained"
+                    color="info"
+                    style={{ height: '40px' }}
+                    onClick={handleOpen}
+                    fullWidth
+                    startIcon={<LocalShippingIcon sx={{ marginLeft: 1.5 }}
+                        disabled={!gift.amount}
+                    />}>
                     מסירת מתנה
                 </Button>
             </Grid>
@@ -126,10 +134,10 @@ const GiftDelivery = ({ gift }) => {
                         size="small"
                         margin="dense"
                         InputProps={{
-                            inputProps: { 
-                                max: dayjs().format('YYYY-MM-DD') 
+                            inputProps: {
+                                max: dayjs().format('YYYY-MM-DD')
                             }
-                        }}                    />
+                        }} />
                     <Box sx={{ display: 'flex', justifyContent: 'flex-end', marginTop: 2 }}>
                         <Button onClick={backToDonors} startIcon={<NavigateNextIcon sx={{ marginLeft: 1 }} />}>חזרה לבחירת תורמים</Button>
                         <Button onClick={handleSave}>שמירה</Button>

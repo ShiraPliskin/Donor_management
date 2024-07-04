@@ -3,11 +3,12 @@ import { getRequest } from "../Tools/APIRequests";
 import { Accordion, AccordionSummary, AccordionDetails, Typography, Box, TextField, Button } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import SearchIcon from '@mui/icons-material/Search';
-import { isEmptyObject } from "../Tools/objectsOperations"
+import dayjs from 'dayjs';
 
 const DonorSearch = ({ fields, setDonorsToDisplay, setQueryString, rowsPerPage, setTotalDonorsCount }) => {
     const [donorDetails, setDonorDetails] = useState({});
     const [commentArea, setCommentArea] = useState("");
+    const [inactiveFromDate, setInactiveFromDate] = useState("");
 
     useEffect(() => {
         setDonorDetails(fields);
@@ -15,20 +16,27 @@ const DonorSearch = ({ fields, setDonorsToDisplay, setQueryString, rowsPerPage, 
     }, []);
 
     const displayAllDonors = async () => {
+        const columnsToDisplay = "id, l_name, f_name, email, phone, address";
         const total = await getRequest("donors", `?_limit=${rowsPerPage}`, setDonorsToDisplay, setCommentArea, "תורם");
         setTotalDonorsCount(total);
-        setQueryString(`?_limit=${rowsPerPage}`);
+        setQueryString(`?fields=${columnsToDisplay}&_limit=${rowsPerPage}`);
     }
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setDonorsToDisplay([]);
         let conditions = [];
-        for (const [key, value] of Object.entries(donorDetails)) {
-            if (value) {
-                conditions.push(`${key}=${value}`);
+        if (inactiveFromDate) {
+            conditions = [`inactiveFromDate=${inactiveFromDate}`];
+        }
+        else {
+            for (const [key, value] of Object.entries(donorDetails)) {
+                if (value) {
+                    conditions.push(`${key}=${value}`);
+                }
             }
         }
+        
         const columnsToDisplay = "id, l_name, f_name, email, phone, address";
         const queryConditions = conditions.length > 0 ? `?fields=${columnsToDisplay}&filter=${conditions.join(',')}&_limit=${rowsPerPage}` : "";
         if (queryConditions) {
@@ -40,7 +48,12 @@ const DonorSearch = ({ fields, setDonorsToDisplay, setQueryString, rowsPerPage, 
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setDonorDetails((prevData) => ({ ...prevData, [name]: value }));
+        if (name === "inactiveFromDate") {
+            setInactiveFromDate(value);
+        }
+        else {
+            setDonorDetails((prevData) => ({ ...prevData, [name]: value }));
+        }
     };
 
     return (
@@ -60,7 +73,9 @@ const DonorSearch = ({ fields, setDonorsToDisplay, setQueryString, rowsPerPage, 
                                 value={donorDetails.id}
                                 onChange={handleChange}
                                 size="small"
-                                margin="none"
+                                InputLabelProps={{
+                                    shrink: true,
+                                }}
                             />
                             <TextField
                                 style={{ width: '130px' }}
@@ -70,7 +85,9 @@ const DonorSearch = ({ fields, setDonorsToDisplay, setQueryString, rowsPerPage, 
                                 value={donorDetails.l_name}
                                 onChange={handleChange}
                                 size="small"
-                                margin="none"
+                                InputLabelProps={{
+                                    shrink: true,
+                                }}
                             />
                             <TextField
                                 style={{ width: '130px' }}
@@ -80,17 +97,21 @@ const DonorSearch = ({ fields, setDonorsToDisplay, setQueryString, rowsPerPage, 
                                 value={donorDetails.f_name}
                                 onChange={handleChange}
                                 size="small"
-                                margin="none"
+                                InputLabelProps={{
+                                    shrink: true,
+                                }}
                             />
                             <TextField
-                                style={{ width: '125px' }}
+                                style={{ width: '150px' }}
                                 label="טלפון"
                                 variant="outlined"
                                 name="phone"
                                 value={donorDetails.phone}
                                 onChange={handleChange}
                                 size="small"
-                                margin="none"
+                                InputLabelProps={{
+                                    shrink: true,
+                                }}
                             />
                             <TextField
                                 style={{ width: '170px' }}
@@ -101,7 +122,9 @@ const DonorSearch = ({ fields, setDonorsToDisplay, setQueryString, rowsPerPage, 
                                 value={donorDetails.email}
                                 onChange={handleChange}
                                 size="small"
-                                margin="none"
+                                InputLabelProps={{
+                                    shrink: true,
+                                }}
                             />
                             <TextField
                                 style={{ width: '160px' }}
@@ -111,7 +134,27 @@ const DonorSearch = ({ fields, setDonorsToDisplay, setQueryString, rowsPerPage, 
                                 value={donorDetails.address}
                                 onChange={handleChange}
                                 size="small"
-                                margin="none"
+                                InputLabelProps={{
+                                    shrink: true,
+                                }}
+                            />
+                            <TextField
+                                style={{ width: '150px' }}
+                                label="לא פעיל החל מתאריך"
+                                variant="outlined"
+                                type="date"
+                                name="inactiveFromDate"
+                                onChange={handleChange}
+                                size="small"
+                                value={inactiveFromDate ? dayjs(updateDonation.date).format('YYYY-MM-DD') : ''}
+                                InputProps={{
+                                    inputProps: { 
+                                        max: dayjs().format('YYYY-MM-DD') 
+                                    }
+                                }}
+                                InputLabelProps={{
+                                    shrink: true,
+                                }}
                             />
                             <Button variant="contained" color="primary" type="submit" endIcon={<SearchIcon sx={{ marginRight: 1, marginLeft: -1 }} />}>
                                 חפש

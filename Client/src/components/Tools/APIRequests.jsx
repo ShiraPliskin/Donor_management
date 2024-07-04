@@ -42,9 +42,8 @@ export const getRequest = async (table, conditions, state, comment, object = "")
     }
 };
 
-
 export const getByIdRequest = async (table, id, state, comment) => {
-    const url = `http://${config.SERVERPORT}/${table}/${id}}`;
+    const url = `http://${config.SERVERPORT}/${table}/${id}`;
     try {
         const response = await fetch(url,{
             headers: {
@@ -62,6 +61,34 @@ export const getByIdRequest = async (table, id, state, comment) => {
             return false;
         } else {
             state(data["data"][0]);
+            return true;
+        }
+    } catch (error) {
+        console.error("Error in GetRequest:", error);
+        comment(`שגיאת שרת`);
+        return false;
+    }
+};
+
+export const getManyItemsByIdRequest = async (table, id, state, comment) => {
+    const url = `http://${config.SERVERPORT}/${table}/${id}`;
+    try {
+        const response = await fetch(url,{
+            headers: {
+                'Origin': 'http://localhost:8080',
+            }, credentials: 'include'
+        });
+
+        if (!response.ok) {
+            throw new Error(`Request failed with status: ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        if (Object.keys(data).length === 0) {
+            return false;
+        } else {
+            state(data["data"]);
             return true;
         }
     } catch (error) {
@@ -90,7 +117,7 @@ export const putRequest = async (table, updatedObject, id, setIsSucceed) => {
             setIsSucceed("error");
         }
 
-        setIsSucceed("updatedSuccessfully");
+        setIsSucceed("success");
 
     } catch (error) {
         console.error(error);
@@ -98,7 +125,6 @@ export const putRequest = async (table, updatedObject, id, setIsSucceed) => {
         return false;
     }
 }
-
 
 export const deleteRequest = async (table, id, setIsSucceed) => {
     try {
@@ -113,12 +139,11 @@ export const deleteRequest = async (table, id, setIsSucceed) => {
         }
 
         const data = await response.json();
-        console.log("data ", Object.keys(data).length)
 
         if (Object.keys(data).length === 0) {
             setIsSucceed("error");
         }
-        setIsSucceed("deletedSuccessfully");
+        setIsSucceed("success");
 
     } catch (error) {
         console.error("Error creating request:", error);
@@ -161,7 +186,7 @@ export const getByPostRequest = async (table, newItem, status, commentArea) => {
             body: JSON.stringify(newItem),
             credentials: 'include'
         });
-
+        
         if (!response.ok) {
             status(response.status);
             throw new Error(`Request failed with status: ${response.status}`);
@@ -169,6 +194,7 @@ export const getByPostRequest = async (table, newItem, status, commentArea) => {
         console.log(" response.json() : " + response.status);
         status(response.status);
         return true;
+
     } catch (error) {
         console.error("Error creating request:", error);
         commentArea('שגיאת שרת');
@@ -194,6 +220,31 @@ export const checkIfExist = async (table, conditions, comment, id) => {
             return true;
         } else {
             return comment("כתובת מייל קיימת במערכת.");
+        }
+    } catch (error) {
+        console.error("Error in GetRequest:", error);
+        comment(`שגיאת שרת`);
+        return false;
+    }
+};
+
+export const getDonotGifts = async (id, state, comment) => {
+    const url = `http://${config.SERVERPORT}/donorGifts/${id}}`;
+    try {
+        const response = await fetch(url,{
+            headers: {'Origin': 'http://localhost:8080',}, credentials: 'include' });
+
+        if (!response.ok) {
+            throw new Error(`Request failed with status: ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        if (Object.keys(data).length === 0) {
+            return false;
+        } else {
+            state(data["data"][0]);
+            return true;
         }
     } catch (error) {
         console.error("Error in GetRequest:", error);

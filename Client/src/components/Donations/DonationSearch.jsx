@@ -3,7 +3,7 @@ import { getRequest } from "../Tools/APIRequests";
 import { Accordion, AccordionSummary, AccordionDetails, Typography, Box, TextField, Button } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import SearchIcon from '@mui/icons-material/Search';
-import { isEmptyObject } from "../Tools/objectsOperations"
+import dayjs from 'dayjs';
 
 const DonationSearch = ({ fields, setDonationsToDisplay, setQueryString, rowsPerPage, setTotalDonationsCount }) => {
     const [donationDetails, setDonationDetails] = useState({});
@@ -58,49 +58,70 @@ const DonationSearch = ({ fields, setDonationsToDisplay, setQueryString, rowsPer
                         <form onSubmit={handleSubmit}>
                             <Box display="flex" alignItems="center" flexWrap="wrap" gap={0.5}>
                                 <TextField
-                                    style={{ width: '85px' }}
+                                    style={{ width: '100px' }}
                                     label="מס' תרומה"
                                     variant="outlined"
                                     name="id"
                                     value={donationDetails.id}
                                     onChange={handleChange}
                                     size="small"
+                                    InputLabelProps={{
+                                        shrink: true,
+                                    }}
                                 />
                                 <TextField
-                                    style={{ width: '130px' }}
+                                    style={{ width: '100px' }}
                                     label="מספר תורם"
                                     variant="outlined"
                                     name="donor_id"
                                     value={donationDetails.donor_id}
                                     onChange={handleChange}
                                     size="small"
+                                    InputLabelProps={{
+                                        shrink: true,
+                                    }}
                                 />
                                 <TextField
-                                    style={{ width: '130px' }}
+                                    style={{ width: '140px' }}
                                     label="סכום התרומה"
                                     variant="outlined"
                                     name="amount"
                                     value={donationDetails.amount}
                                     onChange={handleChange}
                                     size="small"
+                                    InputLabelProps={{
+                                        shrink: true,
+                                    }}
                                 />
                                 <TextField
-                                    style={{ width: '170px' }}
+                                    style={{ width: '190px' }}
+                                    label="תאריך"
                                     variant="outlined"
                                     name="date"
                                     type="date"
-                                    value={donationDetails.date}
                                     onChange={handleChange}
                                     size="small"
+                                    value={donationDetails.date ? dayjs(updateDonation.date).format('YYYY-MM-DD') : ''}
+                                    InputProps={{
+                                    inputProps: { 
+                                        max: dayjs().format('YYYY-MM-DD') 
+                                    }
+                                }}
+                                    InputLabelProps={{
+                                        shrink: true,
+                                    }}
                                 />
                                 <TextField
-                                    style={{ width: '90px' }}
+                                    style={{ width: '140px' }}
                                     label="גובה תרומה מינימלי"
                                     variant="outlined"
                                     name="minDonationAmount"
-                                    value={donationDetails.minDonationAmount}
+                                    value={minDonationAmount}
                                     onChange={handleChange}
                                     size="small"
+                                    InputLabelProps={{
+                                        shrink: true,
+                                    }}
                                 />
                                 <Button variant="contained" color="primary" type="submit" endIcon={<SearchIcon sx={{ marginRight: 1, marginLeft: -1 }} />}>
                                     חפש

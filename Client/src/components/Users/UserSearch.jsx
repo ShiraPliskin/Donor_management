@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { getRequest } from "../Tools/APIRequests";
-import { Accordion, AccordionSummary, AccordionDetails, Typography, Box, TextField, Button } from '@mui/material';
+import { Accordion, AccordionSummary, AccordionDetails, Typography, Box, TextField, Button, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import SearchIcon from '@mui/icons-material/Search';
-import { isEmptyObject } from "../Tools/objectsOperations"
 
 const UserSearch = ({ fields, setUsersToDisplay, setQueryString, rowsPerPage, setTotalCount }) => {
-
     const [userDetails, setUserDetails] = useState({});
     const [commentArea, setCommentArea] = useState("");
 
@@ -60,7 +58,9 @@ const UserSearch = ({ fields, setUsersToDisplay, setQueryString, rowsPerPage, se
                                 value={userDetails.id}
                                 onChange={handleChange}
                                 size="small"
-                                margin="dense"
+                                InputLabelProps={{
+                                    shrink: true
+                                }}
                             />
                             <TextField
                                 style={{ width: '220px' }}
@@ -70,7 +70,9 @@ const UserSearch = ({ fields, setUsersToDisplay, setQueryString, rowsPerPage, se
                                 value={userDetails.name}
                                 onChange={handleChange}
                                 size="small"
-                                margin="dense"
+                                InputLabelProps={{
+                                    shrink: true
+                                }}
                             />
                             <TextField
                                 style={{ width: '250px' }}
@@ -81,18 +83,27 @@ const UserSearch = ({ fields, setUsersToDisplay, setQueryString, rowsPerPage, se
                                 value={userDetails.email}
                                 onChange={handleChange}
                                 size="small"
-                                margin="dense"
+                                InputLabelProps={{
+                                    shrink: true
+                                }}
                             />
-                            <TextField
-                                style={{ width: '180px' }}
-                                label="הרשאה"
-                                variant="outlined"
-                                name="permission"
-                                value={userDetails.permission}
-                                onChange={handleChange}
-                                size="small"
-                                margin="dense"
-                            />
+                            <FormControl style={{ width: '150px' }} size="small" >
+                                <InputLabel id="permission-label" shrink>
+                                    הרשאה
+                                </InputLabel>
+                                <Select
+                                    labelId="permission-label"
+                                    id="permission"
+                                    name="permission"
+                                    label="הרשאה"
+                                    size="small"
+                                    onChange={handleChange}
+                                    notched
+                                >
+                                    <MenuItem value="מזכיר">מזכיר</MenuItem>
+                                    <MenuItem value="מנהל">מנהל</MenuItem>
+                                </Select>
+                            </FormControl>
                             <Button variant="contained" color="primary" type="submit" endIcon={<SearchIcon sx={{ marginRight: 1, marginLeft: -1 }} />}>
                                 חפש
                             </Button>

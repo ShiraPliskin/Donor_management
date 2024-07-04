@@ -18,7 +18,7 @@ const ContactDonorForm = ({ type, setUpdatedDonor, updatedDonor }) => {
     };
 
     return (<>
-        <Grid item xs={12} sm={6}>
+        <Grid item xs={12} sm={3}>
             {!updatedDonor.contact_id && type !== "display" ?
                 <Button
                     fullWidth
@@ -32,7 +32,6 @@ const ContactDonorForm = ({ type, setUpdatedDonor, updatedDonor }) => {
                 <TextField
                     disabled
                     size="small"
-                    margin="dense"
                     name="contact_id"
                     label="מס' איש קשר"
                     type="text"

@@ -4,14 +4,13 @@ import Checkbox from "@mui/material/Checkbox";
 import { deleteRequest } from "./APIRequests";
 import GenericMessage from "./GenericSuccessMessage";
 
-const GenericDeletion = ({ id, warningOpen, setWarningOpen, table, objectName, objectState, formOpen, setTotal, isSucceed, setIsSucceed }) => {
+const GenericDeletion = ({ id, warningOpen, setWarningOpen, table, objectName, objectState, setTotal}) => {
 
-    // const [isSucceed, setIsSucceed] = useState('');
+    const [isSucceed, setIsSucceed] = useState('');
     const [isChecked, setIsChecked] = useState('');
 
     useEffect(() => {
-        console.log("isSucceed ", isSucceed);
-        if (isSucceed === "deletedSuccessfully") {
+        if (isSucceed === "success") {
             objectState((prev) => {
                 return prev.filter(obj => obj.id !== id);
             });
@@ -19,11 +18,9 @@ const GenericDeletion = ({ id, warningOpen, setWarningOpen, table, objectName, o
         }
     }, [isSucceed]);
 
-    const deleteObject = () => {
+    const deleteObject = async () => {
         setIsSucceed("");
-        deleteRequest(table, id, setIsSucceed);
-        setWarningOpen(false);
-        formOpen(false);
+        await deleteRequest(table, id, setIsSucceed);
     };
 
     const handleClickAgree = () => {
@@ -63,8 +60,8 @@ const GenericDeletion = ({ id, warningOpen, setWarningOpen, table, objectName, o
                     </Box>
                 </DialogContent>
             </Dialog>
-            {/* {isSucceed === "success" && <GenericMessage message={`${objectName} מספר ${id} נמחק בהצלחה`} type="success"/>}
-            {isSucceed === "error" && <GenericMessage message={`מחיקת ${objectName} נכשלה`} type="error" />} */}
+            {isSucceed === "success" && <GenericMessage message={`מחיקת ${objectName} מספר ${id} התבצעה בהצלחה`} type="success"/>}
+            {isSucceed === "error" && <GenericMessage message={`מחיקת ${objectName} נכשלה`} type="error" />}
         </>
     );
 };

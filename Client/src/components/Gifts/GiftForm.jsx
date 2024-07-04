@@ -12,6 +12,7 @@ import _ from 'lodash';
 import FileUpload from "./FileUpload";
 import GiftImg from "./GiftImg";
 import GiftDelivery from "./GiftDelivery";
+import GiftDonors from "./GiftDonors";
 
 const GiftForm = ({ fields, giftDetails, setGiftDetails, deleteGift, sendRequest, open, handleClose, type }) => {
 
@@ -293,7 +294,10 @@ const GiftForm = ({ fields, giftDetails, setGiftDetails, deleteGift, sendRequest
                             </Grid>
                             {formType !== "display" && <FileUpload updatedGift={updatedGift} setUpdatedGift={setUpdatedGift} />}  
                             <GiftImg imgUrl={updatedGift.img}/>
-                            {formType === "display" && updatedGift.amount > 0 && <GiftDelivery gift={updatedGift}/> }
+                            {formType === "display" && <>
+                              <GiftDelivery gift={giftDetails}/>
+                              <GiftDonors giftDetails={giftDetails}/>
+                            </>}
                         </Grid>
                         {commentArea}
                     </form>
