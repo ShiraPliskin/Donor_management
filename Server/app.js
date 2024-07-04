@@ -9,7 +9,8 @@ import { contactsRouter } from './router/contactsRouter.js';
 import { giftsDeliveryRouter } from './router/giftsDeliveryRouter.js';
 import { donationsRouter } from './router/donationsRouter.js';
 import bodyparser from 'body-parser';
-import {authenticateToken} from './middleware/authenticateToken.js'
+import {authenticateToken} from './middleware/authenticateToken.js';
+import { forgotPasswordRouter } from './router/forgotPasswordRouter.js';
 import cookieParser from 'cookie-parser';
 const app = express();
 app.use(cors({
@@ -30,6 +31,7 @@ app.use('/gifts',authenticateToken, giftsRouter);
 app.use('/importers',authenticateToken, importersRouter);
 app.use('/contacts',authenticateToken, contactsRouter);
 app.use('/giftsDelivery',authenticateToken, giftsDeliveryRouter);
+app.use('/register/forgotPassword', forgotPasswordRouter);
 
 app.listen(8080, (err) => {
     if (err) console.error(err);

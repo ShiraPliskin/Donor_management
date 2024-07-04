@@ -21,7 +21,7 @@ const Login = () => {
   useEffect(() => {
     if (status === 200)
       navigateToHomePage(userDetails);
-    else if (status === 401)
+    else if (status === 500)
       setComment("כתובת מייל או סיסמא שגויים.");
   }, [status])
 

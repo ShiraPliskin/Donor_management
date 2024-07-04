@@ -42,7 +42,7 @@ const UserUpdatePassword = ({ open, handleClose, id, useType, formType, addPWSuc
             putRequest("register", passwordObject, id, setUpdateSuccessful);
             handleClose();
         }
-        else if (status === 401) {
+        else if (status === 500) {
             setErrorMessage("סיסמתך הנוכחית שגויה")
         }
     }, [status])
