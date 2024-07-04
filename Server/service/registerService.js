@@ -8,33 +8,18 @@ export class RegisterService {
     async getRegisterById(id) {
         const queryRegister = getByIdQuery("register","user_id");
         const result =  await executeQuery(queryRegister, [id]);
-        console.log("qqqqqq "+result[0].password)
         return result;
     }
 
     async getRegister(passwordRegister,id) {
         const queryRegister = getByIdQuery("register","user_id");
         const result =  await executeQuery(queryRegister, [id]);
-        if(result[0])
-        {
-            let algorithm = "sha256";
-            let key = passwordRegister;
-            let digest= crypto.createHash(algorithm).update(key).digest("base64");
-            if(result[0].password===digest)
-            {
-                return {
-                type: 'Success',
-                statusCode: 200,
-                result};
-            }
-            else
-                return {type: 'Error', statusCode:500,result};
-        }
-        else
-        {
-            return {type: 'Error', statusCode:204,result};
-
-        }
+        if(!result[0] || result.length < 0) throw new Error("סיסמה לא תקינה")
+        let algorithm = "sha256";
+        let key = passwordRegister;
+        let digest= crypto.createHash(algorithm).update(key).digest("base64");
+        if(result[0].password!==digest) throw new Error("אין אפשרות לערוך פעולה זו");        
+        return { type: 'Success', result};
     }
 
     async addRegister(register) {
@@ -57,23 +42,13 @@ export class RegisterService {
     async updateRegister(updatedRegister, id) {
         let digest,key,algorithm;
         const resultItem = await this.getRegisterById(id);
-        if(resultItem[0])
-        {
-            algorithm = "sha256";
-            key = updatedRegister.prevPassword;
-            digest= crypto.createHash(algorithm).update(key).digest("base64");
-            if(resultItem[0].password!==digest)
-            {
-                return {type: 'Error', statusCode:500};
-            }
-        }
-        else{
-            return {type: 'Error', statusCode:500};
-        }
+        if (!resultItem[0]) throw new Error("שגיאה בקבלת הנתונים");
+        algorithm = "sha256";
+        key = updatedRegister.prevPassword;
+        digest= crypto.createHash(algorithm).update(key).digest("base64");
+        if(resultItem[0].password!==digest) throw new Error("אין אפשרת לערוך פעולה זו")
         key = updatedRegister.password;
-        console.log(" old digest  "    +digest);
         digest= crypto.createHash(algorithm).update(key).digest("base64"); 
-        console.log("new digest  "    +digest);
         const updatePassword = {
             password: digest
         };  

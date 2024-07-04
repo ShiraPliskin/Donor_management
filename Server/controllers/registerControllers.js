@@ -7,7 +7,7 @@ export class RegisterController {
     ///בשביל התוקן = דוגמה
     // const hashedPassword = await bcrypt.hash(password, 10);
     //             const response = await registerService.addUser({ ...req.body, password: hashedPassword });
-                
+
     //             //req.body.id = response.body.id;
     //             const token = jwt.sign(
     //                 { username: req.body.username, id: req.body.id, email: req.body.email },
@@ -32,8 +32,8 @@ export class RegisterController {
     //         next(err)
     //     }
     // }
-    
-    
+
+
     // async addRegister(req, res, next) {
     //     try {
     //         const registerService = new RegisterService();
@@ -50,15 +50,29 @@ export class RegisterController {
     // }
 
 
+
+
+
+
+    // async getRegister(req, res, next) {
+    //     try {
+    //         const registerService = new RegisterService();
+    //         await registerService.getRegister(req.body.password, req.params.id);
+    //         res.send()
+    //     }
+    //     catch (ex) {
+    //         const err = {}
+    //         err.statusCode = 500;
+    //         err.message = ex;
+    //         next(err)
+    //     }
+    // }
+
     async getRegister(req, res, next) {
         try {
             const registerService = new RegisterService();
-            const {type, statusCode, result} = await registerService.getRegister(req.body.password,req.params.id);
-            if (type === 'Error'){
-                return res.status(statusCode).json({status: statusCode});
-              }
-            else 
-                res.status(200).json({ status: 200 });
+            await registerService.getRegister(req.body.password, req.params.id);
+            res.send()
 
         }
         catch (ex) {
@@ -83,16 +97,11 @@ export class RegisterController {
     //     }
     // }
 
-    async updateRegister(req, res,next) {
+    async updateRegister(req, res, next) {
         try {
-            const registerService = new RegisterService();  
-            const {type, statusCode, result} = await registerService.updateRegister(req.body,req.params.id);
-            if (type === 'Error'){
-                return res.status(statusCode).json({status: statusCode});
-              }
-            else 
-                res.status(200).json({ status: 200, data:result });
-
+            const registerService = new RegisterService();
+            const { result } = await registerService.updateRegister(req.body, req.params.id);
+            res.json({ data: result });
         }
         catch (ex) {
             const err = {}
@@ -101,5 +110,5 @@ export class RegisterController {
             next(err)
         }
     }
-    
+
 }

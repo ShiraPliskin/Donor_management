@@ -21,7 +21,6 @@ export class ContactsService {
     async deleteContact(idKey, idValue) {
         const donors = await donorsService.getDonors({ filter: `contact_id=${idValue}` });
         for (const donor of donors.data) {
-            console.log("donor  " + donors.data.id);
             await donorsService.patchDonor({ contact_id: null }, donor.id);
         }
         const query = deleteQuery("contacts", `${idKey}`);
