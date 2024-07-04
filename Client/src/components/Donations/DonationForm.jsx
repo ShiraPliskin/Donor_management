@@ -8,7 +8,6 @@ import { trimObjectStrings } from "../Tools/objectsOperations"
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import PaymentIcon from '@mui/icons-material/Payment';
 import ChooseDonorButton from "./ChooseDonorButton";
-import { red } from "@mui/material/colors";
 
 const DonationForm = ({ fields, donationDetails, setDonationDetails, sendRequest, open, handleClose, type, deleteDonation }) => {
 
@@ -43,12 +42,7 @@ const DonationForm = ({ fields, donationDetails, setDonationDetails, sendRequest
         setDonationChanged(!_isEqual(trimObjectStrings(donationDetails), trimObjectStrings(updateDonation)));
     }, [updateDonation]);
 
-    const undoEdit = () => {
-        setFormType("display");
-        setUpdateDonation(donationDetails);
-    }
-
-    const undoAdd = () => {
+    const closeForm = () => {
         setUpdateDonation(donationDetails);
         handleClose();
     }
@@ -140,6 +134,9 @@ const DonationForm = ({ fields, donationDetails, setDonationDetails, sendRequest
                                         fullWidth
                                         margin="dense"
                                         size="small"
+                                        helperText={helperText.payment_method}
+                                        error={error.payment_method}
+                                        required
                                     >
                                         <InputLabel id="payment_method-label">שיטת התשלום</InputLabel>
                                         <Select
@@ -147,10 +144,7 @@ const DonationForm = ({ fields, donationDetails, setDonationDetails, sendRequest
                                             id="payment_method"
                                             name="payment_method"
                                             label="שיטת התשלום"
-                                            error={error.payment_method}
-                                            helperText={helperText.payment_method}
                                             value={updateDonation.payment_method || ""}
-                                            required
                                             onChange={handleChange}
                                             startAdornment={
                                                 <InputAdornment position="start">
@@ -221,12 +215,12 @@ const DonationForm = ({ fields, donationDetails, setDonationDetails, sendRequest
                         </>}
                     {formType === "edit" &&
                         <>
-                            <Button onClick={() => undoEdit()} color="primary">ביטול</Button>
+                            <Button onClick={() => closeForm()} color="primary">ביטול</Button>
                             <Button disabled={!donationChanged} onClick={handleSubmit} color="primary">עדכן</Button>
                         </>}
                     {formType === "add" &&
                         <>
-                            <Button onClick={() => undoAdd()} color="primary">ביטול</Button>
+                            <Button onClick={() => closeForm()} color="primary">ביטול</Button>
                             <Button onClick={handleSubmit} color="primary">הוסף</Button>
                         </>}
                 </DialogActions>

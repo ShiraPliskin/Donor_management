@@ -1,7 +1,7 @@
 import express from "express";
 import { GiftsDeliveryController } from "../controllers/giftsDeliveryController.js";
-const giftsDeliveryRouter = express.Router();
 
+const giftsDeliveryRouter = express.Router();
 const giftsDeliveryController = new GiftsDeliveryController();
 
 giftsDeliveryRouter.get('/', giftsDeliveryController.getGiftsDelivery)

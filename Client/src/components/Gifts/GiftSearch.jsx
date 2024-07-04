@@ -8,7 +8,6 @@ import { isEmptyObject } from "../Tools/objectsOperations"
 const GiftSearch = ({ fields, giftsToDisplay, setGiftsToDisplay, setQueryString, rowsPerPage, setTotalGiftsCount }) => {
     const [giftDetails, setGiftDetails] = useState({});
     const [commentArea, setCommentArea] = useState("");
-    const [donorId, setDonorId] = useState("");
 
     useEffect(() => {
         setGiftDetails(fields);
@@ -16,7 +15,7 @@ const GiftSearch = ({ fields, giftsToDisplay, setGiftsToDisplay, setQueryString,
     }, []);
 
     useEffect(() => {
-        if (giftsToDisplay.length === 0 && (!isEmptyObject(giftDetails) || donorId)) {
+        if (giftsToDisplay.length === 0 && !isEmptyObject(giftDetails)) {
             setCommentArea("לא נמצאה מתנה ");
         } else {
             setCommentArea("");
@@ -49,8 +48,6 @@ const GiftSearch = ({ fields, giftsToDisplay, setGiftsToDisplay, setQueryString,
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        if (name === "donorId")
-            setDonorId(value);
         setGiftDetails((prevData) => ({ ...prevData, [name]: value }));
     };
 
@@ -64,7 +61,7 @@ const GiftSearch = ({ fields, giftsToDisplay, setGiftsToDisplay, setQueryString,
                     <form onSubmit={handleSubmit}>
                         <Box display="flex" alignItems="center" flexWrap="wrap" gap={0.5}>
                             <TextField
-                                style={{ width: '100px' }}
+                                style={{ width: '110px' }}
                                 label="מס' מתנה"
                                 variant="outlined"
                                 name="id"
@@ -74,21 +71,11 @@ const GiftSearch = ({ fields, giftsToDisplay, setGiftsToDisplay, setQueryString,
                                 margin="dense"
                             />
                             <TextField
-                                style={{ width: '200px' }}
+                                style={{ width: '300px' }}
                                 label="תיאור המתנה"
                                 variant="outlined"
                                 name="description"
                                 value={giftDetails.description}
-                                onChange={handleChange}
-                                size="small"
-                                margin="dense"
-                            />
-                            <TextField
-                                style={{ width: '150px' }}
-                                label="מס' תורם"
-                                variant="outlined"
-                                name="donorId"
-                                value={donorId}
                                 onChange={handleChange}
                                 size="small"
                                 margin="dense"

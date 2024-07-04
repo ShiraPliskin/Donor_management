@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Button, Grid, TextField, InputAdornment, Dialog, DialogContent, Box} from "@mui/material";
+import { Button, Grid, TextField, InputAdornment, Dialog, DialogContent, Box, DialogTitle} from "@mui/material";
 import PersonIcon from '@mui/icons-material/Person';
 import IconButton from '@mui/material/IconButton';
 import PersonSearchIcon from '@mui/icons-material/PersonSearch';
@@ -9,10 +9,6 @@ const ChooseDonorButton = ({ type, setUpdateDonation, updatedDonation, setCommen
 
     const [openDonorsForm, setOpenDonorsForm] = useState();
     const [selectedDonorId, setSelectedDonorId] = useState([]);
-
-    useEffect(() => {
-       console.log("selectedDonorId", selectedDonorId)
-    }, [selectedDonorId]);
 
     const handleSave = () => {
         setUpdateDonation((prevData) => ({ ...prevData, donor_id: selectedDonorId }));
@@ -72,6 +68,7 @@ const ChooseDonorButton = ({ type, setUpdateDonation, updatedDonation, setCommen
                 disableEscapeKeyDown
                 maxWidth="lg"
             >
+                <DialogTitle sx={{ bgcolor: 'lightblue', fontWeight: 'bold', marginBottom: '5px' }}>בחירת תורם עבור תרומה</DialogTitle>
                 <DialogContent>
                     <Donors
                         type="donations"

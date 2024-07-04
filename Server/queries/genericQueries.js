@@ -68,7 +68,7 @@ function addQuery(table_name, newObj) {
     let values = [];
     for (const key in newObj) {
         keys.push(`${key}`);
-        values.push("?")
+        values.push("?");
     }
     query += "(" + keys.join(', ') + ")";
     query += "VALUES";

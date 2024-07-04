@@ -1,5 +1,5 @@
 import { executeQuery } from './db.js'
-import {addQuery, updateQuery, getByIdQuery, getByConditionQuery, deleteQuery,patchQuery} from './querys.js'
+import {addQuery, updateQuery, getByIdQuery, getByConditionQuery, deleteQuery,patchQuery} from '../queries/genericQueries.js'
 import { DonationsService} from './donationsService.js'
 import { GiftsDeliveryService} from './giftsDeliveryService.js'
 const giftsDeliveryService = new GiftsDeliveryService;

@@ -45,12 +45,7 @@ const ContactForm = ({ fields, contactDetails, setContactDetails, sendRequest, o
         setContactChanged(!_isEqual(trimObjectStrings(contactDetails), trimObjectStrings(updatedContact)));
     }, [updatedContact]);
 
-    const undoEdit = () => {
-        setFormType("display");
-        setUpdatedContact(contactDetails);
-    }
-
-    const undoAdd = () => {
+    const closeForm = () => {
         setUpdatedContact(contactDetails);
         handleClose();
     }
@@ -243,12 +238,12 @@ const ContactForm = ({ fields, contactDetails, setContactDetails, sendRequest, o
                         </>}
                     {formType === "edit" &&
                         <>
-                            <Button onClick={() => undoEdit()} color="primary">ביטול</Button>
+                            <Button onClick={() => closeForm()} color="primary">ביטול</Button>
                             <Button disabled={!contactChanged} onClick={handleSubmit} color="primary">עדכן</Button>
                         </>}
                     {formType === "add" &&
                         <>
-                            <Button onClick={() => undoAdd()} color="primary">ביטול</Button>
+                            <Button onClick={() => closeForm()} color="primary">ביטול</Button>
                             <Button onClick={handleSubmit} color="primary">הוסף</Button>
                         </>}
                 </DialogActions>

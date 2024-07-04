@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Button, Dialog, DialogContent, Grid, Box } from "@mui/material";
+import { Button, Dialog, DialogContent, Grid, Box, DialogTitle } from "@mui/material";
 import PersonIcon from '@mui/icons-material/Person';
 import PeopleIcon from '@mui/icons-material/People';
 import Contacts from "../Contacts/Contacts";
@@ -25,7 +25,12 @@ const ContactsOptionsForm = ({ openOptionsForm, closeOptionsForm, setUpdatedDono
     }, [selectedContactId]);
 
     const handleSave = () => {
-        setUpdatedDonor((prevData) => ({ ...prevData, contactId: selectedContactId }));
+        setUpdatedDonor((prevData) => ({ ...prevData, contact_id: selectedContactId }));
+        setSearchFormOpen(false);
+        closeOptionsForm();
+    }
+
+    const closeContactSearch = () => {
         setSearchFormOpen(false);
         closeOptionsForm();
     }
@@ -73,13 +78,14 @@ const ContactsOptionsForm = ({ openOptionsForm, closeOptionsForm, setUpdatedDono
                 disableEscapeKeyDown
                 maxWidth="lg"
             >
+                <DialogTitle sx={{ bgcolor: 'lightblue', fontWeight: 'bold', marginBottom: '5px' }}>בחירת איש קשר עבור תורם חדש</DialogTitle>
                 <DialogContent>
                     <Contacts
                         selectedContactId={selectedContactId}
                         setSelectedContactId={setSelectedContactId}
                     />
                     <Box sx={{ display: 'flex', justifyContent: 'flex-end', marginTop: 2 }}>
-                        <Button onClick={() => { setSearchFormOpen(false) }}>ביטול</Button>
+                        <Button onClick={closeContactSearch}>ביטול</Button>
                         <Button disabled={!selectedContactId} onClick={handleSave} sx={{ marginRight: 2 }}>שמירה</Button>
                     </Box>
                 </DialogContent>
@@ -90,6 +96,7 @@ const ContactsOptionsForm = ({ openOptionsForm, closeOptionsForm, setUpdatedDono
                 type="donorContact"
                 newContactID={selectedContactId}
                 setNewContactID={setSelectedContactId}
+                closeOptionsForm={closeOptionsForm}
             />}
         </>
     );

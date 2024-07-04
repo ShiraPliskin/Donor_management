@@ -90,13 +90,12 @@ export const deleteRequest = async (table, id, setIsSucceed) => {
         }
 
         const data = await response.json();
+        console.log("data ",Object.keys(data).length)
 
         if (Object.keys(data).length === 0) {
             setIsSucceed("error");
-            return false
         }
-       setIsSucceed("success");
-       return true
+        setIsSucceed("success");
 
     } catch (error) {
         console.error("Error creating request:", error);

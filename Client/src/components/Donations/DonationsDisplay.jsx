@@ -51,7 +51,7 @@ const DonationsDisplay = ({ donationsToDisplay, setDonationsToDisplay, queryStri
             {donationsToDisplay.length > 0 && (
            <Box sx={{ minWidth: 650 }} maxWidth={"xl"} >
                 <TableContainer component={Paper} sx={{marginTop: 5 }}>
-                    <Table sx={{ minWidth: 650}}>
+                    <Table sx={{ minWidth: 650}} size='small'>
                         <TableHead>
                             <TableRow>
                                 <TableCell sx={{ fontWeight: 'bold', textAlign: 'center' }}>מס' תרומה</TableCell>

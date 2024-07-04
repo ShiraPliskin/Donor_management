@@ -10,19 +10,20 @@ const GenericDeletion = ({ id, warningOpen, setWarningOpen, table, objectName, o
     const [isChecked, setIsChecked] = useState('');
 
     useEffect(() => {
+        console.log(isSucceed);
         if (isSucceed === "success") {
             objectState((prev) => {
                 return prev.filter(obj => obj.id !== id);
             });
             setTotal((prev) => prev-1 );
-            setWarningOpen(false);
-            formOpen(false);
         }
     }, [isSucceed]);
 
     const deleteObject = () => {
         setIsSucceed("");
         deleteRequest(table, id, setIsSucceed);
+        // setWarningOpen(false);
+        // formOpen(false);
     };
 
     const handleClickAgree = () => {
@@ -57,8 +58,8 @@ const GenericDeletion = ({ id, warningOpen, setWarningOpen, table, objectName, o
                         </IconButton>
                     </Typography>
                     <Box sx={{ display: 'flex', justifyContent: 'flex-end', marginTop: 2 }}>
-                        <Button disabled={!isChecked} onClick={deleteObject} sx={{ marginRight: 2 }}>מחיקה</Button>
                         <Button onClick={() => { setWarningOpen(false) }}>ביטול</Button>
+                        <Button disabled={!isChecked} onClick={deleteObject} sx={{ marginRight: 2 }}>מחיקה</Button>
                     </Box>
                 </DialogContent>
             </Dialog>

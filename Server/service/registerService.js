@@ -1,6 +1,6 @@
 
 import { executeQuery } from './db.js';
-import {addQuery,deleteQuery,getByIdQuery,updateQuery} from './querys.js'
+import {addQuery,deleteQuery,getByIdQuery,updateQuery} from '../queries/genericQueries.js'
 import crypto from 'crypto';
 
 export class RegisterService {

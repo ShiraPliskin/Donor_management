@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getByIdRequest, putRequest } from '../Tools/APIRequests';
+import { putRequest } from '../Tools/APIRequests';
 import { filterEmptyValues } from "../Tools/objectsOperations"
 import { TableCell, TableRow, IconButton } from '@mui/material';
 import VisibilityIcon from '@mui/icons-material/Visibility';

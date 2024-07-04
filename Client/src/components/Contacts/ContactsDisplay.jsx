@@ -52,7 +52,7 @@ const ContactsDisplay = ({ fields, contactsToDisplay, setContactsToDisplay, sele
             {contactsToDisplay.length > 0 && (<>
                 <Box sx={{ minWidth: 650 }} maxWidth={type === "contacts" ? "xl" : "lg"} >
                     <TableContainer component={Paper} sx={{ width: '100%', height: '100%', marginTop: 5 }}>
-                        <Table sx={{ width: '100%', height: '100%' }} >
+                        <Table sx={{ width: '100%', height: '100%' }} size='small'>
                             <TableHead>
                                 <TableRow>
                                     <TableCell sx={{ fontWeight: 'bold', textAlign: 'center' }}>מס' איש קשר</TableCell>

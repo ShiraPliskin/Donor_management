@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Select, MenuItem, InputLabel, FormControl, Box, Button } from '@mui/material';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Select, MenuItem, InputLabel, FormControl, Typography, Box, Button } from '@mui/material';
 import { getRequest } from "../Tools/APIRequests";
 import TouchAppIcon from '@mui/icons-material/TouchApp';
 import ClearIcon from '@mui/icons-material/Clear';
@@ -22,7 +22,7 @@ const DonorsDisplay = ({ donorsToDisplay, setDonorsToDisplay, queryString, rowsP
     useEffect(() => {
         setDisabledShowMore((page + 1) * rowsPerPage >= totalDonorsCount);
     }, [page, totalDonorsCount]);
-    
+
     const selectAllDonors = () => {
         setSelectedDonorId(donorsToDisplay.map(donor => donor.id));
     }
@@ -59,9 +59,24 @@ const DonorsDisplay = ({ donorsToDisplay, setDonorsToDisplay, queryString, rowsP
     return (
         <>
             {donorsToDisplay.length > 0 && (
-                <Box sx={{ minWidth: 650 }} maxWidth={"xl"} >
-                    <TableContainer component={Paper} sx={{ marginTop: 5 }}>
-                        <Table sx={{ minWidth: 650 }}>
+                <Box sx={{ minWidth: 650 }} maxWidth={"xl"}>
+                    <FormControl sx={{ marginTop: 2, marginLeft: 2, textAlign: 'right' }}>
+                        <InputLabel>מיון לפי</InputLabel>
+                        <Select
+                            value={sortKey}
+                            onChange={handleChangeSortKey}
+                            label="מיון לפי"
+                            sx={{ height: 36, minWidth: 150 }}
+                        >
+                            <MenuItem value="id">מספר תורם</MenuItem>
+                            <MenuItem value="f_name">שם פרטי</MenuItem>
+                            <MenuItem value="l_name">שם משפחה</MenuItem>
+                            <MenuItem value="email">כתובת מייל</MenuItem>
+                            <MenuItem value="address">כתובת</MenuItem>
+                        </Select>
+                    </FormControl>
+                    <TableContainer component={Paper} sx={{ marginTop: 2 }}>
+                        <Table sx={{ minWidth: 650 }} size='small'>
                             <TableHead>
                                 <TableRow>
                                     <TableCell sx={{ fontWeight: 'bold', textAlign: 'center' }}>מס' תורם</TableCell>
@@ -71,29 +86,18 @@ const DonorsDisplay = ({ donorsToDisplay, setDonorsToDisplay, queryString, rowsP
                                     <TableCell sx={{ fontWeight: 'bold', textAlign: 'center' }}>טלפון</TableCell>
                                     <TableCell sx={{ fontWeight: 'bold', textAlign: 'center' }}>כתובת</TableCell>
                                     <TableCell sx={{ textAlign: 'center' }}>
-                                        <FormControl>
-                                            <InputLabel>מיון לפי</InputLabel>
-                                            <Select
-                                                value={sortKey}
-                                                onChange={handleChangeSortKey}
-                                                label="מיון לפי"
-                                            >
-                                                <MenuItem value="id">מספר תורם</MenuItem>
-                                                <MenuItem value="f_name">שם פרטי</MenuItem>
-                                                <MenuItem value="l_name">שם משפחה</MenuItem>
-                                                <MenuItem value="email">כתובת מייל</MenuItem>
-                                                <MenuItem value="address">כתובת</MenuItem>
-                                            </Select>
-                                        </FormControl>
-                                        {type==="gifts" &&
-                                        <Box>
-                                        <Button onClick={selectAllDonors} variant="contained" endIcon={<TouchAppIcon sx={{ marginRight: 0.5, marginLeft: -1 }}/>} sx={{ mt: 2 }}>
-                                        בחר הכל
-                                        </Button>
-                                        <Button onClick={clearAllDonors} variant="contained" disabled={selectedDonorId.length===0} endIcon={<ClearIcon sx={{ marginRight: 0.5, marginLeft: -1 }}/>} sx={{ mt: 2, mr: 2 }}>
-                                         נקה 
-                                        </Button>
-                                        </Box>}
+                                        {type === "gifts" &&
+                                            <Box>
+                                                {/* <Typography sx={{ fontWeight: 'bold', fontSize: '1.2rem' }}>
+                                                    {selectedDonorId.length} פריטים נבחרו
+                                                </Typography>    */}
+                                                 <Button onClick={selectAllDonors} variant="contained" endIcon={<TouchAppIcon sx={{ marginRight: 0.5, marginLeft: -1 }} />} sx={{ mt: 2 }}>
+                                                    בחר הכל
+                                                </Button>
+                                                <Button onClick={clearAllDonors} variant="contained" disabled={selectedDonorId.length === 0} endIcon={<ClearIcon sx={{ marginRight: 0.5, marginLeft: -1 }} />} sx={{ mt: 2, mr: 2 }}>
+                                                    נקה
+                                                </Button>
+                                            </Box>}
                                     </TableCell>
                                 </TableRow>
                             </TableHead>
