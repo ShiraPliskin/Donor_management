@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Select, MenuItem, InputLabel, FormControl, Typography, Box, Button } from '@mui/material';
+import { Table, TableBody, TableCell, TableContainer, IconButton, TableHead, TableRow, Paper, Select, MenuItem, InputLabel, FormControl, Typography, Box, Button } from '@mui/material';
 import { getRequest } from "../Tools/APIRequests";
 import TouchAppIcon from '@mui/icons-material/TouchApp';
 import ClearIcon from '@mui/icons-material/Clear';
+import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import DonorDisplay from './DonorDisplay';
 
 const DonorsDisplay = ({ donorsToDisplay, setDonorsToDisplay, queryString, rowsPerPage, totalDonorsCount, setTotalDonorsCount, selectedDonorId, setSelectedDonorId, type }) => {
@@ -61,12 +62,12 @@ const DonorsDisplay = ({ donorsToDisplay, setDonorsToDisplay, queryString, rowsP
             {donorsToDisplay.length > 0 && (
                 <Box sx={{ minWidth: 650 }} maxWidth={"xl"}>
                     <FormControl sx={{ marginTop: 2, marginLeft: 2, textAlign: 'right' }}>
-                        <InputLabel>מיון לפי</InputLabel>
+                        <InputLabel>מיין לפי</InputLabel>
                         <Select
                             value={sortKey}
                             onChange={handleChangeSortKey}
-                            label="מיון לפי"
-                            sx={{ height: 36, minWidth: 150 }}
+                            label="מיין לפי"
+                            sx={{ height: 40, minWidth: 150 }}
                         >
                             <MenuItem value="id">מספר תורם</MenuItem>
                             <MenuItem value="f_name">שם פרטי</MenuItem>
@@ -88,15 +89,12 @@ const DonorsDisplay = ({ donorsToDisplay, setDonorsToDisplay, queryString, rowsP
                                     <TableCell sx={{ textAlign: 'center' }}>
                                         {type === "gifts" &&
                                             <Box>
-                                                {/* <Typography sx={{ fontWeight: 'bold', fontSize: '1.2rem' }}>
-                                                    {selectedDonorId.length} פריטים נבחרו
-                                                </Typography>    */}
-                                                 <Button onClick={selectAllDonors} variant="contained" endIcon={<TouchAppIcon sx={{ marginRight: 0.5, marginLeft: -1 }} />} sx={{ mt: 2 }}>
+                                                <Button onClick={selectAllDonors} variant="contained" endIcon={<TouchAppIcon sx={{ marginRight: 0.5, marginLeft: -1 }} />} sx={{ mt: 2 }}>
                                                     בחר הכל
                                                 </Button>
-                                                <Button onClick={clearAllDonors} variant="contained" disabled={selectedDonorId.length === 0} endIcon={<ClearIcon sx={{ marginRight: 0.5, marginLeft: -1 }} />} sx={{ mt: 2, mr: 2 }}>
-                                                    נקה
-                                                </Button>
+                                                <IconButton style={{ marginTop: 15 }} disabled={selectedDonorId.length === 0} onClick={clearAllDonors}>
+                                                    <HighlightOffIcon style={{ fontSize: 35 }}/>
+                                                </IconButton>
                                             </Box>}
                                     </TableCell>
                                 </TableRow>

@@ -77,15 +77,9 @@ const DonationForm = ({ fields, donationDetails, setDonationDetails, sendRequest
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        const selectedDate = new Date(value);
-        const today = new Date();
         setUpdateDonation((prevData) => ({ ...prevData, [name]: value }));
         setError((prevData) => ({ ...prevData, [name]: false }));
         setHelperText((prevData) => ({ ...prevData, [name]: '' }));
-        if (selectedDate > today) {
-            setError((prevData) => ({ ...prevData, [name]: true }));
-            setHelperText((prevData) => ({ ...prevData, [name]: 'אין אפשרות לבחור תאריכים עתידיים' }));
-        }
     };
     return (
         <>
@@ -195,7 +189,11 @@ const DonationForm = ({ fields, donationDetails, setDonationDetails, sendRequest
                                     size="small"
                                     disabled={formType === "display"}
                                     margin="dense"
-                                    renderInput={(params) => <TextField {...params} />}
+                                    InputProps={{
+                                        inputProps: { 
+                                            max: dayjs().format('YYYY-MM-DD') 
+                                        }
+                                    }}
                                     error={error.date}
                                     helperText={helperText.date}
                                 />

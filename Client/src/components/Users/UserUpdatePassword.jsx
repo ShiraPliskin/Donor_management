@@ -6,7 +6,6 @@ import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import EditIcon from '@mui/icons-material/Edit';
 
 const UserUpdatePassword = ({ open, handleClose, id, useType, formType, addPWSucceed, setAddPWSucceed, setUpdatedUser }) => {
-    const [isPwVerified, setIsPwVerified] = useState(false);
 
     const passwordObject = {
         currentPassword: '',
@@ -18,10 +17,14 @@ const UserUpdatePassword = ({ open, handleClose, id, useType, formType, addPWSuc
         password: false,
         verifyPW: false,
     }
+
+    const [errorMessage, setErrorMessage] = useState(null);
+    const [isPwVerified, setIsPwVerified] = useState(false);
     const [passwords, setPasswords] = useState(passwordObject);
     const [showPasswords, setShowPasswords] = useState(errorObject);
     const [error, setError] = useState(errorObject);
     const [helperText, setHelperText] = useState(passwordObject);
+    const [updateSuccessful, setUpdateSuccessful] = useState('');
 
     useEffect(() => {
         setError(errorObject);
@@ -32,8 +35,18 @@ const UserUpdatePassword = ({ open, handleClose, id, useType, formType, addPWSuc
         setIsPwVerified(IsVerify);
     }, [passwords.password, passwords.verifyPW]);
 
+    useEffect(() => {
+        if (errorMessage === '') {
+            const passwordObject = { "prevPassword": passwords.currentPassword, "password": passwords.password };
+            putRequest("register", passwordObject, id, setUpdateSuccessful);
+            handleClose();
+        }
+        else return;
+    }, [errorMessage])
+
     const checkCurrentPassword = () => {
-        
+        const passwordObject = { "password": passwords.currentPassword };
+        getByPostRequest(`register/${id}`, passwordObject, setErrorMessage);
     }
 
     const IsVerify = () => {return passwords.password !== "" && passwords.password === passwords.verifyPW}
@@ -140,7 +153,7 @@ const UserUpdatePassword = ({ open, handleClose, id, useType, formType, addPWSuc
                 open={open}
                 onClose={(event, reason) => {
                     if (reason !== 'backdropClick' && reason !== 'escapeKeyDown') {
-                        setOpen(false);
+                        handleClose();
                     }
                 }}
                 disableEscapeKeyDown
@@ -230,12 +243,15 @@ const UserUpdatePassword = ({ open, handleClose, id, useType, formType, addPWSuc
                                 )
                             }} />
                     </Grid>
+                    <p>{errorMessage}</p>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose}>ביטול</Button>
                     <Button disabled={!isPwVerified} onClick={handleSubmit} sx={{ marginRight: 2 }}>שמירה</Button>
                 </DialogActions>
             </Dialog>}
+            {updateSuccessful === "success" && <GenericMessage message="סיסמתך הוחלפה בהצלחה" type="success" />}
+            {updateSuccessful === "error" && <GenericMessage message="החלפת הסיסמא נכשלה" type="error" />}
     </>);
 };
 

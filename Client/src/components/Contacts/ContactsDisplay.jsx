@@ -14,7 +14,7 @@ const ContactsDisplay = ({ fields, contactsToDisplay, setContactsToDisplay, sele
     useEffect(() => {
         if (moreContacts.length > 0) {
             setContactsToDisplay((prevData) => [...prevData, ...moreContacts]);
-            setDisabledShowMore(moreContacts.length  >= totalCount);
+            setDisabledShowMore(moreContacts.length >= totalCount);
         }
     }, [moreContacts]);
 
@@ -51,6 +51,20 @@ const ContactsDisplay = ({ fields, contactsToDisplay, setContactsToDisplay, sele
         <>
             {contactsToDisplay.length > 0 && (<>
                 <Box sx={{ minWidth: 650 }} maxWidth={type === "contacts" ? "xl" : "lg"} >
+                    <FormControl sx={{ marginTop: 2, marginLeft: 2, textAlign: 'right' }}>
+                        <InputLabel>מיין לפי</InputLabel>
+                        <Select
+                            value={sortKey}
+                            onChange={handleChangeSortKey}
+                            label="מיין לפי"
+                            sx={{ height: 40, minWidth: 150 }}
+                        >
+                            <MenuItem value="id">מספר איש קשר</MenuItem>
+                            <MenuItem value="name">שם</MenuItem>
+                            <MenuItem value="email">כתובת מייל</MenuItem>
+                            <MenuItem value="address">כתובת</MenuItem>
+                        </Select>
+                    </FormControl>
                     <TableContainer component={Paper} sx={{ width: '100%', height: '100%', marginTop: 5 }}>
                         <Table sx={{ width: '100%', height: '100%' }} size='small'>
                             <TableHead>
@@ -60,21 +74,7 @@ const ContactsDisplay = ({ fields, contactsToDisplay, setContactsToDisplay, sele
                                     <TableCell sx={{ fontWeight: 'bold', textAlign: 'center' }}>כתובת מייל</TableCell>
                                     <TableCell sx={{ fontWeight: 'bold', textAlign: 'center' }}>טלפון</TableCell>
                                     <TableCell sx={{ fontWeight: 'bold', textAlign: 'center' }}>כתובת</TableCell>
-                                    <TableCell>
-                                    <FormControl fullWidth>
-                                        <InputLabel>מיון לפי</InputLabel>
-                                        <Select
-                                            value={sortKey}
-                                            onChange={handleChangeSortKey}
-                                            label="מיון לפי"
-                                        >
-                                            <MenuItem value="id">מספר איש קשר</MenuItem>
-                                            <MenuItem value="name">שם</MenuItem>
-                                            <MenuItem value="email">כתובת מייל</MenuItem>
-                                            <MenuItem value="address">כתובת</MenuItem>
-                                        </Select>
-                                    </FormControl>
-                                    </TableCell>
+                                    <TableCell></TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
@@ -94,15 +94,15 @@ const ContactsDisplay = ({ fields, contactsToDisplay, setContactsToDisplay, sele
                             </TableBody>
                         </Table>
                         {contactsToDisplay.length >= rowsPerPage &&
-                        <div style={{ textAlign: 'center', marginTop: '10px' }}>
-                            <button onClick={handlePrevPage} disabled={page === 0}>{'<'}</button>
-                            <button onClick={handleNextPage} disabled={disabledShowMore}>{'>'}</button>
-                            <p>{`${page * rowsPerPage + 1}-${(page + 1) * rowsPerPage <= totalCount ? (page + 1) * rowsPerPage : totalCount} מתוך ${totalCount}`}</p>
-                        </div>}
+                            <div style={{ textAlign: 'center', marginTop: '10px' }}>
+                                <button onClick={handlePrevPage} disabled={page === 0}>{'<'}</button>
+                                <button onClick={handleNextPage} disabled={disabledShowMore}>{'>'}</button>
+                                <p>{`${page * rowsPerPage + 1}-${(page + 1) * rowsPerPage <= totalCount ? (page + 1) * rowsPerPage : totalCount} מתוך ${totalCount}`}</p>
+                            </div>}
                     </TableContainer>
                 </Box>
-            </> )}
-           <p>{commentArea}</p>
+            </>)}
+            <p>{commentArea}</p>
         </>
     );
 };
