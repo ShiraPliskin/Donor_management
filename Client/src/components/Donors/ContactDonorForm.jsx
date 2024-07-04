@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { Button, Grid, TextField, InputAdornment } from "@mui/material";
 import PersonIcon from '@mui/icons-material/Person';
 import IconButton from '@mui/material/IconButton';
-import EditIcon from '@mui/icons-material/Edit';
 import ContactsOptionsForm from "./ContactsOptionsForm";
 import PersonSearchIcon from '@mui/icons-material/PersonSearch';
 
@@ -20,7 +19,7 @@ const ContactDonorForm = ({ type, setUpdatedDonor, updatedDonor }) => {
 
     return (<>
         <Grid item xs={12} sm={6}>
-            {!updatedDonor.contactId && type !== "display" ?
+            {!updatedDonor.contact_id && type !== "display" ?
                 <Button
                     fullWidth
                     variant="outlined"
@@ -34,11 +33,11 @@ const ContactDonorForm = ({ type, setUpdatedDonor, updatedDonor }) => {
                     disabled
                     size="small"
                     margin="dense"
-                    name="contactId"
+                    name="contact_id"
                     label="מס' איש קשר"
                     type="text"
                     fullWidth
-                    value={updatedDonor.contactId || ""}
+                    value={updatedDonor.contact_id || ""}
                     InputProps={{
                         startAdornment: (
                             <InputAdornment position="start">

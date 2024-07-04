@@ -84,7 +84,7 @@ const ContactDisplay = ({ fields, contact, index, setContactsToDisplay, selected
                     type="display"
                 />
             )}
-             {openDeleteWarning && type==="contacts" &&
+            {openDeleteWarning &&
                 <GenericDeletion
                     id={currentContact.id}
                     warningOpen={openDeleteWarning}

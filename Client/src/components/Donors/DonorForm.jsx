@@ -64,12 +64,7 @@ const DonorForm = ({ fields, donorDetails, setDonorDetails, sendRequest, open, h
         setDonorChanged(!_isEqual(trimObjectStrings(donorDetails), trimObjectStrings(updatedDonor)));
     }, [updatedDonor]);
 
-    const undoEdit = () => {
-        setFormType("display");
-        setUpdatedDonor(donorDetails);
-    }
-
-    const undoAdd = () => {
+    const closeForm = () => {
         setUpdatedDonor(donorDetails);
         handleClose();
     }
@@ -395,12 +390,12 @@ const DonorForm = ({ fields, donorDetails, setDonorDetails, sendRequest, open, h
                         </>}
                     {formType === "edit" &&
                         <>
-                            <Button onClick={() => undoEdit()} color="primary">ביטול</Button>
+                            <Button onClick={() => closeForm()} color="primary">ביטול</Button>
                             <Button disabled={!donorChanged} onClick={handleSubmit} color="primary">עדכן</Button>
                         </>}
                     {formType === "add" &&
                         <>
-                            <Button onClick={() => undoAdd()} color="primary">ביטול</Button>
+                            <Button onClick={() => closeForm()} color="primary">ביטול</Button>
                             <Button onClick={handleSubmit} color="primary">הוסף</Button>
                         </>}
                 </DialogActions>

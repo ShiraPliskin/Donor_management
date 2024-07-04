@@ -18,8 +18,8 @@ const UserForm = ({ fields, userDetails, setUserDetails, sendRequest, open, hand
     const [formType, setFormType] = useState(type);
     const [updatedUser, setUpdatedUser] = useState(userDetails);
     const [userChanged, setUserChanged] = useState(false);
-    const [openUpdatePWForm, setOpenUpdatePWForm] = useState(false);
     const [addPasswordSucceed, setAddPasswordSucceed] = useState(false);
+    const [currentUser, setCurrentUser] = useState(JSON.parse(localStorage.getItem("currentUser")));
 
     const errorObject = {
         name: false,
@@ -47,12 +47,7 @@ const UserForm = ({ fields, userDetails, setUserDetails, sendRequest, open, hand
 
     const undoEdit = () => {
         setUpdatedUser(userDetails);
-        if (useType === "administration") {
-            setFormType("display");
-        }
-        else {
-            handleClose();
-        }
+        handleClose();
     }
 
     const undoAdd = () => {
@@ -60,10 +55,6 @@ const UserForm = ({ fields, userDetails, setUserDetails, sendRequest, open, hand
         setAddPasswordSucceed(false);
         handleClose();
     }
-
-    const handleClosePW = () => {
-        setOpenUpdatePWForm(false);
-    };
 
     useEffect(() => {
         if (userChanged) {
@@ -191,7 +182,7 @@ const UserForm = ({ fields, userDetails, setUserDetails, sendRequest, open, hand
                                             label="הרשאה"
                                             error={error.permission}
                                             helperText={helperText.permission}
-                                            value={updatedUser.permission}
+                                            value={updatedUser.permission || "מזכיר"}
                                             required
                                             onChange={handleChange}
                                             startAdornment={
@@ -206,8 +197,8 @@ const UserForm = ({ fields, userDetails, setUserDetails, sendRequest, open, hand
                                                 }
                                             }}
                                         >
-                                            <MenuItem value="secretary">מזכיר</MenuItem>
-                                            <MenuItem value="administrator">מנהל</MenuItem>
+                                            <MenuItem value="מזכיר">מזכיר</MenuItem>
+                                            <MenuItem value="מנהל">מנהל</MenuItem>
                                         </Select>
                                     </FormControl>}
                                 {formType === "display" &&
@@ -230,14 +221,9 @@ const UserForm = ({ fields, userDetails, setUserDetails, sendRequest, open, hand
                                         }}
                                     />}
                             </Grid>}
-                            {formType === "display" && useType === "administration" && <Grid item xs={12} sm={12}>
-                                <Button onClick={() => setOpenUpdatePWForm(true)} fullWidth variant="outlined">שינוי סיסמא</Button>
-                            </Grid>}
-                            {(openUpdatePWForm || formType === "add") && <UserUpdatePassword
-                                open={openUpdatePWForm}
-                                handleClose={handleClosePW}
+                            {formType === "add" && <UserUpdatePassword
                                 id={userDetails.id}
-                                formType={formType === "add" ? "add" : "update"}
+                                formType={"add"}
                                 useType="administration"
                                 addPWSucceed={addPasswordSucceed}
                                 setAddPWSucceed={setAddPasswordSucceed}
@@ -250,11 +236,12 @@ const UserForm = ({ fields, userDetails, setUserDetails, sendRequest, open, hand
                 <DialogActions>
                     {formType === "display" &&
                         <>
-                            {useType === "administration" &&
+                            {useType === "administration" && currentUser.id !== userDetails.id &&
                                 <IconButton onClick={() => { deleteUser() }} color="primary">
                                     <DeleteIcon />
                                 </IconButton>}
-                            <Button onClick={() => { setFormType("edit") }} color="primary">עריכה</Button>
+                            {(useType === "userProfile" || currentUser.id !== userDetails.id) &&
+                                <Button onClick={() => { setFormType("edit") }} color="primary">עריכה</Button>}
                             <Button onClick={handleClose} color="primary">סגור</Button>
                         </>}
                     {formType === "edit" &&

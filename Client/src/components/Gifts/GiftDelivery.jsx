@@ -33,16 +33,22 @@ const GiftDelivery = ({ gift }) => {
         setOpenDateSelection(true);
     }
 
+    const backToDonors = () => { 
+        setSelectedDate(new Date());
+        setOpenDateSelection(false);
+    }
+
     const handleDateChanged = (e) => {
         setSelectedDate(e.target.value);
     }
 
     const handleSave = () => {
-            setIsSucceed("");
-            const newDelivery = {donor_id: selectedDonorId, gift_id: gift.id, date: selectedDate};
-            postRequest("giftsDelivery", newDelivery, setIsSucceed);
-            setOpenDateSelection();
-            handleClose();
+        setIsSucceed("");
+        setSelectedDate(new Date())
+        const newDelivery = { donor_id: selectedDonorId, gift_id: gift.id, date: selectedDate };
+        postRequest("giftsDelivery", newDelivery, setIsSucceed);
+        setOpenDateSelection();
+        handleClose();
     }
 
     return (
@@ -122,7 +128,7 @@ const GiftDelivery = ({ gift }) => {
                         renderInput={(params) => <TextField {...params} />}
                     />
                     <Box sx={{ display: 'flex', justifyContent: 'flex-end', marginTop: 2 }}>
-                        <Button onClick={() => { setOpenDateSelection(false) }} startIcon={<NavigateNextIcon sx={{ marginLeft: 1 }} />}>חזרה לבחירת תורמים</Button>
+                        <Button onClick={backToDonors} startIcon={<NavigateNextIcon sx={{ marginLeft: 1 }} />}>חזרה לבחירת תורמים</Button>
                         <Button onClick={handleSave}>שמירה</Button>
                     </Box>
                 </DialogContent>

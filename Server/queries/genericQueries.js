@@ -76,14 +76,6 @@ function addQuery(table_name, newObj) {
     return query;
 }
 
-function addManyItemsQuery(tableName, numItems) {
-    const placeholders = Array(numItems)
-        .fill('(?, ?, ?)')
-        .join(', ');
-
-    return `INSERT INTO ${tableName} (donor_id, gift_id, date) VALUES ${placeholders}`;
-}
-
 function patchQuery(table_name, queryParams, idKey) {
     let query = `UPDATE ${db}.${table_name} SET `;
     const conditions = [];
@@ -103,6 +95,5 @@ export {
     deleteQuery,
     updateQuery,
     addQuery,
-    addManyItemsQuery,
     patchQuery
 }

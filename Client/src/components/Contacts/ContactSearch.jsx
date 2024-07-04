@@ -8,7 +8,6 @@ import { isEmptyObject } from "../Tools/objectsOperations"
 const ContactSearch = ({ fields, contactsToDisplay, setContactsToDisplay, setQueryString, rowsPerPage, setTotalCount }) => {
 
     const [contactDetails, setContactDetails] = useState({});
-    const [donorId, setDonorId] = useState("");
     const [commentArea, setCommentArea] = useState("");
 
     useEffect(() => {
@@ -17,7 +16,7 @@ const ContactSearch = ({ fields, contactsToDisplay, setContactsToDisplay, setQue
     }, []);
 
     useEffect(() => {
-        if (contactsToDisplay.length === 0 && (!isEmptyObject(contactDetails) || donorId)) {
+        if (contactsToDisplay.length === 0 && !isEmptyObject(contactDetails)) {
             setCommentArea("לא נמצא איש קשר");
         } else {
             setCommentArea("");
@@ -49,10 +48,7 @@ const ContactSearch = ({ fields, contactsToDisplay, setContactsToDisplay, setQue
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        if (name === "donorId")
-            setDonorId(value);
-        else
-            setContactDetails((prevData) => ({ ...prevData, [name]: value }));
+        setContactDetails((prevData) => ({ ...prevData, [name]: value }));
     };
 
     return (
@@ -85,7 +81,7 @@ const ContactSearch = ({ fields, contactsToDisplay, setContactsToDisplay, setQue
                                 margin="dense"
                             />
                             <TextField
-                                style={{ width: '150px' }}
+                                style={{ width: '210px' }}
                                 label="טלפון"
                                 variant="outlined"
                                 name="phone"
@@ -95,22 +91,12 @@ const ContactSearch = ({ fields, contactsToDisplay, setContactsToDisplay, setQue
                                 margin="dense"
                             />
                             <TextField
-                                style={{ width: '220px' }}
+                                style={{ width: '230px' }}
                                 label="כתובת מייל"
                                 variant="outlined"
                                 name="email"
                                 type="email"
                                 value={contactDetails.email}
-                                onChange={handleChange}
-                                size="small"
-                                margin="dense"
-                            />
-                            <TextField
-                                style={{ width: '150px' }}
-                                label="מס' תורם"
-                                variant="outlined"
-                                name="donorId"
-                                value={donorId}
                                 onChange={handleChange}
                                 size="small"
                                 margin="dense"

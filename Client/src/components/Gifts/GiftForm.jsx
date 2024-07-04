@@ -8,7 +8,6 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { checkValidation } from '../Tools/Validation'
 import _isEqual from 'lodash/isEqual';
 import _ from 'lodash';
-import ImporterGiftForm from "../Importers/ImporterGiftForm";
 import FileUpload from "./FileUpload";
 import GiftImg from "./GiftImg";
 import GiftDelivery from "./GiftDelivery";
@@ -62,12 +61,7 @@ const GiftForm = ({ fields, giftDetails, setGiftDetails, sendRequest, open, hand
         setGiftChanged(!_isEqual(trimObjectStrings(giftDetails), trimObjectStrings(updatedGift)));
     }, [updatedGift]);
 
-    const undoEdit = () => {
-        setFormType("display");
-        setUpdatedGift(giftDetails);
-    }
-
-    const undoAdd = () => {
+    const closeForm = () => {
         setUpdatedGift(giftDetails);
         handleClose();
     }
@@ -312,12 +306,12 @@ const GiftForm = ({ fields, giftDetails, setGiftDetails, sendRequest, open, hand
                         </>}
                     {formType === "edit" &&
                         <>
-                            <Button onClick={() => undoEdit()} color="primary">ביטול</Button>
+                            <Button onClick={() => closeForm()} color="primary">ביטול</Button>
                             <Button disabled={!giftChanged} onClick={handleSubmit} color="primary">עדכן</Button>
                         </>}
                     {formType === "add" &&
                         <>
-                            <Button onClick={() => undoAdd()} color="primary">ביטול</Button>
+                            <Button onClick={() => closeForm()} color="primary">ביטול</Button>
                             <Button onClick={handleSubmit} color="primary">הוסף</Button>
                         </>}
                 </DialogActions>

@@ -1,5 +1,6 @@
 import { executeQuery } from './db.js'
-import {addQuery, updateQuery, getByIdQuery, getByConditionQuery, deleteQuery, addManyItemsQuery} from './querys.js'
+import {updateQuery, getByIdQuery, getByConditionQuery, deleteQuery} from '../queries/genericQueries.js'
+import {addGiftDeliveryQuery} from '../queries/giftDeliveryQuery.js'
 
 export class GiftsDeliveryService {
 
@@ -35,7 +36,7 @@ export class GiftsDeliveryService {
         const donorIds = newItem.donor_id;
         const giftId = newItem.gift_id;
         const date = newItem.date;
-        const query = addManyItemsQuery("gift_delivery", donorIds.length);
+        const query = addGiftDeliveryQuery("gift_delivery", donorIds.length);
                 const values = donorIds.reduce((acc, donorId) => {
             acc.push(donorId, giftId, date);
             return acc;

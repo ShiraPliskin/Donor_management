@@ -102,7 +102,7 @@ const DonorSearch = ({ fields, donorsToDisplay, setDonorsToDisplay, setQueryStri
                                 value={donorDetails.phone}
                                 onChange={handleChange}
                                 size="small"
-                                margin="dense"
+                                margin="none"
                             />
                             <TextField
                                 style={{ width: '170px' }}
@@ -113,7 +113,7 @@ const DonorSearch = ({ fields, donorsToDisplay, setDonorsToDisplay, setQueryStri
                                 value={donorDetails.email}
                                 onChange={handleChange}
                                 size="small"
-                                margin="dense"
+                                margin="none"
                             />
                             <TextField
                                 style={{ width: '160px' }}
@@ -123,7 +123,7 @@ const DonorSearch = ({ fields, donorsToDisplay, setDonorsToDisplay, setQueryStri
                                 value={donorDetails.address}
                                 onChange={handleChange}
                                 size="small"
-                                margin="dense"
+                                margin="none"
                             />
                             <TextField
                                 style={{ width: '90px' }}
@@ -133,7 +133,7 @@ const DonorSearch = ({ fields, donorsToDisplay, setDonorsToDisplay, setQueryStri
                                 value={donorDetails.minDonationAmount}
                                 onChange={handleChange}
                                 size="small"
-                                margin="dense"
+                                margin="none"
                             />
                             <Button variant="contained" color="primary" type="submit" endIcon={<SearchIcon sx={{ marginRight: 1, marginLeft: -1 }} />}>
                                 חפש

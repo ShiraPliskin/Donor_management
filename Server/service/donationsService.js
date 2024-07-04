@@ -1,5 +1,5 @@
 import { executeQuery } from './db.js'
-import {addQuery, updateQuery, getByIdQuery, getByConditionQuery, deleteQuery} from './querys.js'
+import {addQuery, updateQuery, getByIdQuery, getByConditionQuery, deleteQuery} from '../queries/genericQueries.js'
 import dateFormat from 'dateformat';
 
 export class DonationsService {
