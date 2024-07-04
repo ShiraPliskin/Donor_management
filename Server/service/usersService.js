@@ -30,7 +30,6 @@ export class UsersService {
         const query = updateQuery("users", updatedUser, "id");
         const values = Object.values(updatedUser);
         values.push(id);
-        console.log(values);
         const result = await executeQuery(query, values);
         return result;
     }

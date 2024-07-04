@@ -6,7 +6,7 @@ export class ContactsController {
         try {
             const contactsService = new ContactsService();
             const resultItems = await contactsService.getContacts(req.query);
-            return res.status(200).json(resultItems);
+            return res.json(resultItems);
         }
         catch (ex) {
             const err = {}
@@ -21,7 +21,7 @@ export class ContactsController {
         try {
             const contactsService = new ContactsService();
             const resultItems = await contactsService.getContactById(req.params.id);
-            return res.status(200).json({ status: 200, data: resultItems });
+            return res.json({data: resultItems });
         }
         catch (ex) {
             const err = {}
@@ -35,7 +35,7 @@ export class ContactsController {
         try {
             const contactsService = new ContactsService();
             const resultItems = await contactsService.updateContact(req.body, req.params.id);
-            return res.status(200).json(resultItems);
+            return res.json(resultItems);
         }
         catch (ex) {
             const err = {}
@@ -49,7 +49,7 @@ export class ContactsController {
         try {
             const contactsService = new ContactsService();
             await contactsService.deleteContact("id",req.params.id);
-            return res.status(200).json({ status: 200, data: req.params.id });
+            return res.json({ data: req.params.id });
         }
         catch (ex) {
             const err = {}
@@ -62,7 +62,7 @@ export class ContactsController {
         try {
             const contactsService = new ContactsService();
             const resultItem = await contactsService.addContact(req.body);
-            res.status(200).json({ insertId: resultItem.insertId });
+            res.json({ insertId: resultItem.insertId });
         }
         catch (ex) {
             const err = {}

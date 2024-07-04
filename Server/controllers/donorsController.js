@@ -6,7 +6,7 @@ export class DonorsController {
         try {
             const donorsService = new DonorsService();
             const resultItems = await donorsService.getDonors(req.query);
-            return res.status(200).json(resultItems);
+            return res.json(resultItems);
         }
         catch (ex) {
             const err = {}
@@ -21,7 +21,7 @@ export class DonorsController {
         try {
             const donorsService = new DonorsService();
             const resultItems = await donorsService.getDonorById(req.params.id);
-            return res.status(200).json({ status: 200, data: resultItems });
+            return res.json({ data: resultItems });
         }
         catch (ex) {
             const err = {}
@@ -35,7 +35,7 @@ export class DonorsController {
         try {
             const donorsService = new DonorsService();
             const resultItems = await donorsService.updateDonor(req.body, req.params.id);
-            return res.status(200).json(resultItems);
+            return res.json(resultItems);
         }
         catch (ex) {
             const err = {}
@@ -49,7 +49,7 @@ export class DonorsController {
         try {
             const donorsService = new DonorsService();
             await donorsService.deleteDonor("id",req.params.id);
-            return res.status(200).json({ status: 200, data: req.params.id });
+            return res.json({data: req.params.id });
         }
         catch (ex) {
             const err = {}
@@ -62,7 +62,7 @@ export class DonorsController {
         try {
             const donorsService = new DonorsService();
             const resultItem = await donorsService.addDonor(req.body);
-            res.status(200).json({ insertId: resultItem.insertId });
+            res.json({ insertId: resultItem.insertId });
         }
         catch (ex) {
             const err = {}
