@@ -1,4 +1,5 @@
 import { UsersService } from '../service/usersService.js'
+import jwt from 'jsonwebtoken';
 
 export class UsersController {
 
@@ -19,7 +20,7 @@ export class UsersController {
     async getUsersForLogin(req, res, next) {
         try {
             const userService = new UsersService();
-            const resultItems = await userService.getUsers(req.query,"yes");
+            const resultItems = await userService.getUsers(req.query,true);
             return res.cookie("token", resultItems.token, { httpOnly: true, secure: true })
                 .json(resultItems );
         }

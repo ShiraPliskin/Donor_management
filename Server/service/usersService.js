@@ -2,7 +2,6 @@ import { executeQuery } from './db.js'
 import { addQuery, updateQuery, getByIdQuery, getByConditionQuery, deleteQuery } from '../queries/genericQueries.js'
 import { RegisterService } from './registerService.js';
 import 'dotenv/config'
-import { token } from 'morgan';
 import jwt from 'jsonwebtoken';
 
 const registerService = new RegisterService;
@@ -15,12 +14,12 @@ const signToken = (email) => {
 }
 
 export class UsersService {
-    async getUsers(queryParams, isLogin = "") {
+    async getUsers(queryParams, isLogin = false) {
         const { dataQuery, countQuery } = getByConditionQuery("users", queryParams);
         const values = Object.values(queryParams);
         const data = await executeQuery(dataQuery, values);
         const total = await executeQuery(countQuery, values);
-        if (isLogin !== "yes") return { data, total };
+        if (!isLogin) return { data, total };
         const email = queryParams.filter.substring(6);
         return { data, total, token: signToken(email) };        
     }
