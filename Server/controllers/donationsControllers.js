@@ -6,7 +6,7 @@ export class DonationsController {
         try {
             const donationsService = new DonationsService();
             const resultItems = await donationsService.getDonations(req.query);
-            return res.status(200).json(resultItems);
+            return res.json(resultItems);
         }
         catch (ex) {
             const err = {}
@@ -21,7 +21,7 @@ export class DonationsController {
         try {
             const donationsService = new DonationsService();
             const resultItems = await donationsService.getDonationById(req.params.id);
-            return res.status(200).json({ status: 200, data: resultItems });
+            return res.json({ data: resultItems });
         }
         catch (ex) {
             const err = {}
