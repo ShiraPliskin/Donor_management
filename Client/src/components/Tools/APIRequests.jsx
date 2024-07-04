@@ -3,7 +3,11 @@ import { config } from "../config.jsx";
 export const getRequest = async (table, conditions, state, comment, object = "") => {
     const url = `http://${config.SERVERPORT}/${table}${conditions ? `${conditions}` : ''}`;
     try {
-        const response = await fetch(url);
+        const response = await fetch(url, {
+            headers: {
+                'Origin': 'http://localhost:8080',
+            }, credentials: 'include'
+        });
 
         if (!response.ok) {
             throw new Error(`Request failed with status: ${response.status}`);
@@ -42,7 +46,11 @@ export const getRequest = async (table, conditions, state, comment, object = "")
 export const getByIdRequest = async (table, id, state, comment) => {
     const url = `http://${config.SERVERPORT}/${table}/${id}}`;
     try {
-        const response = await fetch(url);
+        const response = await fetch(url,{
+            headers: {
+                'Origin': 'http://localhost:8080',
+            }, credentials: 'include'
+        });
 
         if (!response.ok) {
             throw new Error(`Request failed with status: ${response.status}`);
@@ -66,9 +74,10 @@ export const getByIdRequest = async (table, id, state, comment) => {
 export const putRequest = async (table, updatedObject, id, setIsSucceed) => {
     try {
         const response = await fetch(`http://${config.SERVERPORT}/${table}/${id}`, {
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'application/json', 'Origin': 'http://localhost:8080' },
             method: 'PUT',
-            body: JSON.stringify(updatedObject)
+            body: JSON.stringify(updatedObject),
+            credentials: 'include'
         });
 
         if (!response.ok) {
@@ -94,8 +103,9 @@ export const putRequest = async (table, updatedObject, id, setIsSucceed) => {
 export const deleteRequest = async (table, id, setIsSucceed) => {
     try {
         const response = await fetch(`http://${config.SERVERPORT}/${table}/${id}`, {
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'application/json', 'Origin': 'http://localhost:8080'},
             method: 'DELETE',
+            credentials: 'include'
         });
 
         if (!response.ok) {
@@ -120,9 +130,10 @@ export const deleteRequest = async (table, id, setIsSucceed) => {
 export const postRequest = async (table, newItem, comment, newID = 0) => {
     try {
         const response = await fetch(`http://${config.SERVERPORT}/${table}`, {
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'application/json','Origin': 'http://localhost:8080' },
             method: 'POST',
-            body: JSON.stringify(newItem)
+            body: JSON.stringify(newItem),
+            credentials: 'include'
         });
         if (!response.ok) {
             throw new Error(`Request failed with status: ${response.status}`);
@@ -145,9 +156,10 @@ export const postRequest = async (table, newItem, comment, newID = 0) => {
 export const getByPostRequest = async (table, newItem, status, commentArea) => {
     try {
         const response = await fetch(`http://${config.SERVERPORT}/${table}`, {
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'application/json','Origin': 'http://localhost:8080' },
             method: 'POST',
-            body: JSON.stringify(newItem)
+            body: JSON.stringify(newItem),
+            credentials: 'include'
         });
 
         if (!response.ok) {
@@ -167,7 +179,11 @@ export const getByPostRequest = async (table, newItem, status, commentArea) => {
 export const checkIfExist = async (table, conditions, comment, id) => {
     const url = `http://${config.SERVERPORT}/${table}${conditions ? `${conditions}` : ''}`;
     try {
-        const response = await fetch(url);
+        const response = await fetch(url,{
+            headers: {
+                'Origin': 'http://localhost:8080',
+            }, credentials: 'include'
+        });
 
         if (!response.ok) {
             throw new Error(`Request failed with status: ${response.status}`);

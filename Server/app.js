@@ -9,22 +9,27 @@ import { contactsRouter } from './router/contactsRouter.js';
 import { giftsDeliveryRouter } from './router/giftsDeliveryRouter.js';
 import { donationsRouter } from './router/donationsRouter.js';
 import bodyparser from 'body-parser';
-
+import {authenticateToken} from './middleware/authenticateToken.js'
+import cookieParser from 'cookie-parser';
 const app = express();
-app.use(cors());
+app.use(cors({
+    origin: process.env.CLIENT_URL,
+    credentials: true
+}));
+app.use(cookieParser());
 app.use(express.json());
 app.use(bodyparser.json());
 app.use(bodyparser.urlencoded({ extended: true }));
 app.use('/uploads', express.static('uploads'));
 
-app.use('/donors', donorsRouter);
-app.use('/donations', donationsRouter);
+app.use('/donors',authenticateToken,donorsRouter);
+app.use('/donations',authenticateToken, donationsRouter);
 app.use('/register', registerRouter);
 app.use('/users', usersRouter);
-app.use('/gifts', giftsRouter);
-app.use('/importers', importersRouter);
-app.use('/contacts', contactsRouter);
-app.use('/giftsDelivery', giftsDeliveryRouter);
+app.use('/gifts',authenticateToken, giftsRouter);
+app.use('/importers',authenticateToken, importersRouter);
+app.use('/contacts',authenticateToken, contactsRouter);
+app.use('/giftsDelivery',authenticateToken, giftsDeliveryRouter);
 
 app.listen(8080, (err) => {
     if (err) console.error(err);

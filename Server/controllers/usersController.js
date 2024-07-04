@@ -7,9 +7,26 @@ export class UsersController {
 
     async getUsers(req, res, next) {
         try {
+            console.log("getUsers")
             const userService = new UsersService();
             const resultItems = await userService.getUsers(req.query);
-            console.log("result from controller  "+resultItems);
+            console.log("result from getUser  "+resultItems);
+            return res.json(resultItems);
+        }
+        catch (ex) {
+            const err = {}
+            err.statusCode = 500;
+            err.message = ex;
+            next(err)
+        }
+    }
+
+    async getUsersForLogin(req, res, next) {
+        try {
+            console.log("getUsersForLogin")
+            const userService = new UsersService();
+            const resultItems = await userService.getUsers(req.query,"yes");
+            console.log("result from getUser  "+resultItems);
             return res.json(resultItems);
         }
         catch (ex) {
@@ -52,7 +69,7 @@ export class UsersController {
         try {
             const userService = new UsersService();
             await userService.deleteUser("id", req.params.id);
-            return res.json({  data: req.params.id });
+            return res.json({ data: req.params.id });
         }
         catch (ex) {
             const err = {}

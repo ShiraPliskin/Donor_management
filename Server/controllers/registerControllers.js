@@ -79,6 +79,8 @@ export class RegisterController {
             const err = {}
             err.statusCode = 500;
             err.message = ex;
+            if(err.message === "אין אפשרות לערוך פעולה זו")
+                err.statusCode = 401;
             next(err)
         }
     }
@@ -107,6 +109,8 @@ export class RegisterController {
             const err = {}
             err.statusCode = 500;
             err.message = ex;
+            if(err.message === "אין אפשרות לערוך פעולה זו")
+                err.statusCode = 401;
             next(err)
         }
     }
