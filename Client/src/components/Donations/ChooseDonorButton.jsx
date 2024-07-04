@@ -11,7 +11,7 @@ const ChooseDonorButton = ({ type, setUpdateDonation, updatedDonation, setCommen
     const [selectedDonorId, setSelectedDonorId] = useState([]);
 
     const handleSave = () => {
-        setUpdateDonation((prevData) => ({ ...prevData, donor_id: selectedDonorId }));
+        setUpdateDonation((prevData) => ({ ...prevData, donor_id: selectedDonorId[0] }));
         setOpenDonorsForm(false);
     }
 

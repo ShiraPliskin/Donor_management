@@ -49,47 +49,47 @@ const DonationsDisplay = ({ donationsToDisplay, setDonationsToDisplay, queryStri
     return (
         <>
             {donationsToDisplay.length > 0 && (
-           <Box sx={{ minWidth: 650 }} maxWidth={"xl"} >
-                <TableContainer component={Paper} sx={{marginTop: 5 }}>
-                    <Table sx={{ minWidth: 650}} size='small'>
-                        <TableHead>
-                            <TableRow>
-                                <TableCell sx={{ fontWeight: 'bold', textAlign: 'center' }}>מס' תרומה</TableCell>
-                                <TableCell sx={{ fontWeight: 'bold', textAlign: 'center' }}>מס' תורם</TableCell>
-                                <TableCell sx={{ fontWeight: 'bold', textAlign: 'center' }}>סכום התרומה</TableCell>
-                                <TableCell sx={{ fontWeight: 'bold', textAlign: 'center' }}>שיטת התשלום</TableCell>
-                                <TableCell sx={{ fontWeight: 'bold', textAlign: 'center' }}>תאריך התרומה</TableCell>
-                                <TableCell>
-                                    <FormControl fullWidth>
-                                        <InputLabel>מיון לפי</InputLabel>
-                                        <Select
-                                            value={sortKey}
-                                            onChange={handleChangeSortKey}
-                                            label="מיון לפי"
-                                        >
-                                            <MenuItem value="id">מס' תרומה</MenuItem>
-                                            <MenuItem value="donor_id">מס' תורם</MenuItem>
-                                            <MenuItem value="amount">סכום התרומה</MenuItem>
-                                            <MenuItem value="payment_method">שיטת התשלום</MenuItem>
-                                            <MenuItem value="date">תאריך התרומה</MenuItem>
-                                        </Select>
-                                    </FormControl>
-                                </TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {donationsToDisplay.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((donation, index) => (
-                                <DonationDisplay key={index} donation={donation} index={index} setDonationsToDisplay={setDonationsToDisplay} setTotal={setTotalDonationsCount}/>
-                            ))}
-                        </TableBody>
-                    </Table>
-                    {donationsToDisplay.length >= rowsPerPage &&
-                        <div style={{ textAlign: 'center', marginTop: '10px' }}>
-                            <button onClick={handlePrevPage} disabled={page === 0}>{'<'}</button>
-                            <button onClick={handleNextPage} disabled={disabledShowMore}>{'>'}</button>
-                            <p>{`${page * rowsPerPage + 1}-${(page + 1) * rowsPerPage <= totalDonationsCount ? (page + 1) * rowsPerPage : totalDonationsCount} מתוך ${totalDonationsCount}`}</p>
-                        </div>}
-                </TableContainer>
+                <Box sx={{ minWidth: 650 }} maxWidth={"xl"} >
+                    <FormControl sx={{ marginTop: 2, marginLeft: 2, textAlign: 'right' }}>
+                        <InputLabel>מיין לפי</InputLabel>
+                        <Select
+                            value={sortKey}
+                            onChange={handleChangeSortKey}
+                            label="מיין לפי"
+                            sx={{ height: 40, minWidth: 150 }}
+                        >
+                            <MenuItem value="id">מס' תרומה</MenuItem>
+                            <MenuItem value="donor_id">מס' תורם</MenuItem>
+                            <MenuItem value="amount">סכום התרומה</MenuItem>
+                            <MenuItem value="payment_method">שיטת התשלום</MenuItem>
+                            <MenuItem value="date">תאריך התרומה</MenuItem>
+                        </Select>
+                    </FormControl>
+                    <TableContainer component={Paper} sx={{ marginTop: 5 }}>
+                        <Table sx={{ minWidth: 650 }} size='small'>
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell sx={{ fontWeight: 'bold', textAlign: 'center' }}>מס' תרומה</TableCell>
+                                    <TableCell sx={{ fontWeight: 'bold', textAlign: 'center' }}>מס' תורם</TableCell>
+                                    <TableCell sx={{ fontWeight: 'bold', textAlign: 'center' }}>סכום התרומה</TableCell>
+                                    <TableCell sx={{ fontWeight: 'bold', textAlign: 'center' }}>שיטת התשלום</TableCell>
+                                    <TableCell sx={{ fontWeight: 'bold', textAlign: 'center' }}>תאריך התרומה</TableCell>
+                                    <TableCell></TableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {donationsToDisplay.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((donation, index) => (
+                                    <DonationDisplay key={index} donation={donation} index={index} setDonationsToDisplay={setDonationsToDisplay} setTotal={setTotalDonationsCount} />
+                                ))}
+                            </TableBody>
+                        </Table>
+                        {donationsToDisplay.length >= rowsPerPage &&
+                            <div style={{ textAlign: 'center', marginTop: '10px' }}>
+                                <button onClick={handlePrevPage} disabled={page === 0}>{'<'}</button>
+                                <button onClick={handleNextPage} disabled={disabledShowMore}>{'>'}</button>
+                                <p>{`${page * rowsPerPage + 1}-${(page + 1) * rowsPerPage <= totalDonationsCount ? (page + 1) * rowsPerPage : totalDonationsCount} מתוך ${totalDonationsCount}`}</p>
+                            </div>}
+                    </TableContainer>
                 </Box>
             )}
             <p>{commentArea}</p>

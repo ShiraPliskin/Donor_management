@@ -19,29 +19,12 @@ const UserProfile = () => {
     const [updateSuccessful, setUpdateSuccessful] = useState('');
     const [openUpdatePWForm, setOpenUpdatePWForm] = useState(false);
 
-    // useEffect(() => {
-    //     const permissionType = currentUser.permission === "secretary" ? "מזכירה" : "מנהל";
-    //     setPermission(permissionType);
-    // }, [currentUser.permission]);
-
-    // useEffect(() => {
-    //     if (oldPassword != "") {
-    //         const passwordObject = { "password": oldPassword };
-    //         getByPostRequest(`register/${currentUser.id}`, passwordObject, setComment, setStatus);
-    //     }
-    // }, [oldPassword])
-
-    // useEffect(() => {
-    //     if (status === 200) {
-    //         const passwordObject = { "prevPassword": oldPassword, "password": newPassword };
-    //         putRequest("register", passwordObject, currentUser.id, setComment);
-    //         setChangePassword(false);
-    //         setComment("הסיסמה עודכנה בהצלחה");
-
-    //     }
-    //     else if (status === 500)
-    //         setComment("אינך מורשה לשנות סיסמה");
-    // }, [status])
+    useEffect(() => {
+        if (updateSuccessful === "success") {
+            console.log(currentUser);
+            localStorage.setItem("currentUser", JSON.stringify(currentUser));
+        }
+    }, [updateSuccessful]);
 
     const handleClosePW = () => {
         setOpenUpdatePWForm(false);

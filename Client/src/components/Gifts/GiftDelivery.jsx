@@ -125,8 +125,11 @@ const GiftDelivery = ({ gift }) => {
                         type="date"
                         size="small"
                         margin="dense"
-                        renderInput={(params) => <TextField {...params} />}
-                    />
+                        InputProps={{
+                            inputProps: { 
+                                max: dayjs().format('YYYY-MM-DD') 
+                            }
+                        }}                    />
                     <Box sx={{ display: 'flex', justifyContent: 'flex-end', marginTop: 2 }}>
                         <Button onClick={backToDonors} startIcon={<NavigateNextIcon sx={{ marginLeft: 1 }} />}>חזרה לבחירת תורמים</Button>
                         <Button onClick={handleSave}>שמירה</Button>

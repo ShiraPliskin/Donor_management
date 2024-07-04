@@ -48,46 +48,46 @@ const GiftsDisplay = ({ giftsToDisplay, setGiftsToDisplay, queryString, rowsPerP
 
     return (
         <>
-           {giftsToDisplay.length > 0 && (
-           <Box sx={{ minWidth: 650 }} maxWidth={"xl"} >
-                <TableContainer component={Paper} sx={{marginTop: 5 }}>
-                    <Table sx={{ minWidth: 850}} size='small'>
-                        <TableHead>
-                            <TableRow>
-                                <TableCell sx={{ fontWeight: 'bold', textAlign: 'center' }}>מס' מתנה</TableCell>
-                                <TableCell sx={{ fontWeight: 'bold', textAlign: 'center' }}>תיאור המתנה</TableCell>
-                                <TableCell sx={{ fontWeight: 'bold', textAlign: 'center' }}>עלות המתנה</TableCell>
-                                <TableCell sx={{ fontWeight: 'bold', textAlign: 'center' }}>כמות במלאי</TableCell>
-                                <TableCell>
-                                    <FormControl fullWidth>
-                                        <InputLabel>מיון לפי</InputLabel>
-                                        <Select
-                                            value={sortKey}
-                                            onChange={handleChangeSortKey}
-                                            label="מיון לפי"
-                                        >
-                                            <MenuItem value="id">מספר מתנה</MenuItem>
-                                            <MenuItem value="description">תיאור</MenuItem>
-                                            <MenuItem value="gift_cost">עלות המתנה</MenuItem>
-                                            <MenuItem value="amount">כמות במלאי</MenuItem>
-                                        </Select>
-                                    </FormControl>
-                                </TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {giftsToDisplay.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((gift, index) => (
-                                <GiftDisplay key={index} gift={gift} index={index} setGiftsToDisplay={setGiftsToDisplay} setTotal={setTotalGiftsCount}/>
-                            ))}
-                        </TableBody>
-                    </Table>
-                    {giftsToDisplay.length >= rowsPerPage &&
-                        <div style={{ textAlign: 'center', marginTop: '10px' }}>
-                            <button onClick={handlePrevPage} disabled={page === 0}>{'<'}</button>
-                            <button onClick={handleNextPage} disabled={disabledShowMore}>{'>'}</button>
-                            <p>{`${page * rowsPerPage + 1}-${(page + 1) * rowsPerPage <= totalGiftsCount ? (page + 1) * rowsPerPage : totalGiftsCount} מתוך ${totalGiftsCount}`}</p>
-                        </div>}
-                </TableContainer>
+            {giftsToDisplay.length > 0 && (
+                <Box sx={{ minWidth: 650 }} maxWidth={"xl"} >
+                    <FormControl sx={{ marginTop: 2, marginLeft: 2, textAlign: 'right' }}>
+                        <InputLabel>מיין לפי</InputLabel>
+                        <Select
+                            value={sortKey}
+                            onChange={handleChangeSortKey}
+                            label="מיין לפי"
+                            sx={{ height: 40, minWidth: 150 }}
+                        >
+                            <MenuItem value="id">מספר מתנה</MenuItem>
+                            <MenuItem value="description">תיאור</MenuItem>
+                            <MenuItem value="gift_cost">עלות המתנה</MenuItem>
+                            <MenuItem value="amount">כמות במלאי</MenuItem>
+                        </Select>
+                    </FormControl>
+                    <TableContainer component={Paper} sx={{ marginTop: 5 }}>
+                        <Table sx={{ minWidth: 850 }} size='small'>
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell sx={{ fontWeight: 'bold', textAlign: 'center' }}>מס' מתנה</TableCell>
+                                    <TableCell sx={{ fontWeight: 'bold', textAlign: 'center' }}>תיאור המתנה</TableCell>
+                                    <TableCell sx={{ fontWeight: 'bold', textAlign: 'center' }}>עלות המתנה</TableCell>
+                                    <TableCell sx={{ fontWeight: 'bold', textAlign: 'center' }}>כמות במלאי</TableCell>
+                                    <TableCell></TableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {giftsToDisplay.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((gift, index) => (
+                                    <GiftDisplay key={index} gift={gift} index={index} setGiftsToDisplay={setGiftsToDisplay} setTotal={setTotalGiftsCount} />
+                                ))}
+                            </TableBody>
+                        </Table>
+                        {giftsToDisplay.length >= rowsPerPage &&
+                            <div style={{ textAlign: 'center', marginTop: '10px' }}>
+                                <button onClick={handlePrevPage} disabled={page === 0}>{'<'}</button>
+                                <button onClick={handleNextPage} disabled={disabledShowMore}>{'>'}</button>
+                                <p>{`${page * rowsPerPage + 1}-${(page + 1) * rowsPerPage <= totalGiftsCount ? (page + 1) * rowsPerPage : totalGiftsCount} מתוך ${totalGiftsCount}`}</p>
+                            </div>}
+                    </TableContainer>
                 </Box>
             )}
             <p>{commentArea}</p>

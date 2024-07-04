@@ -129,7 +129,7 @@ export const postRequest = async (table, newItem, comment, newID = 0) => {
     }
 };
 
-export const getByPostRequest = async (table, newItem, comment,status) => {
+export const getByPostRequest = async (table, newItem, errorMessage) => {
     try {
         const response = await fetch(`http://${config.SERVERPORT}/${table}`, {
             headers: { 'Content-Type': 'application/json' },
@@ -138,15 +138,15 @@ export const getByPostRequest = async (table, newItem, comment,status) => {
         });
 
         if (!response.ok) {
-            status(response.status);
+            errorMessage(response.status);
             throw new Error(`Request failed with status: ${response.status}`);
         }
         console.log(" response.json() : " + response.status);
-        status(response.status);
+        errorMessage(response.status);
         return true;
     } catch (error) {
         console.error("Error creating request:", error);
-        comment('שגיאת שרת');
+        errorMessage('שגיאת שרת');
         return false;
     }
 };
