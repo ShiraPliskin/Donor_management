@@ -1,11 +1,12 @@
 import { useState, React, useEffect } from "react";
-import { Button, Dialog, DialogContent, Grid, TextField, InputAdornment, IconButton, DialogActions, DialogTitle } from "@mui/material";
+import { Button, Dialog, DialogContent, Grid, TextField, InputAdornment, IconButton, DialogActions, DialogTitle, Box } from "@mui/material";
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { checkValidation } from '../Tools/Validation'
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import EditIcon from '@mui/icons-material/Edit';
+import { putRequest, getByPostRequest } from "../Tools/APIRequests";
 
-const UserUpdatePassword = ({ open, handleClose, id, useType, formType, addPWSucceed, setAddPWSucceed, setUpdatedUser }) => {
+const UserUpdatePassword = ({ open, handleClose, id, useType, formType, addPWSucceed, setAddPWSucceed, setUpdatedUser, updateSuccessful, setUpdateSuccessful }) => {
 
     const passwordObject = {
         currentPassword: '',
@@ -19,12 +20,12 @@ const UserUpdatePassword = ({ open, handleClose, id, useType, formType, addPWSuc
     }
 
     const [errorMessage, setErrorMessage] = useState(null);
+    const [status, setStatus] = useState(null);
     const [isPwVerified, setIsPwVerified] = useState(false);
     const [passwords, setPasswords] = useState(passwordObject);
     const [showPasswords, setShowPasswords] = useState(errorObject);
     const [error, setError] = useState(errorObject);
     const [helperText, setHelperText] = useState(passwordObject);
-    const [updateSuccessful, setUpdateSuccessful] = useState('');
 
     useEffect(() => {
         setError(errorObject);
@@ -36,21 +37,23 @@ const UserUpdatePassword = ({ open, handleClose, id, useType, formType, addPWSuc
     }, [passwords.password, passwords.verifyPW]);
 
     useEffect(() => {
-        if (errorMessage === '') {
+        if (status === 200) {
             const passwordObject = { "prevPassword": passwords.currentPassword, "password": passwords.password };
             putRequest("register", passwordObject, id, setUpdateSuccessful);
             handleClose();
         }
-        else return;
-    }, [errorMessage])
+        else if (status === 401) {
+            setErrorMessage("סיסמתך הנוכחית שגויה")
+        }
+    }, [status])
 
     const checkCurrentPassword = () => {
         const passwordObject = { "password": passwords.currentPassword };
-        getByPostRequest(`register/${id}`, passwordObject, setErrorMessage);
+        getByPostRequest(`register/${id}`, passwordObject, setStatus, setErrorMessage);
     }
 
-    const IsVerify = () => {return passwords.password !== "" && passwords.password === passwords.verifyPW}
-    
+    const IsVerify = () => { return passwords.password !== "" && passwords.password === passwords.verifyPW }
+
     const handleEditPassword = () => {
         setAddPWSucceed(false);
         setIsPwVerified(IsVerify);
@@ -243,15 +246,13 @@ const UserUpdatePassword = ({ open, handleClose, id, useType, formType, addPWSuc
                                 )
                             }} />
                     </Grid>
-                    <p>{errorMessage}</p>
+                    {errorMessage && <Box marginTop={"10px"} color={"red"}>{errorMessage}</Box>}
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose}>ביטול</Button>
                     <Button disabled={!isPwVerified} onClick={handleSubmit} sx={{ marginRight: 2 }}>שמירה</Button>
                 </DialogActions>
             </Dialog>}
-            {updateSuccessful === "success" && <GenericMessage message="סיסמתך הוחלפה בהצלחה" type="success" />}
-            {updateSuccessful === "error" && <GenericMessage message="החלפת הסיסמא נכשלה" type="error" />}
     </>);
 };
 

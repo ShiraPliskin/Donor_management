@@ -5,7 +5,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import SearchIcon from '@mui/icons-material/Search';
 import { isEmptyObject } from "../Tools/objectsOperations"
 
-const ContactSearch = ({ fields, contactsToDisplay, setContactsToDisplay, setQueryString, rowsPerPage, setTotalCount }) => {
+const ContactSearch = ({ fields, setContactsToDisplay, setQueryString, rowsPerPage, setTotalCount }) => {
 
     const [contactDetails, setContactDetails] = useState({});
     const [commentArea, setCommentArea] = useState("");
@@ -14,14 +14,6 @@ const ContactSearch = ({ fields, contactsToDisplay, setContactsToDisplay, setQue
         setContactDetails(fields);
         displayAllContacts();
     }, []);
-
-    useEffect(() => {
-        if (contactsToDisplay.length === 0 && !isEmptyObject(contactDetails)) {
-            setCommentArea("לא נמצא איש קשר");
-        } else {
-            setCommentArea("");
-        }
-    }, [contactsToDisplay]);
 
     const displayAllContacts = async () => {
         const total = await getRequest("contacts", `?_limit=${rowsPerPage}`, setContactsToDisplay, setCommentArea, "איש קשר");

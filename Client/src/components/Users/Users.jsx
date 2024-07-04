@@ -26,7 +26,6 @@ const Users = () => {
             />
             <UserSearch
                 fields={fields}
-                usersToDisplay={usersToDisplay}
                 setUsersToDisplay={setUsersToDisplay}
                 setQueryString={setQueryString}
                 rowsPerPage={rowsPerPage}

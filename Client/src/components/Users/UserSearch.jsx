@@ -5,24 +5,15 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import SearchIcon from '@mui/icons-material/Search';
 import { isEmptyObject } from "../Tools/objectsOperations"
 
-const UserSearch = ({ fields, usersToDisplay, setUsersToDisplay, setQueryString, rowsPerPage, setTotalCount }) => {
+const UserSearch = ({ fields, setUsersToDisplay, setQueryString, rowsPerPage, setTotalCount }) => {
 
     const [userDetails, setUserDetails] = useState({});
-    const [donorId, setDonorId] = useState("");
     const [commentArea, setCommentArea] = useState("");
 
     useEffect(() => {
         setUserDetails(fields);
         displayAllUsers();
     }, []);
-
-    useEffect(() => {
-        if (usersToDisplay.length === 0 && (!isEmptyObject(userDetails) || donorId)) {
-            setCommentArea("לא נמצא משתמש");
-        } else {
-            setCommentArea("");
-        }
-    }, [usersToDisplay]);
 
     const displayAllUsers = async () => {
         const total = await getRequest("users", `?_limit=${rowsPerPage}`, setUsersToDisplay, setCommentArea, "משתמש");

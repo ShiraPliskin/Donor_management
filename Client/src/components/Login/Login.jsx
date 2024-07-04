@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import style from "./Login.module.css";
 import { getRequest, getByPostRequest } from "../Tools/APIRequests";
+import { Box } from "@mui/material";
 
 const Login = () => {
   const [comment, setComment] = useState("");
+  const [status, setStatus] = useState("");
   const [userDetails, setUserDetails] = useState("");
   const [password, setPassword] = useState("");
-  const [status, setStatus] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -20,30 +21,31 @@ const Login = () => {
   useEffect(() => {
     if (status === 200)
       navigateToHomePage(userDetails);
-    else if (status === 500)
-      setComment("שם משתמש או סיסמא שגויים");
+    else if (status === 401)
+      setComment("כתובת מייל או סיסמא שגויים.");
   }, [status])
 
   useEffect(() => {
     if (userDetails[0]) {
+      setComment("");
       const passwordObject = { "password": password };
-      getByPostRequest(`register/${userDetails[0].id}`, passwordObject, setComment, setStatus);
+      getByPostRequest(`register/${userDetails[0].id}`, passwordObject, setStatus, setComment);
     }
-  }, [userDetails]);
-
-  const handleFormSubmit = (event) => {
-    event.preventDefault();
-    const email = event.target.email.value;
-    const password = event.target.password.value;
-    setPassword(password);
-    getRequest("users", `?filter=email=${email}`, setUserDetails, setComment);
-  };
+}, [userDetails]);
 
   function navigateToHomePage(userDetails) {
     delete userDetails["password"];
     localStorage.setItem("currentUser", JSON.stringify(userDetails[0]));
     navigate(`/users/${userDetails[0].id}/home`);
   }
+
+  const handleFormSubmit = (event) => {
+    event.preventDefault();
+    const email = event.target.email.value;
+    const password = event.target.password.value;
+    setPassword(password);
+    getRequest("users/login", `?filter=email=${email}`, setUserDetails, setComment, "כתובת מייל");
+  };
 
   return (
     <>
@@ -52,9 +54,9 @@ const Login = () => {
         <form onSubmit={handleFormSubmit} className={style.inputBox}>
           <input name="email" type="text" placeholder="מייל" required />
           <input name="password" type="password" placeholder="סיסמה" required />
-          <button type="submit">המשך</button>
+          <button type="submit">כניסה</button>
         </form>
-        <p>{comment}</p>
+        {comment && <Box marginTop={"10px"} color={"red"}>{comment}</Box>}
         <p>אין לך עדיין חשבון? פנה למנהל להרשמה</p>
       </div>
     </>

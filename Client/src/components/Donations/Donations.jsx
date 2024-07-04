@@ -25,7 +25,6 @@ const Donations = () => {
             />
             <DonationSearch
                 fields={fields}
-                donationsToDisplay={donationsToDisplay}
                 setDonationsToDisplay={setDonationsToDisplay}
                 setQueryString={setQueryString}
                 rowsPerPage={rowsPerPage}

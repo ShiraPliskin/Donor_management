@@ -17,7 +17,7 @@ const DonorDisplay = ({ donor, index, setDonorsToDisplay, setTotal, selectedDono
     const [comment, setComment] = useState("");
 
     useEffect(() => {
-        if (updateSuccessful === "success") {
+        if (updateSuccessful === "updatedSuccessfully") {
             setDonorsToDisplay((prevDonors) => {
                 return prevDonors.map(donor =>
                     donor.id === currentDonor.id ? currentDonor : donor
@@ -103,9 +103,12 @@ const DonorDisplay = ({ donor, index, setDonorsToDisplay, setTotal, selectedDono
                     objectState={setDonorsToDisplay}
                     formOpen={setOpen}
                     setTotal={setTotal}
+                    isSucceed={updateSuccessful}
+                    setIsSucceed={setUpdateSuccessful}
                 />
             }
-            {updateSuccessful === "success" && <GenericMessage message={`תורם מספר ${currentDonor.id} עודכן בהצלחה`} type="success" />}
+            {updateSuccessful === "updatedSuccessfully" && <GenericMessage message={`תורם מספר ${currentDonor.id} עודכן בהצלחה`} type="success" />}
+            {updateSuccessful === "deletedSuccessfully" && <GenericMessage message={`תורם מספר ${currentDonor.id} נמחק בהצלחה`} type="success" />}
             {updateSuccessful === "error" && <GenericMessage message="עדכון תורם נכשל" type="error" />}
             <p>{comment}</p>
         </>

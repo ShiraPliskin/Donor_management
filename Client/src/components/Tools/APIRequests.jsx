@@ -14,18 +14,31 @@ export const getRequest = async (table, conditions, state, comment, object = "")
         }
 
         const responseData = await response.json();
-        if (Object.keys(responseData).length === 0) {
-            comment(`לא נמצא ${object}`);
+        if (responseData.data.length === 0) {
+            switch (object) {
+                case "תורם":
+                case "משתמש":
+                case "איש קשר":
+                    comment(`לא נמצא ${object}`);
+                    break;
+                case "כתובת מייל":
+                    comment("כתובת מייל או סיסמא שגויים.");
+                    break;
+                default:
+                    comment(`לא נמצאה ${object}`);
+                    break;
+            }
             return 0;
         } else {
-            state(responseData.data); 
+            comment("")
+            state(responseData.data);
             const total = responseData.total[0]["total"] || responseData.data.length;
             return total;
         }
     } catch (error) {
         console.error("Error in GetRequest:", error);
         comment(`שגיאת שרת`);
-        return 0 ; 
+        return 0;
     }
 };
 
@@ -77,7 +90,7 @@ export const putRequest = async (table, updatedObject, id, setIsSucceed) => {
             setIsSucceed("error");
         }
 
-        setIsSucceed("success");
+        setIsSucceed("updatedSuccessfully");
 
     } catch (error) {
         console.error(error);
@@ -100,12 +113,12 @@ export const deleteRequest = async (table, id, setIsSucceed) => {
         }
 
         const data = await response.json();
-        console.log("data ",Object.keys(data).length)
+        console.log("data ", Object.keys(data).length)
 
         if (Object.keys(data).length === 0) {
             setIsSucceed("error");
         }
-        setIsSucceed("success");
+        setIsSucceed("deletedSuccessfully");
 
     } catch (error) {
         console.error("Error creating request:", error);
@@ -140,7 +153,7 @@ export const postRequest = async (table, newItem, comment, newID = 0) => {
     }
 };
 
-export const getByPostRequest = async (table, newItem, errorMessage) => {
+export const getByPostRequest = async (table, newItem, status, commentArea) => {
     try {
         const response = await fetch(`http://${config.SERVERPORT}/${table}`, {
             headers: { 'Content-Type': 'application/json','Origin': 'http://localhost:8080' },
@@ -150,15 +163,15 @@ export const getByPostRequest = async (table, newItem, errorMessage) => {
         });
 
         if (!response.ok) {
-            errorMessage(response.status);
+            status(response.status);
             throw new Error(`Request failed with status: ${response.status}`);
         }
         console.log(" response.json() : " + response.status);
-        errorMessage(response.status);
+        status(response.status);
         return true;
     } catch (error) {
         console.error("Error creating request:", error);
-        errorMessage('שגיאת שרת');
+        commentArea('שגיאת שרת');
         return false;
     }
 };
@@ -179,7 +192,7 @@ export const checkIfExist = async (table, conditions, comment, id) => {
 
         if (Object.keys(data["data"]).length === 0) {
             return true;
-        } else {           
+        } else {
             return comment("כתובת מייל קיימת במערכת.");
         }
     } catch (error) {

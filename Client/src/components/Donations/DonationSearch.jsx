@@ -5,7 +5,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import SearchIcon from '@mui/icons-material/Search';
 import { isEmptyObject } from "../Tools/objectsOperations"
 
-const DonationSearch = ({ fields, donationsToDisplay, setDonationsToDisplay, setQueryString, rowsPerPage, setTotalDonationsCount }) => {
+const DonationSearch = ({ fields, setDonationsToDisplay, setQueryString, rowsPerPage, setTotalDonationsCount }) => {
     const [donationDetails, setDonationDetails] = useState({});
     const [minDonationAmount, setMinDonationAmount] = useState("");
     const [commentArea, setCommentArea] = useState("");
@@ -14,14 +14,6 @@ const DonationSearch = ({ fields, donationsToDisplay, setDonationsToDisplay, set
         setDonationDetails(fields);
         displayAllDonations();
     }, []);
-
-    useEffect(() => {
-        if (donationsToDisplay.length === 0 && (!isEmptyObject(donationDetails) || minDonationAmount)) {
-            setCommentArea("לא נמצאה תרומה");
-        } else {
-            setCommentArea("");
-        }
-    }, [donationsToDisplay]);
 
     const displayAllDonations = async () => {
         const total = await getRequest("donations", `?_limit=${rowsPerPage}`, setDonationsToDisplay, setCommentArea, "תורם");

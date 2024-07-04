@@ -23,7 +23,6 @@ const Contacts = ({ selectedContactId, setSelectedContactId, type }) => {
             {type === "contacts" && <ContactAdd fields={fields} type="contacts"/>}
             <ContactSearch
                 fields={fields}
-                contactsToDisplay={contactsToDisplay}
                 setContactsToDisplay={setContactsToDisplay}
                 setQueryString={setQueryString}
                 rowsPerPage={rowsPerPage}
