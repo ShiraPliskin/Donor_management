@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Dialog, DialogContent, Grid, Button, DialogTitle, Box, TextField, Typography } from "@mui/material";
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import dayjs from 'dayjs';
@@ -6,12 +6,12 @@ import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import Donors from "../Donors/Donors";
 import { postRequest } from "../Tools/APIRequests";
 import GenericMessage from "../Tools/GenericSuccessMessage";
+import { preview } from "vite";
 
-const GiftDelivery = ({ gift }) => {
+const GiftDelivery = ({ setGiftsToDisplay, gift }) => {
     const [openDeliveryForm, setOpenDeliveryForm] = useState(false);
     const [openWarning, setOpenWarning] = useState(false);
     const [openDateSelection, setOpenDateSelection] = useState(false);
-
     const [selectedDonorId, setSelectedDonorId] = useState([]);
     const [selectedDate, setSelectedDate] = useState(new Date());
     const [isSucceed, setIsSucceed] = useState('');
@@ -50,6 +50,14 @@ const GiftDelivery = ({ gift }) => {
         setOpenDateSelection();
         handleClose();
     }
+
+    useEffect(() => {
+        setGiftsToDisplay((prevgift) => {
+            return prevgift.map(giftItem =>
+                giftItem.id === gift.id ? gift : giftItem
+            );
+        })
+    }, [isSucceed]);
 
     return (
         <>

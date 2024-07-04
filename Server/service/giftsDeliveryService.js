@@ -1,6 +1,7 @@
 import { executeQuery } from './db.js'
 import {updateQuery, deleteQuery} from '../queries/genericQueries.js'
 import {addGiftDeliveryQuery, getByGiftIdQuery, getByDonorIdQuery} from '../queries/giftDeliveryQuery.js'
+import {updateGiftsAmount} from '../queries/giftsQuery.js'
 
 export class GiftsDeliveryService {
 
@@ -39,7 +40,8 @@ export class GiftsDeliveryService {
             acc.push(donorId, giftId, date);
             return acc;
         }, []);
-        
+        const giftQuery = updateGiftsAmount(donorIds.length);
+        await executeQuery(giftQuery, [giftId]);
         const result = await executeQuery(query, values);
         return result;
     }

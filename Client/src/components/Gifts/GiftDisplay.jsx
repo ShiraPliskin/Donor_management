@@ -69,6 +69,7 @@ const GiftDisplay = ({ gift, index, setGiftsToDisplay, setTotal}) => {
                     deleteGift={deleteGift}
                     open={open}
                     handleClose={handleClose}
+                    setGiftsToDisplay ={setGiftsToDisplay}
                     type="display"
                 />
             )}

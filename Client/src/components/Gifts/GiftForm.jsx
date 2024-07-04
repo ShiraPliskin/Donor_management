@@ -14,7 +14,7 @@ import GiftImg from "./GiftImg";
 import GiftDelivery from "./GiftDelivery";
 import GiftDonors from "./GiftDonors";
 
-const GiftForm = ({ fields, giftDetails, setGiftDetails, deleteGift, sendRequest, open, handleClose, type }) => {
+const GiftForm = ({ fields, giftDetails, setGiftDetails, deleteGift, sendRequest, open, handleClose, setGiftsToDisplay,type }) => {
 
     const [commentArea, setCommentArea] = useState("");
     const [formType, setFormType] = useState(type);
@@ -295,7 +295,7 @@ const GiftForm = ({ fields, giftDetails, setGiftDetails, deleteGift, sendRequest
                             {formType !== "display" && <FileUpload updatedGift={updatedGift} setUpdatedGift={setUpdatedGift} />}  
                             <GiftImg imgUrl={updatedGift.img}/>
                             {formType === "display" && <>
-                              <GiftDelivery gift={giftDetails}/>
+                              <GiftDelivery setGiftsToDisplay={setGiftsToDisplay} gift={giftDetails}/>
                               <GiftDonors giftDetails={giftDetails}/>
                             </>}
                         </Grid>
