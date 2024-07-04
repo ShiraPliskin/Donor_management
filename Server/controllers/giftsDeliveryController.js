@@ -2,12 +2,12 @@
 import { GiftsDeliveryService } from '../service/giftsDeliveryService.js';
 
 export class GiftsDeliveryController {
-
-    async getGiftsDelivery(req, res, next) {
+    
+    async getGiftDeliveryByDonorId(req, res, next) {
         try {
             const giftsDeliveryService = new GiftsDeliveryService();
-            const resultItems = await giftsDeliveryService.getGiftsDelivery(req.query);
-            return res.json(resultItems);
+            const resultItems = await giftsDeliveryService.getGiftDeliveryByDonorId(req.params.id);
+            return res.json({data: resultItems });
         }
         catch (ex) {
             const err = {}
@@ -15,13 +15,12 @@ export class GiftsDeliveryController {
             err.message = ex;
             next(err)
         }
-
     }
-    
-    async getGiftDeliveryById(req, res, next) {
+
+    async getGiftDeliveryByGiftId(req, res, next) {
         try {
             const giftsDeliveryService = new GiftsDeliveryService();
-            const resultItems = await giftsDeliveryService.getGiftDeliveryById(req.params.id);
+            const resultItems = await giftsDeliveryService.getGiftDeliveryByGiftId(req.params.id);
             return res.json({data: resultItems });
         }
         catch (ex) {

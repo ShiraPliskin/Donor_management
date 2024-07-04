@@ -184,11 +184,11 @@ const DonationForm = ({ fields, donationDetails, setDonationDetails, sendRequest
                                     InputLabelProps={{ shrink: true, required: formType !== "display" }}
                                     label="תאריך מתן התרומה"
                                     onChange={(e) => handleChange({ target: { name: "date", value: e.target.value } })}
-                                    value={updateDonation.date ? dayjs(updateDonation.date).format('YYYY-MM-DD') : ''}
                                     type="date"
                                     size="small"
                                     disabled={formType === "display"}
                                     margin="dense"
+                                    value={updateDonation.date ? dayjs(updateDonation.date).format('YYYY-MM-DD') : ''}
                                     InputProps={{
                                         inputProps: { 
                                             max: dayjs().format('YYYY-MM-DD') 

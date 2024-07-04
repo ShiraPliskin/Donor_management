@@ -3,7 +3,6 @@ import { getRequest } from "../Tools/APIRequests";
 import { Accordion, AccordionSummary, AccordionDetails, Typography, Box, TextField, Button } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import SearchIcon from '@mui/icons-material/Search';
-import { isEmptyObject } from "../Tools/objectsOperations"
 
 const GiftSearch = ({ fields, setGiftsToDisplay, setQueryString, rowsPerPage, setTotalGiftsCount }) => {
     const [giftDetails, setGiftDetails] = useState({});
@@ -60,7 +59,9 @@ const GiftSearch = ({ fields, setGiftsToDisplay, setQueryString, rowsPerPage, se
                                 value={giftDetails.id}
                                 onChange={handleChange}
                                 size="small"
-                                margin="dense"
+                                InputLabelProps={{
+                                    shrink: true,
+                                }}
                             />
                             <TextField
                                 style={{ width: '300px' }}
@@ -70,7 +71,9 @@ const GiftSearch = ({ fields, setGiftsToDisplay, setQueryString, rowsPerPage, se
                                 value={giftDetails.description}
                                 onChange={handleChange}
                                 size="small"
-                                margin="dense"
+                                InputLabelProps={{
+                                    shrink: true,
+                                }}
                             />
                             <Button variant="contained" color="primary" type="submit" endIcon={<SearchIcon sx={{ marginRight: 1, marginLeft: -1 }} />}>
                                 חפש

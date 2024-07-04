@@ -14,7 +14,6 @@ const ContactDisplay = ({ fields, contact, index, setContactsToDisplay, selected
     const [open, setOpen] = useState(false);
     const [updateSuccessful, setUpdateSuccessful] = useState('');
     const [openDeleteWarning, setOpenDeleteWarning] = useState(false);
-    const [comment, setComment] = useState("");
 
     useEffect(() => {
         if (setContactsToDisplay === "success") {
@@ -92,13 +91,11 @@ const ContactDisplay = ({ fields, contact, index, setContactsToDisplay, selected
                     table="contacts"
                     objectName="איש קשר"
                     objectState={setContactsToDisplay}
-                    formOpen={setOpen}
                     setTotal={setTotal}
                 />
             }
              {updateSuccessful === "success" && <GenericMessage message={`איש קשר מספר ${currentContact.id} עודכן בהצלחה`} type="success" />}
              {updateSuccessful === "error" && <GenericMessage message="עדכון איש קשר נכשל" type="error" />}
-       <p>{comment}</p> 
         </>
     );
 };

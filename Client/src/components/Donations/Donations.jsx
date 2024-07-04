@@ -30,7 +30,6 @@ const Donations = () => {
                 rowsPerPage={rowsPerPage}
                 setTotalDonationsCount={setTotalDonationsCount}
             />
-
             <DonationsDisplay
                 donationsToDisplay={donationsToDisplay}
                 setDonationsToDisplay={setDonationsToDisplay}
