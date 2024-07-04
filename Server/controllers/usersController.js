@@ -9,6 +9,7 @@ export class UsersController {
         try {
             const userService = new UsersService();
             const resultItems = await userService.getUsers(req.query);
+            console.log("result from controller  "+resultItems);
             return res.json(resultItems);
         }
         catch (ex) {
@@ -17,7 +18,6 @@ export class UsersController {
             err.message = ex;
             next(err)
         }
-
     }
 
     async getUserById(req, res, next) {

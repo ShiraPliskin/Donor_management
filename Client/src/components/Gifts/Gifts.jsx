@@ -30,7 +30,6 @@ const Gifts = () => {
             />
             <GiftSearch 
                 fields={fields}
-                giftsToDisplay={giftsToDisplay}
                 setGiftsToDisplay={setGiftsToDisplay}
                 setQueryString={setQueryString}
                 rowsPerPage={rowsPerPage}

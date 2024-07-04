@@ -5,23 +5,14 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import SearchIcon from '@mui/icons-material/Search';
 import { isEmptyObject } from "../Tools/objectsOperations"
 
-const DonorSearch = ({ fields, donorsToDisplay, setDonorsToDisplay, setQueryString, rowsPerPage, setTotalDonorsCount }) => {
+const DonorSearch = ({ fields, setDonorsToDisplay, setQueryString, rowsPerPage, setTotalDonorsCount }) => {
     const [donorDetails, setDonorDetails] = useState({});
-    const [minDonationAmount, setMinDonationAmount] = useState("");
     const [commentArea, setCommentArea] = useState("");
 
     useEffect(() => {
         setDonorDetails(fields);
         displayAllDonors();
     }, []);
-
-    useEffect(() => {
-        if (donorsToDisplay.length === 0 && (!isEmptyObject(donorDetails) || minDonationAmount)) {
-            setCommentArea("לא נמצא תורם");
-        } else {
-            setCommentArea("");
-        }
-    }, [donorsToDisplay]);
 
     const displayAllDonors = async () => {
         const total = await getRequest("donors", `?_limit=${rowsPerPage}`, setDonorsToDisplay, setCommentArea, "תורם");
@@ -49,10 +40,7 @@ const DonorSearch = ({ fields, donorsToDisplay, setDonorsToDisplay, setQueryStri
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        if (name === "minDonationAmount")
-            setMinDonationAmount(value);
-        else
-            setDonorDetails((prevData) => ({ ...prevData, [name]: value }));
+        setDonorDetails((prevData) => ({ ...prevData, [name]: value }));
     };
 
     return (
@@ -121,16 +109,6 @@ const DonorSearch = ({ fields, donorsToDisplay, setDonorsToDisplay, setQueryStri
                                 variant="outlined"
                                 name="address"
                                 value={donorDetails.address}
-                                onChange={handleChange}
-                                size="small"
-                                margin="none"
-                            />
-                            <TextField
-                                style={{ width: '90px' }}
-                                label="גובה תרומה מינימלי"
-                                variant="outlined"
-                                name="minDonationAmount"
-                                value={donorDetails.minDonationAmount}
                                 onChange={handleChange}
                                 size="small"
                                 margin="none"

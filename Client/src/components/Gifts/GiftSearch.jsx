@@ -5,7 +5,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import SearchIcon from '@mui/icons-material/Search';
 import { isEmptyObject } from "../Tools/objectsOperations"
 
-const GiftSearch = ({ fields, giftsToDisplay, setGiftsToDisplay, setQueryString, rowsPerPage, setTotalGiftsCount }) => {
+const GiftSearch = ({ fields, setGiftsToDisplay, setQueryString, rowsPerPage, setTotalGiftsCount }) => {
     const [giftDetails, setGiftDetails] = useState({});
     const [commentArea, setCommentArea] = useState("");
 
@@ -13,14 +13,6 @@ const GiftSearch = ({ fields, giftsToDisplay, setGiftsToDisplay, setQueryString,
         setGiftDetails(fields);
         displayAllGifts();
     }, []);
-
-    useEffect(() => {
-        if (giftsToDisplay.length === 0 && !isEmptyObject(giftDetails)) {
-            setCommentArea("לא נמצאה מתנה ");
-        } else {
-            setCommentArea("");
-        }
-    }, [giftsToDisplay]);
 
     const displayAllGifts = async () => {
         const total = await getRequest("gifts", `?_limit=${rowsPerPage}`, setGiftsToDisplay, setCommentArea, "מתנה");

@@ -4,8 +4,7 @@ import { RegisterService } from './registerService.js';
 const registerService = new RegisterService;
 
 export class UsersService {
-
-    async getUsers(queryParams) {
+        async getUsers(queryParams) {   
         const {dataQuery, countQuery} = getByConditionQuery("users",queryParams);
         const values = Object.values(queryParams);
         const data = await executeQuery(dataQuery, values);

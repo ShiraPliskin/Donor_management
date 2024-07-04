@@ -32,7 +32,6 @@ const Donors = ({type, selectedDonorId, setSelectedDonorId}) => {
             />}
             <DonorSearch
                 fields={fields}
-                donorsToDisplay={donorsToDisplay}
                 setDonorsToDisplay={setDonorsToDisplay}
                 setQueryString={setQueryString}
                 rowsPerPage={rowsPerPage}

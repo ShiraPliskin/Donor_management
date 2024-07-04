@@ -1,8 +1,7 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
-import { Button, Grid, TextField } from '@mui/material';
-import { AppBar, Toolbar, Container, Box, Menu, IconButton, MenuItem, List, ListItem, ListItemText, Typography, ListItemIcon } from '@mui/material';
-import { NavLink } from 'react-router-dom';
+import { Button } from '@mui/material';
+import { Box, List, ListItem, ListItemText, Typography, ListItemIcon } from '@mui/material';
 import EmailIcon from '@mui/icons-material/Email';
 import PersonIcon from '@mui/icons-material/Person';
 import EditIcon from '@mui/icons-material/Edit';
@@ -67,7 +66,15 @@ const UserProfile = () => {
                     <Button onClick={() => setOpenUpdatePWForm(true)} fullWidth variant="outlined">שינוי סיסמה</Button>
                 </Box>
             </Box>
-            {openUpdatePWForm && <UserUpdatePassword open={openUpdatePWForm} handleClose={handleClosePW} id={currentUser.id} formType="update" useType="userProfile" />}
+            {openUpdatePWForm && <UserUpdatePassword
+                open={openUpdatePWForm}
+                handleClose={handleClosePW}
+                id={currentUser.id}
+                formType="update"
+                useType="userProfile"
+                updateSuccessful={updateSuccessful}
+                setUpdateSuccessful={setUpdateSuccessful}
+            />}
             {openEditForm &&
                 <UserForm
                     userDetails={currentUser}

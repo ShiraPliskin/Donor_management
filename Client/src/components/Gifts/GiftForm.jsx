@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
-import { Button, TextField, Dialog, DialogActions, DialogContent, DialogTitle, Grid, InputAdornment, Select, MenuItem, FormControl, InputLabel} from "@mui/material";
+import { Button, TextField, IconButton, Dialog, DialogActions, DialogContent, DialogTitle, Grid, InputAdornment, Select, MenuItem, FormControl, InputLabel} from "@mui/material";
 import PeopleIcon from '@mui/icons-material/People';
 import DescriptionIcon from '@mui/icons-material/Description';
 import NoteIcon from '@mui/icons-material/Note';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
+import DeleteIcon from '@mui/icons-material/Delete';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { checkValidation } from '../Tools/Validation'
 import _isEqual from 'lodash/isEqual';
@@ -12,7 +13,7 @@ import FileUpload from "./FileUpload";
 import GiftImg from "./GiftImg";
 import GiftDelivery from "./GiftDelivery";
 
-const GiftForm = ({ fields, giftDetails, setGiftDetails, sendRequest, open, handleClose, type }) => {
+const GiftForm = ({ fields, giftDetails, setGiftDetails, deleteGift, sendRequest, open, handleClose, type }) => {
 
     const [commentArea, setCommentArea] = useState("");
     const [formType, setFormType] = useState(type);
@@ -291,7 +292,6 @@ const GiftForm = ({ fields, giftDetails, setGiftDetails, sendRequest, open, hand
                                 />
                             </Grid>
                             {formType !== "display" && <FileUpload updatedGift={updatedGift} setUpdatedGift={setUpdatedGift} />}  
-
                             <GiftImg imgUrl={updatedGift.img}/>
                             {formType === "display" && updatedGift.amount > 0 && <GiftDelivery gift={updatedGift}/> }
                         </Grid>
@@ -301,6 +301,9 @@ const GiftForm = ({ fields, giftDetails, setGiftDetails, sendRequest, open, hand
                 <DialogActions>
                     {formType === "display" &&
                         <>
+                           <IconButton onClick={() => { deleteGift() }} color="primary">
+                                <DeleteIcon />
+                            </IconButton>
                             <Button onClick={() => { setFormType("edit") }} color="primary">עריכה</Button>
                             <Button onClick={handleClose} color="primary">סגור</Button>
                         </>}
