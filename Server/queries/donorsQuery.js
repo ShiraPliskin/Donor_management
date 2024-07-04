@@ -1,22 +1,33 @@
 import 'dotenv/config'
 const db = process.env.DB_NAME;
 
-function getByInactiveFromDate() {
+function getByInactiveFromDate(queryParams) {
     let fields = queryParams.fields || '*';
     let filter = queryParams.filter || '';
     let limit = queryParams._limit;
     let page = queryParams.page;
     let sortby = queryParams.sortby;
 
-    let dataQuery = `SELECT ${fields} 
-    FROM ${db}.donors
-    JOIN ${db}.donations ON donations.donor_id = donors.id
-    WHERE donations.date < ?`;
+    const [key, value] = filter.split('=');
 
-    let countQuery = `SELECT COUNT(*) AS total 
+    let dataQuery = "SELECT DISTINCT";
+
+    const fieldsArray = fields.split(', ').map(field => {
+        return ` donors.${field}`;
+    });
+    
+    const fieldsString = fieldsArray.join(', ');
+   
+    dataQuery += fieldsString; 
+
+    dataQuery += ` FROM ${db}.donors
+    JOIN ${db}.donations ON donations.donor_id = donors.id
+    WHERE donations.date > ${value}`;
+
+    let countQuery = `SELECT DISTINCT COUNT(*) AS total 
     FROM ${db}.donors
     JOIN ${db}.donations ON donations.donor_id = donors.id
-    WHERE donations.date < ?`
+    WHERE donations.date > ${value}`
 
     if (sortby) {
         dataQuery += ` ORDER BY ${sortby}`;
@@ -30,6 +41,7 @@ function getByInactiveFromDate() {
             dataQuery += ` LIMIT ${limit}`;
         }
     }
+    console.log(dataQuery)
 
     return { dataQuery, countQuery };
 }

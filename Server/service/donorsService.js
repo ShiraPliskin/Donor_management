@@ -3,6 +3,7 @@ import {addQuery, updateQuery, getByIdQuery, getByConditionQuery, deleteQuery,pa
 import { DonationsService} from './donationsService.js'
 import { GiftsDeliveryService} from './giftsDeliveryService.js'
 import { getByInactiveFromDate } from '../queries/donorsQuery.js';
+import dateFormat from 'dateformat';
 
 const giftsDeliveryService = new GiftsDeliveryService;
 const donationsService = new DonationsService;
@@ -11,7 +12,7 @@ export class DonorsService {
 
     async getDonors(queryParams) {
         const values = Object.values(queryParams);
-        if (queryParams.filter && queryParams.filter.split('=')[0] === "inactiveFromDate"){
+        if (queryParams.filter && queryParams.filter.split('=')[0] === "date"){ 
             const { dataQuery, countQuery } = getByInactiveFromDate(queryParams);
             const data = await executeQuery(dataQuery, values);
             const total = await executeQuery(countQuery, values);

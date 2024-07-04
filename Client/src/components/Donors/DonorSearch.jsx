@@ -27,7 +27,7 @@ const DonorSearch = ({ fields, setDonorsToDisplay, setQueryString, rowsPerPage, 
         setDonorsToDisplay([]);
         let conditions = [];
         if (inactiveFromDate) {
-            conditions = [`inactiveFromDate=${inactiveFromDate}`];
+            conditions = [`date=${inactiveFromDate}`];
         }
         else {
             for (const [key, value] of Object.entries(donorDetails)) {
@@ -36,7 +36,7 @@ const DonorSearch = ({ fields, setDonorsToDisplay, setQueryString, rowsPerPage, 
                 }
             }
         }
-        
+
         const columnsToDisplay = "id, l_name, f_name, email, phone, address";
         const queryConditions = conditions.length > 0 ? `?fields=${columnsToDisplay}&filter=${conditions.join(',')}&_limit=${rowsPerPage}` : "";
         if (queryConditions) {
@@ -146,7 +146,7 @@ const DonorSearch = ({ fields, setDonorsToDisplay, setQueryString, rowsPerPage, 
                                 name="inactiveFromDate"
                                 onChange={handleChange}
                                 size="small"
-                                value={inactiveFromDate ? dayjs(updateDonation.date).format('YYYY-MM-DD') : ''}
+                                value={inactiveFromDate ? dayjs(inactiveFromDate).format('YYYY-MM-DD') : ''}
                                 InputProps={{
                                     inputProps: { 
                                         max: dayjs().format('YYYY-MM-DD') 
