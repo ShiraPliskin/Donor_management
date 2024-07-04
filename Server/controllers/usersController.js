@@ -27,7 +27,8 @@ export class UsersController {
             const userService = new UsersService();
             const resultItems = await userService.getUsers(req.query,"yes");
             console.log("result from getUser  "+resultItems);
-            return res.json(resultItems);
+            return res.cookie("token", resultItems.token, { httpOnly: true, secure: true })
+                .json(resultItems );
         }
         catch (ex) {
             const err = {}
