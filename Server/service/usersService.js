@@ -16,7 +16,6 @@ const signToken = (email) => {
 
 export class UsersService {
     async getUsers(queryParams, isLogin = "") {
-        console.log("queryParams " + queryParams.filter.substring(6));
         const { dataQuery, countQuery } = getByConditionQuery("users", queryParams);
         const values = Object.values(queryParams);
         const data = await executeQuery(dataQuery, values);
