@@ -16,9 +16,8 @@ const DonationSearch = ({ fields, setDonationsToDisplay, setQueryString, rowsPer
     }, []);
 
     const displayAllDonations = async () => {
-        const total = await getRequest("donations", `?_limit=${rowsPerPage}`, setDonationsToDisplay, setCommentArea, "תורם");
+        const total = await getRequest("donations", `?_limit=${rowsPerPage}`, setDonationsToDisplay, setCommentArea, "תרומה");
         setTotalDonationsCount(total);
-        setQueryString(`?_limit=${rowsPerPage}`);
     }
 
     const handleSubmit = async (e) => {
@@ -30,12 +29,9 @@ const DonationSearch = ({ fields, setDonationsToDisplay, setQueryString, rowsPer
                 conditions.push(`${key}=${value}`);
             }
         }
-        const columnsToDisplay = "id, l_name, f_name, email, phone, address";
-        const queryConditions = conditions.length > 0 ? `?fields=${columnsToDisplay}&filter=${conditions.join(',')}&_limit=${rowsPerPage}` : "";
-        if (queryConditions) {
-            const total = await getRequest("donations", queryConditions, setDonationsToDisplay, setCommentArea, "תורם");
-            setTotalDonationsCount(total);
-        }
+        const queryConditions = conditions.length > 0 ? `&filter=${conditions.join(',')}` : "";
+        const total = await getRequest("donations", `?_limit=${rowsPerPage}${queryConditions}`, setDonationsToDisplay, setCommentArea, "תרומה");
+        setTotalDonationsCount(total);
         setQueryString(queryConditions);
     };
 

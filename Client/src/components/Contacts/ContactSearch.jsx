@@ -16,7 +16,6 @@ const ContactSearch = ({ fields, setContactsToDisplay, setQueryString, rowsPerPa
     const displayAllContacts = async () => {
         const total = await getRequest("contacts", `?_limit=${rowsPerPage}`, setContactsToDisplay, setCommentArea, "איש קשר");
         setTotalCount(total);
-        setQueryString(`?_limit=${rowsPerPage}`);
     }
 
     const handleSubmit = async (e) => {
@@ -28,11 +27,9 @@ const ContactSearch = ({ fields, setContactsToDisplay, setQueryString, rowsPerPa
                 conditions.push(`${key}=${value}`);
             }
         }
-        const queryURL = conditions.length > 0 ? `?filter=${conditions.join(',')}&_limit=${rowsPerPage}` : "";
-        if (queryURL) {
-            const total = await getRequest("contacts", queryURL, setContactsToDisplay, setCommentArea, "איש קשר");
-            setTotalCount(total);
-        }
+        const queryURL = conditions.length > 0 ? `&filter=${conditions.join(',')}` : '';
+        const total = await getRequest("contacts", `?_limit=${rowsPerPage}${queryURL}`, setContactsToDisplay, setCommentArea, "איש קשר");
+        setTotalCount(total);
         setQueryString(queryURL);
     };
 

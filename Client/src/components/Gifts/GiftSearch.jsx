@@ -7,6 +7,7 @@ import SearchIcon from '@mui/icons-material/Search';
 const GiftSearch = ({ fields, setGiftsToDisplay, setQueryString, rowsPerPage, setTotalGiftsCount }) => {
     const [giftDetails, setGiftDetails] = useState({});
     const [commentArea, setCommentArea] = useState("");
+    const columnsToDisplay = "id, description, gift_cost, amount";
 
     useEffect(() => {
         setGiftDetails(fields);
@@ -14,9 +15,8 @@ const GiftSearch = ({ fields, setGiftsToDisplay, setQueryString, rowsPerPage, se
     }, []);
 
     const displayAllGifts = async () => {
-        const total = await getRequest("gifts", `?_limit=${rowsPerPage}`, setGiftsToDisplay, setCommentArea, "מתנה");
+        const total = await getRequest("gifts", `?feilds=${columnsToDisplay}&_limit=${rowsPerPage}`, setGiftsToDisplay, setCommentArea, "מתנה");
         setTotalGiftsCount(total);
-        setQueryString(`?_limit=${rowsPerPage}`);
     }
 
     const handleSubmit = async (e) => {
@@ -28,12 +28,9 @@ const GiftSearch = ({ fields, setGiftsToDisplay, setQueryString, rowsPerPage, se
                 conditions.push(`${key}=${value}`);
             }
         }
-        const columnsToDisplay = "id, description, gift_cost, amount";
-        const queryConditions = conditions.length > 0 ? `?fields=${columnsToDisplay}&filter=${conditions.join(',')}&_limit=${rowsPerPage}` : "";
-        if (queryConditions) {
-            const total = await getRequest("gifts", queryConditions, setGiftsToDisplay, setCommentArea, "מתנה");
-            setTotalGiftsCount(total);
-        }
+        const queryConditions = conditions.length > 0 ? `&filter=${conditions.join(',')}` : "";
+        const total = await getRequest("gifts", `?feilds=${columnsToDisplay}&_limit=${rowsPerPage}${queryConditions}`, setGiftsToDisplay, setCommentArea, "מתנה");
+        setTotalGiftsCount(total);
         setQueryString(queryConditions);
     };
 

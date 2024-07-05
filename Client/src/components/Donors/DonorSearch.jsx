@@ -9,6 +9,7 @@ const DonorSearch = ({ fields, setDonorsToDisplay, setQueryString, rowsPerPage, 
     const [donorDetails, setDonorDetails] = useState({});
     const [commentArea, setCommentArea] = useState("");
     const [inactiveFromDate, setInactiveFromDate] = useState("");
+    const columnsToDisplay = "id, l_name, f_name, email, phone, address";
 
     useEffect(() => {
         setDonorDetails(fields);
@@ -16,10 +17,8 @@ const DonorSearch = ({ fields, setDonorsToDisplay, setQueryString, rowsPerPage, 
     }, []);
 
     const displayAllDonors = async () => {
-        const columnsToDisplay = "id, l_name, f_name, email, phone, address";
-        const total = await getRequest("donors", `?_limit=${rowsPerPage}`, setDonorsToDisplay, setCommentArea, "תורם");
+        const total = await getRequest("donors", `?fields=${columnsToDisplay}&_limit=${rowsPerPage}`, setDonorsToDisplay, setCommentArea, "תורם");
         setTotalDonorsCount(total);
-        setQueryString(`?fields=${columnsToDisplay}&_limit=${rowsPerPage}`);
     }
 
     const handleSubmit = async (e) => {
@@ -37,12 +36,9 @@ const DonorSearch = ({ fields, setDonorsToDisplay, setQueryString, rowsPerPage, 
             }
         }
 
-        const columnsToDisplay = "id, l_name, f_name, email, phone, address";
-        const queryConditions = conditions.length > 0 ? `?fields=${columnsToDisplay}&filter=${conditions.join(',')}&_limit=${rowsPerPage}` : "";
-        if (queryConditions) {
-            const total = await getRequest("donors", queryConditions, setDonorsToDisplay, setCommentArea, "תורם");
-            setTotalDonorsCount(total);
-        }
+        const queryConditions = conditions.length > 0 ? `&filter=${conditions.join(',')}` : '';
+        const total = await getRequest("donors", `?fields=${columnsToDisplay}&_limit=${rowsPerPage}${queryConditions}`, setDonorsToDisplay, setCommentArea, "תורם");
+        setTotalDonorsCount(total);
         setQueryString(queryConditions);
     };
 

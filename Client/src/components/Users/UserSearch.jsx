@@ -16,7 +16,6 @@ const UserSearch = ({ fields, setUsersToDisplay, setQueryString, rowsPerPage, se
     const displayAllUsers = async () => {
         const total = await getRequest("users", `?_limit=${rowsPerPage}`, setUsersToDisplay, setCommentArea, "משתמש");
         setTotalCount(total);
-        setQueryString(`?_limit=${rowsPerPage}`);
     }
 
     const handleSubmit = async (e) => {
@@ -28,11 +27,9 @@ const UserSearch = ({ fields, setUsersToDisplay, setQueryString, rowsPerPage, se
                 conditions.push(`${key}=${value}`);
             }
         }
-        const queryURL = conditions.length > 0 ? `?filter=${conditions.join(',')}&_limit=${rowsPerPage}` : "";
-        if (queryURL) {
-            const total = await getRequest("users", queryURL, setUsersToDisplay, setCommentArea, "משתמש");
-            setTotalCount(total);
-        }
+        const queryURL = conditions.length > 0 ? `&filter=${conditions.join(',')}` : "";
+        const total = await getRequest("users", `?_limit=${rowsPerPage}${queryURL}`, setUsersToDisplay, setCommentArea, "משתמש");
+        setTotalCount(total);
         setQueryString(queryURL);
     };
 

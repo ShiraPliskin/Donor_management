@@ -37,7 +37,7 @@ function getByConditionQuery(tableName, queryParams) {
             dataQuery += ` LIMIT ${limit}`;
         }
     }
-
+    console.log(dataQuery)
     return { dataQuery, countQuery };
 }
 
