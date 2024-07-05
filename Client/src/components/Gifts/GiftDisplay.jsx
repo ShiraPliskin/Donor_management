@@ -7,13 +7,14 @@ import { filterEmptyValues } from "../Tools/objectsOperations"
 import GenericDeletion from '../Tools/GenericDeletion';
 import GenericMessage from '../Tools/GenericSuccessMessage';
 
-const GiftDisplay = ({ gift, index, setGiftsToDisplay, setTotal}) => {
+const GiftDisplay = ({ gift, index, setGiftsToDisplay, setTotal }) => {
 
     const [currentGift, setCurrentGift] = useState("");
     const [open, setOpen] = useState(false);
     const [openDeleteWarning, setOpenDeleteWarning] = useState(false);
     const [updateSuccessful, setUpdateSuccessful] = useState('');
     const [comment, setComment] = useState("");
+    const [isHovered, setIsHovered] = useState(false);
 
     useEffect(() => {
         if (updateSuccessful === "success") {
@@ -48,9 +49,26 @@ const GiftDisplay = ({ gift, index, setGiftsToDisplay, setTotal}) => {
         putRequest("gifts", updatedGift, currentGift.id, setUpdateSuccessful);
     };
 
+    const handleMouseEnter = () => {
+        setIsHovered(true);
+    };
+
+    const handleMouseLeave = () => {
+        setIsHovered(false);
+    };
+
     return (
         <>
-            <TableRow sx={{ height: '40px' }} key={index}>
+            <TableRow
+                sx={{
+                    height: '40px',
+                    backgroundColor: isHovered ? '#f5f5f5' : 'inherit',
+                    transition: 'background-color 0.3s ease',
+                }}
+                key={index}
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
+            >
                 <TableCell sx={{ textAlign: 'center' }}>{gift.id}</TableCell>
                 <TableCell sx={{ textAlign: 'center' }}>{gift.description}</TableCell>
                 <TableCell sx={{ textAlign: 'center' }}>{gift.gift_cost}</TableCell>
@@ -69,7 +87,7 @@ const GiftDisplay = ({ gift, index, setGiftsToDisplay, setTotal}) => {
                     deleteGift={deleteGift}
                     open={open}
                     handleClose={handleClose}
-                    setGiftsToDisplay ={setGiftsToDisplay}
+                    setGiftsToDisplay={setGiftsToDisplay}
                     type="display"
                 />
             )}
@@ -86,7 +104,7 @@ const GiftDisplay = ({ gift, index, setGiftsToDisplay, setTotal}) => {
             }
             {updateSuccessful === "success" && <GenericMessage message={`מתנה מספר ${currentGift.id} עוכנה בהצלחה`} type="success" />}
             {updateSuccessful === "error" && <GenericMessage message="עדכון מתנה נכשל" type="error" />}
-            <p>{comment}</p> 
+            <p>{comment}</p>
         </>
     );
 };

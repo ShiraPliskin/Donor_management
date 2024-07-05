@@ -4,7 +4,7 @@ import Checkbox from "@mui/material/Checkbox";
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import ContactForm from './ContactForm';
 import { putRequest } from '../Tools/APIRequests';
-import {filterEmptyValues} from "../Tools/objectsOperations"
+import { filterEmptyValues } from "../Tools/objectsOperations"
 import GenericDeletion from '../Tools/GenericDeletion';
 import GenericMessage from '../Tools/GenericSuccessMessage';
 
@@ -14,6 +14,7 @@ const ContactDisplay = ({ fields, contact, index, setContactsToDisplay, selected
     const [open, setOpen] = useState(false);
     const [updateSuccessful, setUpdateSuccessful] = useState('');
     const [openDeleteWarning, setOpenDeleteWarning] = useState(false);
+    const [isHovered, setIsHovered] = useState(false);
 
     useEffect(() => {
         if (setContactsToDisplay === "success") {
@@ -26,8 +27,9 @@ const ContactDisplay = ({ fields, contact, index, setContactsToDisplay, selected
     }, [updateSuccessful]);
 
     const updateContactRequest = () => {
+        setUpdateSuccessful("")
         const updatedContact = filterEmptyValues(currentContact);
-        putRequest("contacts", updatedContact,currentContact.id, setUpdateSuccessful);
+        putRequest("contacts", updatedContact, currentContact.id, setUpdateSuccessful);
     };
 
     const handleClickChoose = () => {
@@ -46,9 +48,26 @@ const ContactDisplay = ({ fields, contact, index, setContactsToDisplay, selected
         setOpenDeleteWarning(true);
     }
 
+    const handleMouseEnter = () => {
+        setIsHovered(true);
+    };
+
+    const handleMouseLeave = () => {
+        setIsHovered(false);
+    };
+
     return (
         <>
-            <TableRow key={index}>
+            <TableRow
+                sx={{
+                    height: '40px',
+                    backgroundColor: isHovered ? '#f5f5f5' : 'inherit',
+                    transition: 'background-color 0.3s ease',
+                }}
+                key={index}
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
+            >
                 <TableCell sx={{ textAlign: 'center' }}>{contact.id}</TableCell>
                 <TableCell sx={{ textAlign: 'center' }}>{contact.name}</TableCell>
                 <TableCell sx={{ textAlign: 'center' }}>{contact.email}</TableCell>
@@ -94,8 +113,8 @@ const ContactDisplay = ({ fields, contact, index, setContactsToDisplay, selected
                     setTotal={setTotal}
                 />
             }
-             {updateSuccessful === "success" && <GenericMessage message={`איש קשר מספר ${currentContact.id} עודכן בהצלחה`} type="success" />}
-             {updateSuccessful === "error" && <GenericMessage message="עדכון איש קשר נכשל" type="error" />}
+            {updateSuccessful === "success" && <GenericMessage message={`איש קשר מספר ${currentContact.id} עודכן בהצלחה`} type="success" />}
+            {updateSuccessful === "error" && <GenericMessage message="עדכון איש קשר נכשל" type="error" />}
         </>
     );
 };

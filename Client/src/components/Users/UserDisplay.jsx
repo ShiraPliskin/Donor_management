@@ -7,11 +7,12 @@ import GenericDeletion from '../Tools/GenericDeletion';
 import GenericMessage from '../Tools/GenericSuccessMessage';
 import UserForm from './UserForm';
 
-const UserDisplay = ({ user, index, setUsersToDisplay, setTotal}) => {
+const UserDisplay = ({ user, index, setUsersToDisplay, setTotal }) => {
     const [currentUser, setCurrentUser] = useState(user);
     const [open, setOpen] = useState(false);
     const [openDeleteWarning, setOpenDeleteWarning] = useState(false);
     const [updateSuccessful, setUpdateSuccessful] = useState('');
+    const [isHovered, setIsHovered] = useState(false);
 
     useEffect(() => {
         if (updateSuccessful === "success") {
@@ -41,10 +42,26 @@ const UserDisplay = ({ user, index, setUsersToDisplay, setTotal}) => {
         putRequest("users", updatedUser, currentUser.id, setUpdateSuccessful);
     };
 
+    const handleMouseEnter = () => {
+        setIsHovered(true);
+    };
+
+    const handleMouseLeave = () => {
+        setIsHovered(false);
+    };
+
     return (
         <>
-            <TableRow sx={{ height: '40px' }} key={index}>
-                <TableCell sx={{ textAlign: 'center' }}>{user.id}</TableCell>
+            <TableRow
+                sx={{
+                    height: '40px',
+                    backgroundColor: isHovered ? '#f5f5f5' : 'inherit',
+                    transition: 'background-color 0.3s ease',
+                }}
+                key={index}
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
+            >                <TableCell sx={{ textAlign: 'center' }}>{user.id}</TableCell>
                 <TableCell sx={{ textAlign: 'center' }}>{user.name}</TableCell>
                 <TableCell sx={{ textAlign: 'center' }}>{user.email}</TableCell>
                 <TableCell sx={{ textAlign: 'center' }}>{user.permission}</TableCell>

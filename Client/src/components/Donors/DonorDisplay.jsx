@@ -15,6 +15,7 @@ const DonorDisplay = ({ donor, index, setDonorsToDisplay, setTotal, selectedDono
     const [openDeleteWarning, setOpenDeleteWarning] = useState(false);
     const [updateSuccessful, setUpdateSuccessful] = useState('');
     const [comment, setComment] = useState("");
+    const [isHovered, setIsHovered] = useState(false);
 
     useEffect(() => {
         if (updateSuccessful === "success") {
@@ -56,9 +57,26 @@ const DonorDisplay = ({ donor, index, setDonorsToDisplay, setTotal, selectedDono
         putRequest("donors", updatedDonor, currentDonor.id, setUpdateSuccessful);
     };
 
+    const handleMouseEnter = () => {
+        setIsHovered(true);
+    };
+
+    const handleMouseLeave = () => {
+        setIsHovered(false);
+    };
+
     return (
         <>
-            <TableRow sx={{ height: '40px' }} key={index}>
+            <TableRow
+                sx={{
+                    height: '40px',
+                    backgroundColor: isHovered ? '#f5f5f5' : 'inherit',
+                    transition: 'background-color 0.3s ease',
+                }}
+                key={index}
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
+            >
                 <TableCell sx={{ textAlign: 'center' }}>{donor.id}</TableCell>
                 <TableCell sx={{ textAlign: 'center' }}>{donor.l_name}</TableCell>
                 <TableCell sx={{ textAlign: 'center' }}>{donor.f_name}</TableCell>

@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Table, TableBody, TableCell, TableContainer, IconButton, TableHead, TableRow, Paper, Select, MenuItem, InputLabel, FormControl, Typography, Box, Button } from '@mui/material';
 import { getRequest } from "../Tools/APIRequests";
 import TouchAppIcon from '@mui/icons-material/TouchApp';
-import ClearIcon from '@mui/icons-material/Clear';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import DonorDisplay from './DonorDisplay';
 

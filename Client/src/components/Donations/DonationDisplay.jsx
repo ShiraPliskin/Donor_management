@@ -14,6 +14,7 @@ const DonationDisplay = ({ donation, index, setDonationsToDisplay, setTotal}) =>
     const [open, setOpen] = useState(false);
     const [openDeleteWarning, setOpenDeleteWarning] = useState(false);
     const [updateSuccessful, setUpdateSuccessful] = useState('');
+    const [isHovered, setIsHovered] = useState(false);
 
     useEffect(() => {
         if (updateSuccessful === "success") {
@@ -43,9 +44,26 @@ const DonationDisplay = ({ donation, index, setDonationsToDisplay, setTotal}) =>
         putRequest("donations", updatedDonation, currentDonation.id, setUpdateSuccessful);
     };
 
+    const handleMouseEnter = () => {
+        setIsHovered(true);
+    };
+
+    const handleMouseLeave = () => {
+        setIsHovered(false);
+    };
+    
     return (
         <>
-            <TableRow sx={{ height: '40px' }} key={index}>
+            <TableRow
+             sx={{
+                height: '40px',
+                backgroundColor: isHovered ? '#f5f5f5' : 'inherit',
+                transition: 'background-color 0.3s ease',
+            }}
+            key={index}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave} 
+            >
                 <TableCell sx={{ textAlign: 'center' }}>{donation.id}</TableCell>
                 <TableCell sx={{ textAlign: 'center' }}>{donation.donor_id}</TableCell>
                 <TableCell sx={{ textAlign: 'center' }}>{Number.isInteger(donation.amount) ? donation.amount : parseFloat(donation.amount).toFixed(2).replace(/\.?0+$/, '')}</TableCell>
