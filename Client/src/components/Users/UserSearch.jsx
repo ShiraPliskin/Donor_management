@@ -43,6 +43,7 @@ const UserSearch = ({ fields, setUsersToDisplay, setQueryString, rowsPerPage, se
             <Accordion sx={{ flexGrow: 1 }}>
                 <AccordionSummary expandIcon={<ExpandMoreIcon />} >
                     <Typography variant="h6">חיפוש משתמש</Typography>
+                    <SearchIcon style={{ marginTop: '0.3rem',marginRight: 3 }} /> 
                 </AccordionSummary>
                 <AccordionDetails>
                     <form onSubmit={handleSubmit}>

@@ -1,7 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, Outlet, NavLink, useParams, Link as RouterLink } from "react-router-dom";
-import { AppBar, Toolbar, Button, Container, Box, Menu, MenuItem, Typography } from '@mui/material';
+import { AppBar, Toolbar, Button, Container, Box, Menu, MenuItem, ListItemIcon } from '@mui/material';
 import { config } from "./config.jsx";
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
+import LockPersonIcon from '@mui/icons-material/LockPerson';
+import RedeemIcon from '@mui/icons-material/Redeem';
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
+import PermContactCalendarIcon from '@mui/icons-material/PermContactCalendar';
+import GroupIcon from '@mui/icons-material/Group';
+import Person4Icon from '@mui/icons-material/Person4';
 
 const Layout = () => {
   const [currentUser, setCurrentUser] = useState(JSON.parse(localStorage.getItem("currentUser")));
@@ -59,7 +67,11 @@ const Layout = () => {
                     "&:hover": {
                       backgroundColor: activeButton === "userProfile" ? "#f50057" : "#f44336",
                     },
+                    height: "40px",
+                    marginLeft: "20px",
+                    width: '100px'
                   }}
+                  startIcon={<AccountCircleIcon sx={{ marginLeft: 1.5, marginRight: -1.5 }} />}
                 >
                   {currentUser && currentUser.name}
                 </Button>
@@ -70,9 +82,15 @@ const Layout = () => {
                 >
                   <MenuItem component={RouterLink} to={`users/${currentUser.id}/userProfile`} onClick={() => handleButtonClick("userProfile")}
                   >
+                     <ListItemIcon>
+                       <LockPersonIcon fontSize="small" /> 
+                     </ListItemIcon>
                     פרטים אישיים
                   </MenuItem>
-                  <MenuItem onClick={handleLogout}>
+                  <MenuItem onClick={handleLogout} >
+                     <ListItemIcon>
+                       <ExitToAppIcon fontSize="small" /> 
+                     </ListItemIcon>
                     התנתקות
                   </MenuItem>
                 </Menu>
@@ -88,7 +106,11 @@ const Layout = () => {
                     "&:hover": {
                       backgroundColor: activeButton === "userManagement" ? "#f50057" : "#f44336",
                     },
+                    padding: "1.5rem",
+                    height: "70px",
+                    width: '140px'
                   }}
+                  startIcon={<GroupIcon sx={{ marginLeft: 1.5, marginRight: -1.5 }} />}
                 >
                   ניהול משתמשים
                 </Button>
@@ -103,7 +125,11 @@ const Layout = () => {
                   "&:hover": {
                     backgroundColor: activeButton === "donors" ? "#f50057" : "#f44336",
                   },
+                  padding: "1.5rem",
+                  height: "70px",
+                  width: '140px'
                 }}
+                startIcon={<Person4Icon sx={{ marginLeft: 1.5, marginRight: -1.5 }} />}
               >
                 תורמים
               </Button>
@@ -117,7 +143,11 @@ const Layout = () => {
                   "&:hover": {
                     backgroundColor: activeButton === "donations" ? "#f50057" : "#f44336",
                   },
+                  padding: "1.5rem",
+                  height: "70px",
+                  width: '140px'
                 }}
+                startIcon={<AttachMoneyIcon sx={{ marginLeft: 1.5, marginRight: -1.5 }} />}
               >
                 תרומות
               </Button>
@@ -131,7 +161,11 @@ const Layout = () => {
                   "&:hover": {
                     backgroundColor: activeButton === "contacts" ? "#f50057" : "#f44336",
                   },
+                  padding: "1.5rem",
+                  height: "70px",
+                  width: '140px'
                 }}
+                startIcon={<PermContactCalendarIcon sx={{ marginLeft: 1.5, marginRight: -1.5 }} />}
               >
                 אנשי קשר
               </Button>
@@ -145,7 +179,11 @@ const Layout = () => {
                   "&:hover": {
                     backgroundColor: activeButton === "gifts" ? "#f50057" : "#f44336",
                   },
+                  padding: "1.5rem",
+                  height: "70px",
+                  width: '140px'
                 }}
+                startIcon={<RedeemIcon sx={{ marginLeft: 1.5, marginRight: -1.5 }} />}
               >
                 מתנות
               </Button>
