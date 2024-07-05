@@ -1,3 +1,10 @@
-.displayAllButton{
-  height: 56px;
+@media (max-width: 600px) {
+  .MuiTextField-root {
+      width: 100% !important;
+  }
+  
+  .MuiButton-root {
+      width: 100%;
+      margin-top: 8px;
+  }
 }
