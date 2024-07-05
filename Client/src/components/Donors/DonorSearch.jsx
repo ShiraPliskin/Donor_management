@@ -57,6 +57,7 @@ const DonorSearch = ({ fields, setDonorsToDisplay, setQueryString, rowsPerPage, 
             <Accordion sx={{ flexGrow: 1 }}>
                 <AccordionSummary expandIcon={<ExpandMoreIcon />} >
                     <Typography variant="h6">חיפוש תורם</Typography>
+                    <SearchIcon style={{ marginTop: '0.3rem',marginRight: 3 }} /> 
                 </AccordionSummary>
                 <AccordionDetails>
                     <form onSubmit={handleSubmit}>
