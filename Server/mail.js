@@ -14,7 +14,6 @@ const transporter = nodemailer.createTransport({
 
 function sendOTPPasswordByEmail(userEmail, otp) {
 
-    console.log("mail "+userEmail+" otp "+otp )
     let mailOptions = {
         from: 'shirap67679@gmail.com',
         to: userEmail,

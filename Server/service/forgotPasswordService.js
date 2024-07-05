@@ -15,8 +15,8 @@ const encryption = async(item) => {
 }
 
 
-const signToken = (email) => {
-    return jwt.sign({ email: email }, process.env.JWT_SECRET, {
+const signToken = (id) => {
+    return jwt.sign({ email: id }, process.env.JWT_SECRET, {
         expiresIn: "1h",
     })
 }
@@ -26,29 +26,30 @@ export class ForgotPasswordService {
         const resultItem = await registerService.getRegisterById(id);
         if (!resultItem[0]) throw new Error("Error receiving data");
         const otp = otpGenerator.generate(6, {});
+        console.log("otp from update: "+otp);
+
         sendOTPPasswordByEmail(email,otp);
         const encodedOtp = await encryption(otp);
-        const query = patchQuery("register", { otp: encodedOtp }, "id");
-        const values = Object.values(updatedFields);
-        values.push(id);
-        const result =  await executeQuery(query, values);
+        const query = updateQuery("register", { otp: encodedOtp }, "user_id");
+        const result =  await executeQuery(query, [encodedOtp,id]);
         return result;
     }
-
+    
 
     async updateByOTP(updatedPassword, id) {
-        const resultItem = await this.getRegisterById(id);
+        const resultItem = await registerService.getRegisterById(id);
         if (!resultItem[0]) throw new Error("Error receiving data");
         let encodedOTP = await encryption(updatedPassword.otp);
         if(resultItem[0].otp!==encodedOTP) throw new Error("Incorrect previous password");
+        console.log("aaaaaaaaaaaaaaaaa: "+updatedPassword.otp)
+
         let encodedPassword = await encryption(updatedPassword.password);
-        const updatePassword = {
+        const newPassword = {
             password: encodedPassword
         };  
-        const queryRegister = updateQuery("register",updatePassword,"user_id");
-        const values =[updatePassword["password"],id]
-        const result =  await executeQuery(queryRegister, values);
-        return {...result, token: signToken(email)};
+        const queryRegister = updateQuery("register",newPassword,"user_id");
+        const result =  await executeQuery(queryRegister, [newPassword.password,id]);
+        return {...result, token: signToken(id)};
     }
 
 }

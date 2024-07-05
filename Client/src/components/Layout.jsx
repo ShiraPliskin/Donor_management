@@ -55,9 +55,10 @@ const Layout = () => {
                   color="inherit"
                   variant="outlined"
                   sx={{
-                    backgroundColor: activeButton === "userProfile" ? "#f50057" : "transparent",
+                    backgroundColor: activeButton === "userProfile" ? "#ffffff" : "transparent",
+                    color:"black",
                     "&:hover": {
-                      backgroundColor: activeButton === "userProfile" ? "#f50057" : "#f44336",
+                      backgroundColor: activeButton === "userProfile" ? "#ffffff" : "#73b6f9",
                     },
                   }}
                 >
@@ -77,6 +78,21 @@ const Layout = () => {
                   </MenuItem>
                 </Menu>
               </Box>
+              <Button
+                color="inherit"
+                component={NavLink}
+                to={`users/${currentUser.id}/home`}
+                onClick={() => handleButtonClick("home")}
+                sx={{
+                  backgroundColor: activeButton === "home" ? "#ffffff" : "transparent",
+                  color:"black",
+                  "&:hover": {
+                    backgroundColor: activeButton === "home" ? "#ffffff" : "#73b6f9",
+                  },
+                }}
+              >
+                דף הבית
+              </Button>
               {currentUser.permission === config.HIGH_PERMISSION && (
                 <Button
                   color="inherit"
@@ -84,9 +100,10 @@ const Layout = () => {
                   to={`users/${currentUser.id}/userManagement`}
                   onClick={() => handleButtonClick("userManagement")}
                   sx={{
-                    backgroundColor: activeButton === "userManagement" ? "#f50057" : "transparent",
+                    backgroundColor: activeButton === "userManagement" ? "#ffffff" : "transparent",
+                    color:"black",
                     "&:hover": {
-                      backgroundColor: activeButton === "userManagement" ? "#f50057" : "#f44336",
+                      backgroundColor: activeButton === "userManagement" ? "#ffffff" : "#73b6f9",
                     },
                   }}
                 >
@@ -99,9 +116,10 @@ const Layout = () => {
                 to={`users/${currentUser.id}/donors`}
                 onClick={() => handleButtonClick("donors")}
                 sx={{
-                  backgroundColor: activeButton === "donors" ? "#f50057" : "transparent",
+                  backgroundColor: activeButton === "donors" ? "#ffffff" : "transparent",
+                  color:"black",
                   "&:hover": {
-                    backgroundColor: activeButton === "donors" ? "#f50057" : "#f44336",
+                    backgroundColor: activeButton === "donors" ? "#ffffff" : "#73b6f9",
                   },
                 }}
               >
@@ -113,9 +131,10 @@ const Layout = () => {
                 to={`users/${currentUser.id}/donations`}
                 onClick={() => handleButtonClick("donations")}
                 sx={{
-                  backgroundColor: activeButton === "donations" ? "#f50057" : "transparent",
+                  backgroundColor: activeButton === "donations" ? "#ffffff" : "transparent",
+                  color:"black",
                   "&:hover": {
-                    backgroundColor: activeButton === "donations" ? "#f50057" : "#f44336",
+                    backgroundColor: activeButton === "donations" ? "#ffffff" : "#73b6f9",
                   },
                 }}
               >
@@ -127,9 +146,10 @@ const Layout = () => {
                 to={`users/${currentUser.id}/contacts`}
                 onClick={() => handleButtonClick("contacts")}
                 sx={{
-                  backgroundColor: activeButton === "contacts" ? "#f50057" : "transparent",
+                  backgroundColor: activeButton === "contacts" ? "#ffffff" : "transparent",
+                  color:"black",
                   "&:hover": {
-                    backgroundColor: activeButton === "contacts" ? "#f50057" : "#f44336",
+                    backgroundColor: activeButton === "contacts" ? "#ffffff" : "#73b6f9",
                   },
                 }}
               >
@@ -141,9 +161,10 @@ const Layout = () => {
                 to={`users/${currentUser.id}/gifts`}
                 onClick={() => handleButtonClick("gifts")}
                 sx={{
-                  backgroundColor: activeButton === "gifts" ? "#f50057" : "transparent",
+                  backgroundColor: activeButton === "gifts" ? "#ffffff" : "transparent",
+                  color:"black",
                   "&:hover": {
-                    backgroundColor: activeButton === "gifts" ? "#f50057" : "#f44336",
+                    backgroundColor: activeButton === "gifts" ? "#ffffff" : "#73b6f9",
                   },
                 }}
               >

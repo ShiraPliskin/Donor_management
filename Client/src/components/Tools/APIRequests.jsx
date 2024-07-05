@@ -2,10 +2,11 @@ import { config } from "../config.jsx";
 
 export const getRequest = async (table, conditions, state, comment, object = "") => {
     const url = `http://${config.SERVERPORT}/${table}${conditions ? `${conditions}` : ''}`;
+    console.log("url: "+url)
     try {
         const response = await fetch(url, {
             headers: {
-                'Origin': 'http://localhost:8080',
+                'Origin': `http://${config.SERVERPORT}`,
             }, credentials: 'include'
         });
 
@@ -46,7 +47,7 @@ export const getByIdRequest = async (table, id, state, comment) => {
     try {
         const response = await fetch(url,{
             headers: {
-                'Origin': 'http://localhost:8080',
+                'Origin': `http://${config.SERVERPORT}`,
             }, credentials: 'include'
         });
 
@@ -74,7 +75,7 @@ export const getManyItemsByIdRequest = async (table, id, state, comment) => {
     try {
         const response = await fetch(url,{
             headers: {
-                'Origin': 'http://localhost:8080',
+                'Origin': `http://${config.SERVERPORT}`,
             }, credentials: 'include'
         });
 
@@ -100,7 +101,7 @@ export const getManyItemsByIdRequest = async (table, id, state, comment) => {
 export const putRequest = async (table, updatedObject, id, setIsSucceed) => {
     try {
         const response = await fetch(`http://${config.SERVERPORT}/${table}/${id}`, {
-            headers: { 'Content-Type': 'application/json', 'Origin': 'http://localhost:8080' },
+            headers: { 'Content-Type': 'application/json', 'Origin': `http://${config.SERVERPORT}` },
             method: 'PUT',
             body: JSON.stringify(updatedObject),
             credentials: 'include'
@@ -128,7 +129,7 @@ export const putRequest = async (table, updatedObject, id, setIsSucceed) => {
 export const deleteRequest = async (table, id, setIsSucceed) => {
     try {
         const response = await fetch(`http://${config.SERVERPORT}/${table}/${id}`, {
-            headers: { 'Content-Type': 'application/json', 'Origin': 'http://localhost:8080'},
+            headers: { 'Content-Type': 'application/json', 'Origin': `http://${config.SERVERPORT}`},
             method: 'DELETE',
             credentials: 'include'
         });
@@ -154,7 +155,7 @@ export const deleteRequest = async (table, id, setIsSucceed) => {
 export const postRequest = async (table, newItem, comment, newID = 0) => {
     try {
         const response = await fetch(`http://${config.SERVERPORT}/${table}`, {
-            headers: { 'Content-Type': 'application/json','Origin': 'http://localhost:8080' },
+            headers: { 'Content-Type': 'application/json','Origin': `http://${config.SERVERPORT}` },
             method: 'POST',
             body: JSON.stringify(newItem),
             credentials: 'include'
@@ -180,7 +181,7 @@ export const postRequest = async (table, newItem, comment, newID = 0) => {
 export const getByPostRequest = async (table, newItem, status, commentArea) => {
     try {
         const response = await fetch(`http://${config.SERVERPORT}/${table}`, {
-            headers: { 'Content-Type': 'application/json','Origin': 'http://localhost:8080' },
+            headers: { 'Content-Type': 'application/json','Origin': `http://${config.SERVERPORT}` },
             method: 'POST',
             body: JSON.stringify(newItem),
             credentials: 'include'
@@ -206,7 +207,7 @@ export const checkIfExist = async (table, conditions, comment, id) => {
     try {
         const response = await fetch(url,{
             headers: {
-                'Origin': 'http://localhost:8080',
+                'Origin': `http://${config.SERVERPORT}`,
             }, credentials: 'include'
         });
 
@@ -231,7 +232,7 @@ export const getDonotGifts = async (id, state, comment) => {
     const url = `http://${config.SERVERPORT}/donorGifts/${id}}`;
     try {
         const response = await fetch(url,{
-            headers: {'Origin': 'http://localhost:8080',}, credentials: 'include' });
+            headers: {'Origin': `http://${config.SERVERPORT}`,}, credentials: 'include' });
 
         if (!response.ok) {
             throw new Error(`Request failed with status: ${response.status}`);
