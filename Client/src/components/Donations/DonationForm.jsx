@@ -10,7 +10,6 @@ import PaymentIcon from '@mui/icons-material/Payment';
 import ChooseDonorButton from "./ChooseDonorButton";
 
 const DonationForm = ({ fields, donationDetails, setDonationDetails, sendRequest, open, handleClose, type, deleteDonation }) => {
-
     const [commentArea, setCommentArea] = useState("");
     const [formType, setFormType] = useState(type);
     const [updateDonation, setUpdateDonation] = useState(donationDetails);
@@ -204,7 +203,7 @@ const DonationForm = ({ fields, donationDetails, setDonationDetails, sendRequest
                 <DialogActions>
                     {formType === "display" &&
                         <>
-                            <IconButton onClick={() => { deleteDonation() }} color="primary">
+                            <IconButton onClick={deleteDonation} color="primary">
                                 <DeleteIcon />
                             </IconButton>
                             <Button onClick={() => { setFormType("edit") }} color="primary">עריכה</Button>

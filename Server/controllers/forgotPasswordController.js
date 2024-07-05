@@ -2,6 +2,7 @@ import { ForgotPasswordService } from '../service/forgotPasswordService.js';
 export class ForgotPasswordController {
 
     async forgotPassword(req, res, next) {
+        console.log("req", req)
         try {
             const forgotPasswordService = new ForgotPasswordService();
             await forgotPasswordService.forgotPassword(req.body.email, req.params.id);

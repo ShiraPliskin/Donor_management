@@ -295,7 +295,7 @@ const GiftForm = ({ fields, giftDetails, setGiftDetails, deleteGift, sendRequest
                             {formType !== "display" && <FileUpload updatedGift={updatedGift} setUpdatedGift={setUpdatedGift} />}  
                             <GiftImg imgUrl={updatedGift.img}/>
                             {formType === "display" && <>
-                              <GiftDelivery setGiftsToDisplay={setGiftsToDisplay} gift={giftDetails}/>
+                              <GiftDelivery setGiftsToDisplay={setGiftsToDisplay} gift={updatedGift} setGift={setUpdatedGift}/>
                               <GiftDonors giftDetails={giftDetails}/>
                             </>}
                         </Grid>

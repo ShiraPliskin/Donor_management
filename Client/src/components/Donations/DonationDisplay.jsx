@@ -10,7 +10,7 @@ import moment from 'moment';
 
 const DonationDisplay = ({ donation, index, setDonationsToDisplay, setTotal}) => {
 
-    const [currentDonation, setCurrentDonation] = useState("");
+    const [currentDonation, setCurrentDonation] = useState(donation);
     const [open, setOpen] = useState(false);
     const [openDeleteWarning, setOpenDeleteWarning] = useState(false);
     const [updateSuccessful, setUpdateSuccessful] = useState('');
@@ -25,7 +25,7 @@ const DonationDisplay = ({ donation, index, setDonationsToDisplay, setTotal}) =>
         }
     }, [updateSuccessful]);
 
-    const handleClickOpen = async () => {
+    const handleClickOpen = () => {
         setOpen(true);
     };
 

@@ -6,9 +6,8 @@ import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import Donors from "../Donors/Donors";
 import { postRequest } from "../Tools/APIRequests";
 import GenericMessage from "../Tools/GenericSuccessMessage";
-import { preview } from "vite";
 
-const GiftDelivery = ({ setGiftsToDisplay, gift }) => {
+const GiftDelivery = ({ setGiftsToDisplay, gift, setGift }) => {
     const [openDeliveryForm, setOpenDeliveryForm] = useState(false);
     const [openWarning, setOpenWarning] = useState(false);
     const [openDateSelection, setOpenDateSelection] = useState(false);
@@ -51,13 +50,21 @@ const GiftDelivery = ({ setGiftsToDisplay, gift }) => {
         handleClose();
     }
 
-    useEffect(() => {
-        setGiftsToDisplay((prevgift) => {
-            return prevgift.map(giftItem =>
-                giftItem.id === gift.id ? gift : giftItem
-            );
-        })
-    }, [isSucceed]);
+    // useEffect(() => {
+    //     console.log("7",gift.amount - selectedDonorId.length)
+
+    //     if(isSucceed==="success")
+    //     setGift(prevGift => ({
+    //         ...prevGift,
+    //         amount: prevGift.amount - selectedDonorId.length
+    //     }));
+    //         console.log("8",gift.amount - selectedDonorId.length)
+    //     // setGiftsToDisplay((prevgift) => {
+    //     //     return prevgift.map(giftItem =>
+    //     //         giftItem.id === gift.id ?  {...giftItem, amount: giftItem.amount - selectedDonorId.length} : giftItem
+    //     //     );
+    //     // })
+    // }, [isSucceed]);
 
     return (
         <>

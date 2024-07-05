@@ -10,6 +10,7 @@ import Home from "./Home";
 import UserProfile from "./Users/UserProfile";
 import Users from "./Users/Users";
 import Donations from "./Donations/Donations";
+import ForgotPassword from "./Login/ForgotPassword";
 
 const Routing = () => {
   const [redirect, setRedirect] = useState(null);
@@ -28,6 +29,7 @@ const Routing = () => {
       <Routes>
         <Route path='/' element={<Navigate to={redirect && redirect} replace />}/>
         <Route path='/login' element={<Login />} />
+        <Route path='/forgotPassword' element={<ForgotPassword />} />
         <Route element={<Layout />}>
           <Route path='/users/:userId'>
             <Route path='home' element={<Home />} />

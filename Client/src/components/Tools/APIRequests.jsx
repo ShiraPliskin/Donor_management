@@ -12,7 +12,6 @@ export const getRequest = async (table, conditions, state, comment, object = "")
         if (!response.ok) {
             throw new Error(`Request failed with status: ${response.status}`);
         }
-
         const responseData = await response.json();
         if (responseData.data.length === 0) {
             switch (object) {

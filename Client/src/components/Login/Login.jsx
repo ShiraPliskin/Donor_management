@@ -47,13 +47,18 @@ const Login = () => {
     getRequest("users/login", `?filter=email=${email}`, setUserDetails, setComment, "כתובת מייל");
   };
 
+  const forgotPassword = () => {
+    navigate(`/forgotPassword`);
+  }
+
   return (
     <>
       <div className={style.wrapper}>
         <h1>התחברות</h1>
         <form onSubmit={handleFormSubmit} className={style.inputBox}>
-          <input name="email" type="text" placeholder="מייל" required />
+          <input name="email" type="text" placeholder="כתובת מייל" required />
           <input name="password" type="password" placeholder="סיסמה" required />
+          <a onClick={forgotPassword}>שכחת את הסיסמא שלך?</a>
           <button type="submit">כניסה</button>
         </form>
         {comment && <Box marginTop={"10px"} color={"red"}>{comment}</Box>}

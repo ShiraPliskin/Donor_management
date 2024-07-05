@@ -6,7 +6,6 @@ import jwt from 'jsonwebtoken';
 
 const registerService = new RegisterService;
 
-
 const signToken = (email) => {
     return jwt.sign({ email: email }, process.env.JWT_SECRET, {
         expiresIn: "1h",
