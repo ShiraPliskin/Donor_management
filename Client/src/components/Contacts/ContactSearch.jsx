@@ -4,7 +4,7 @@ import { Accordion, AccordionSummary, AccordionDetails, Typography, Box, TextFie
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import SearchIcon from '@mui/icons-material/Search';
 
-const ContactSearch = ({ fields, setContactsToDisplay, setQueryString, rowsPerPage, setTotalCount }) => {
+const ContactSearch = ({ fields, setContactsToDisplay, setQueryString, rowsPerPage, setTotalCount, addedAnItem }) => {
     const [contactDetails, setContactDetails] = useState({});
     const [commentArea, setCommentArea] = useState("");
 
@@ -13,13 +13,17 @@ const ContactSearch = ({ fields, setContactsToDisplay, setQueryString, rowsPerPa
         displayAllContacts();
     }, []);
 
+    useEffect(() => {
+        if (addedAnItem)
+            sendRequest();
+    }, [addedAnItem]);
+
     const displayAllContacts = async () => {
         const total = await getRequest("contacts", `?_limit=${rowsPerPage}`, setContactsToDisplay, setCommentArea, "איש קשר");
         setTotalCount(total);
     }
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+    const sendRequest = async () => {
         setContactsToDisplay([]);
         let conditions = [];
         for (const [key, value] of Object.entries(contactDetails)) {
@@ -31,6 +35,11 @@ const ContactSearch = ({ fields, setContactsToDisplay, setQueryString, rowsPerPa
         const total = await getRequest("contacts", `?_limit=${rowsPerPage}${queryURL}`, setContactsToDisplay, setCommentArea, "איש קשר");
         setTotalCount(total);
         setQueryString(queryURL);
+    }
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        sendRequest();
     };
 
     const handleChange = (e) => {

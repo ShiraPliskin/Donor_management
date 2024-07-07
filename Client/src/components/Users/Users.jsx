@@ -18,11 +18,13 @@ const Users = () => {
     const [queryString, setQueryString] = useState("");
     const [rowsPerPage, setRowsPerPage] = useState(8);
     const [totalCount, setTotalCount] = useState(0);
+    const [addedAnItem, setAddedAnItem] = useState(false);
 
     return (
         <>
             <UserAdd
                 fields={fields}
+                setAddedAnItem={setAddedAnItem}
             />
             <UserSearch
                 fields={fields}
@@ -30,6 +32,7 @@ const Users = () => {
                 setQueryString={setQueryString}
                 rowsPerPage={rowsPerPage}
                 setTotalCount={setTotalCount}
+                addedAnItem={addedAnItem}
             />
             <UsersDisplay
                 usersToDisplay={usersToDisplay}

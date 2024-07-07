@@ -242,6 +242,7 @@ const UserForm = ({ fields, userDetails, setUserDetails, sendRequest, open, hand
                                 </IconButton>}
                             {(useType === "userProfile" || currentUser.id !== userDetails.id) &&
                                 <Button onClick={() => { setFormType("edit") }} color="primary">עריכה</Button>}
+                            {currentUser.id === userDetails.id && <p>על מנת לערוך משתמש זה לחץ "פרטים אישיים"</p>}
                             <Button onClick={handleClose} color="primary">סגור</Button>
                         </>}
                     {formType === "edit" &&

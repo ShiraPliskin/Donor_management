@@ -32,7 +32,7 @@ const DonorsDisplay = ({ donorsToDisplay, setDonorsToDisplay, queryString, rowsP
     }
 
     const handleFetchData = async () => {
-        const queryConditions = `${queryString}&page=${page + 2}&sortby=${sortKey}`;
+        const queryConditions = `?_limit=${rowsPerPage}${queryString}&page=${page + 2}&sortby=${sortKey}`;
         const total = await getRequest("donors", queryConditions, setMoreDonors, setCommentArea, "תורם");
         setTotalDonorsCount(total);
     };
@@ -52,7 +52,7 @@ const DonorsDisplay = ({ donorsToDisplay, setDonorsToDisplay, queryString, rowsP
     const handleChangeSortKey = async (e) => {
         setSortKey(e.target.value);
         setPage(0);
-        const total = await getRequest("donors", `${queryString}&page=${1}&sortby=${e.target.value}`, setDonorsToDisplay, setCommentArea, "תורם")
+        const total = await getRequest("donors", `?_limit=${rowsPerPage}${queryString}&page=${1}&sortby=${e.target.value}`, setDonorsToDisplay, setCommentArea, "תורם")
         setTotalDonorsCount(total);
     };
 
@@ -117,8 +117,9 @@ const DonorsDisplay = ({ donorsToDisplay, setDonorsToDisplay, queryString, rowsP
                             <div style={{ textAlign: 'center', marginTop: '10px' }}>
                                 <button onClick={handlePrevPage} disabled={page === 0}>{'<'}</button>
                                 <button onClick={handleNextPage} disabled={disabledShowMore}>{'>'}</button>
-                                <p>{`${page * rowsPerPage + 1}-${(page + 1) * rowsPerPage <= totalDonorsCount ? (page + 1) * rowsPerPage : totalDonorsCount} מתוך ${totalDonorsCount}`}</p>
                             </div>}
+                            <p>{`${page * rowsPerPage + 1}-${(page + 1) * rowsPerPage <= totalDonorsCount ? (page + 1) * rowsPerPage : totalDonorsCount} מתוך ${totalDonorsCount}`}</p>
+                         
                     </TableContainer>
                 </Box>
             )}

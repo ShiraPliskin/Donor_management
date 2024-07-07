@@ -6,7 +6,7 @@ import { filterEmptyValues } from "../Tools/objectsOperations"
 import GenericMessage from "../Tools/GenericSuccessMessage";
 import AddIcon from '@mui/icons-material/Add';
 
-const ContactAdd = ({ fields, type, newContactID, setNewContactID, closeOptionsForm }) => {
+const ContactAdd = ({ fields, type, newContactID, setNewContactID, closeOptionsForm, setAddedAnItem }) => {
 
     const [contactDetails, setContactDetails] = useState(fields);
     const [openForm, setOpenForm] = useState(type === "contacts" ? false : true);
@@ -33,6 +33,7 @@ const ContactAdd = ({ fields, type, newContactID, setNewContactID, closeOptionsF
         setIsSucceed("");
         const newContact = filterEmptyValues(contactDetails);
         postRequest("contacts", newContact, setIsSucceed, type === "contacts" ? setNewID : setNewContactID);
+        type==="contacts" && setAddedAnItem(true);
         handleClose();
     };
 

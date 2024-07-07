@@ -12,8 +12,22 @@ const GiftDelivery = ({ setGiftsToDisplay, gift, setGift }) => {
     const [openWarning, setOpenWarning] = useState(false);
     const [openDateSelection, setOpenDateSelection] = useState(false);
     const [selectedDonorId, setSelectedDonorId] = useState([]);
-    const [selectedDate, setSelectedDate] = useState(new Date());
+    const [selectedDate, setSelectedDate] = useState("");
     const [isSucceed, setIsSucceed] = useState('');
+
+    useEffect(() => {
+        if(isSucceed==="success")
+        setGift(prevGift => ({
+            ...prevGift,
+            amount: prevGift.amount - selectedDonorId.length
+        }));
+        setGiftsToDisplay((prevgift) => {
+            return prevgift.map(giftItem =>
+                giftItem.id === gift.id ?  {...giftItem, amount: giftItem.amount - selectedDonorId.length} : giftItem
+            );
+        })
+        setSelectedDonorId([]);
+    }, [isSucceed]);
 
     const handleOpen = () => {
         setOpenDeliveryForm(true);
@@ -21,7 +35,6 @@ const GiftDelivery = ({ setGiftsToDisplay, gift, setGift }) => {
 
     const handleClose = () => {
         setOpenDeliveryForm(false);
-        setSelectedDonorId([]);
     }
 
     const handleContinue = () => {
@@ -33,7 +46,7 @@ const GiftDelivery = ({ setGiftsToDisplay, gift, setGift }) => {
     }
 
     const backToDonors = () => {
-        setSelectedDate(new Date());
+        setSelectedDate("");
         setOpenDateSelection(false);
     }
 
@@ -43,28 +56,12 @@ const GiftDelivery = ({ setGiftsToDisplay, gift, setGift }) => {
 
     const handleSave = () => {
         setIsSucceed("");
-        setSelectedDate(new Date())
         const newDelivery = { donor_id: selectedDonorId, gift_id: gift.id, date: selectedDate };
         postRequest("giftsDelivery", newDelivery, setIsSucceed);
         setOpenDateSelection();
         handleClose();
+        setSelectedDate("")
     }
-
-    // useEffect(() => {
-    //     console.log("7",gift.amount - selectedDonorId.length)
-
-    //     if(isSucceed==="success")
-    //     setGift(prevGift => ({
-    //         ...prevGift,
-    //         amount: prevGift.amount - selectedDonorId.length
-    //     }));
-    //         console.log("8",gift.amount - selectedDonorId.length)
-    //     // setGiftsToDisplay((prevgift) => {
-    //     //     return prevgift.map(giftItem =>
-    //     //         giftItem.id === gift.id ?  {...giftItem, amount: giftItem.amount - selectedDonorId.length} : giftItem
-    //     //     );
-    //     // })
-    // }, [isSucceed]);
 
     return (
         <>
@@ -75,8 +72,8 @@ const GiftDelivery = ({ setGiftsToDisplay, gift, setGift }) => {
                     style={{ height: '40px' }}
                     onClick={handleOpen}
                     fullWidth
+                    disabled={gift.amount === 0}
                     startIcon={<LocalShippingIcon sx={{ marginLeft: 1.5 }}
-                        disabled={!gift.amount}
                     />}>
                     מסירת מתנה
                 </Button>
@@ -144,7 +141,7 @@ const GiftDelivery = ({ setGiftsToDisplay, gift, setGift }) => {
                         fullWidth
                         InputLabelProps={{ shrink: true }}
                         onChange={handleDateChanged}
-                        value={dayjs(selectedDate).format('YYYY-MM-DD')}
+                        value={selectedDate ? dayjs(selectedDate).format('YYYY-MM-DD') : ''}
                         type="date"
                         size="small"
                         margin="dense"
@@ -155,7 +152,7 @@ const GiftDelivery = ({ setGiftsToDisplay, gift, setGift }) => {
                         }} />
                     <Box sx={{ display: 'flex', justifyContent: 'flex-end', marginTop: 2 }}>
                         <Button onClick={backToDonors} startIcon={<NavigateNextIcon sx={{ marginLeft: 1 }} />}>חזרה לבחירת תורמים</Button>
-                        <Button onClick={handleSave}>שמירה</Button>
+                        <Button disabled={!selectedDate} onClick={handleSave}>שמירה</Button>
                     </Box>
                 </DialogContent>
             </Dialog>

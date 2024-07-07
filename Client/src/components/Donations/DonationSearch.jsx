@@ -5,7 +5,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import SearchIcon from '@mui/icons-material/Search';
 import dayjs from 'dayjs';
 
-const DonationSearch = ({ fields, setDonationsToDisplay, setQueryString, rowsPerPage, setTotalDonationsCount }) => {
+const DonationSearch = ({ fields, setDonationsToDisplay, setQueryString, rowsPerPage, setTotalDonationsCount, addedAnItem }) => {
     const [donationDetails, setDonationDetails] = useState({});
     const [minDonationAmount, setMinDonationAmount] = useState("");
     const [commentArea, setCommentArea] = useState("");
@@ -15,13 +15,17 @@ const DonationSearch = ({ fields, setDonationsToDisplay, setQueryString, rowsPer
         displayAllDonations();
     }, []);
 
+    useEffect(() => {
+        if (addedAnItem)
+            sendRequest();
+    }, [addedAnItem]);
+
     const displayAllDonations = async () => {
         const total = await getRequest("donations", `?_limit=${rowsPerPage}`, setDonationsToDisplay, setCommentArea, "תרומה");
         setTotalDonationsCount(total);
     }
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+    
+    const sendRequest = async () => {
         setDonationsToDisplay([]);
         let conditions = [];
         for (const [key, value] of Object.entries(donationDetails)) {
@@ -33,7 +37,12 @@ const DonationSearch = ({ fields, setDonationsToDisplay, setQueryString, rowsPer
         const total = await getRequest("donations", `?_limit=${rowsPerPage}${queryConditions}`, setDonationsToDisplay, setCommentArea, "תרומה");
         setTotalDonationsCount(total);
         setQueryString(queryConditions);
-    };
+    }
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        sendRequest();
+    }
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -49,7 +58,7 @@ const DonationSearch = ({ fields, setDonationsToDisplay, setQueryString, rowsPer
                 <Accordion sx={{ flexGrow: 1 }}>
                     <AccordionSummary expandIcon={<ExpandMoreIcon />} >
                         <Typography variant="h6">חיפוש תרומה</Typography>
-                        <SearchIcon style={{ marginTop: '0.3rem',marginRight: 3 }} /> 
+                        <SearchIcon style={{ marginTop: '0.3rem', marginRight: 3 }} />
                     </AccordionSummary>
                     <AccordionDetails>
                         <form onSubmit={handleSubmit}>
@@ -100,10 +109,10 @@ const DonationSearch = ({ fields, setDonationsToDisplay, setQueryString, rowsPer
                                     size="small"
                                     value={donationDetails.date ? dayjs(updateDonation.date).format('YYYY-MM-DD') : ''}
                                     InputProps={{
-                                    inputProps: { 
-                                        max: dayjs().format('YYYY-MM-DD') 
-                                    }
-                                }}
+                                        inputProps: {
+                                            max: dayjs().format('YYYY-MM-DD')
+                                        }
+                                    }}
                                     InputLabelProps={{
                                         shrink: true,
                                     }}

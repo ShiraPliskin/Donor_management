@@ -23,7 +23,7 @@ const ContactsDisplay = ({ fields, contactsToDisplay, setContactsToDisplay, sele
     }, [page, totalCount]);
 
     const handleFetchData = async () => {
-        const queryConditions = `${queryString}&page=${page + 2}&sortby=${sortKey}`;
+        const queryConditions = `?_limit=${rowsPerPage}${queryString}&page=${page + 2}&sortby=${sortKey}`;
         const total = await getRequest("contacts", queryConditions, setMoreContacts, setCommentArea, "איש קשר");
         setTotalCount(total);
     };
@@ -43,7 +43,7 @@ const ContactsDisplay = ({ fields, contactsToDisplay, setContactsToDisplay, sele
     const handleChangeSortKey = async (e) => {
         setSortKey(e.target.value);
         setPage(0);
-        const total = await getRequest("contacts", `${queryString}&page=${1}&sortby=${e.target.value}`, setContactsToDisplay, setCommentArea, "איש קשר");
+        const total = await getRequest("contacts", `?_limit=${rowsPerPage}${queryString}&page=${1}&sortby=${e.target.value}`, setContactsToDisplay, setCommentArea, "איש קשר");
         setTotalCount(total);
     };
 
@@ -97,8 +97,8 @@ const ContactsDisplay = ({ fields, contactsToDisplay, setContactsToDisplay, sele
                             <div style={{ textAlign: 'center', marginTop: '10px' }}>
                                 <button onClick={handlePrevPage} disabled={page === 0}>{'<'}</button>
                                 <button onClick={handleNextPage} disabled={disabledShowMore}>{'>'}</button>
-                                <p>{`${page * rowsPerPage + 1}-${(page + 1) * rowsPerPage <= totalCount ? (page + 1) * rowsPerPage : totalCount} מתוך ${totalCount}`}</p>
                             </div>}
+                            <p>{`${page * rowsPerPage + 1}-${(page + 1) * rowsPerPage <= totalCount ? (page + 1) * rowsPerPage : totalCount} מתוך ${totalCount}`}</p>
                     </TableContainer>
                 </Box>
             </>)}

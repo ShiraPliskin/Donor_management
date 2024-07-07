@@ -6,7 +6,7 @@ import GenericMessage from "../Tools/GenericSuccessMessage";
 import GiftForm from "./GiftForm";
 import AddIcon from '@mui/icons-material/Add';
 
-const GiftAdd = ({ fields }) => {
+const GiftAdd = ({ fields, setAddedAnItem }) => {
     const [giftDetails, setGiftDetails] = useState(fields);
     const [open, setOpen] = useState(false);
     const [isSucceed, setIsSucceed] = useState('');
@@ -29,6 +29,7 @@ const GiftAdd = ({ fields }) => {
         setIsSucceed("");
         const newGift = filterEmptyValues(giftDetails);
         postRequest("gifts", newGift, setIsSucceed, setNewID);
+        setAddedAnItem(true);
         handleClose();
     };
 

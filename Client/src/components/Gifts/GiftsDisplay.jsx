@@ -22,7 +22,7 @@ const GiftsDisplay = ({ giftsToDisplay, setGiftsToDisplay, queryString, rowsPerP
     }, [page, totalGiftsCount]);
 
     const handleFetchData = async () => {
-        const queryConditions = `${queryString}&page=${page + 2}&sortby=${sortKey}`;
+        const queryConditions = `?_limit=${rowsPerPage}${queryString}&page=${page + 2}&sortby=${sortKey}`;
         const total = await getRequest("gifts", queryConditions, setMoreGifts, setCommentArea, "מתנה");
         setTotalGiftsCount(total);
     };
@@ -42,7 +42,7 @@ const GiftsDisplay = ({ giftsToDisplay, setGiftsToDisplay, queryString, rowsPerP
     const handleChangeSortKey = async (e) => {
         setSortKey(e.target.value);
         setPage(0);
-        const total = await getRequest("gifts", `${queryString}&page=${1}&sortby=${e.target.value}`, setGiftsToDisplay, setCommentArea, "מתנה")
+        const total = await getRequest("gifts", `?_limit=${rowsPerPage}${queryString}&page=${1}&sortby=${e.target.value}`, setGiftsToDisplay, setCommentArea, "מתנה")
         setTotalGiftsCount(total);
     };
 
@@ -85,8 +85,8 @@ const GiftsDisplay = ({ giftsToDisplay, setGiftsToDisplay, queryString, rowsPerP
                             <div style={{ textAlign: 'center', marginTop: '10px' }}>
                                 <button onClick={handlePrevPage} disabled={page === 0}>{'<'}</button>
                                 <button onClick={handleNextPage} disabled={disabledShowMore}>{'>'}</button>
-                                <p>{`${page * rowsPerPage + 1}-${(page + 1) * rowsPerPage <= totalGiftsCount ? (page + 1) * rowsPerPage : totalGiftsCount} מתוך ${totalGiftsCount}`}</p>
                             </div>}
+                            <p>{`${page * rowsPerPage + 1}-${(page + 1) * rowsPerPage <= totalGiftsCount ? (page + 1) * rowsPerPage : totalGiftsCount} מתוך ${totalGiftsCount}`}</p>
                     </TableContainer>
                 </Box>
             )}
