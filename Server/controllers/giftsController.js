@@ -63,7 +63,6 @@ export class GiftsController {
                 return res.status(400).json({ message: 'No file uploaded' });
             }
             const path = `http://localhost:${process.env.PORT}/uploads/${req.file.filename}`;
-            console.log("path ",path)
             res.json({ filePath: path});
         } catch (ex) {
             const err = { statusCode: 500, message: ex };
