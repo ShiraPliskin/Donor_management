@@ -35,14 +35,12 @@ const ForgotPassword = () => {
                 throw new Error(`Request failed with status: ${response.status}`);
             }
             const data = await response.json();
-            console.log("dataaaa", data.otp);
             setRealOtp(data.otp);
             setComment("נא הזן את הסיסמה הזמנית שנשלחה למייל שלך.")
             setRegisterStep(2);
             return true;
 
         } catch (error) {
-            console.error("Error creating request:", error);
             setComment("שגיאת שרת");
             return false;
         }
@@ -94,7 +92,6 @@ const ForgotPassword = () => {
             return true;
 
         } catch (error) {
-            console.error("Error creating request:", error);
             setComment("שגיאת שרת");
             return false;
         }
@@ -103,13 +100,6 @@ const ForgotPassword = () => {
     useEffect(() => {
         setIsPwVerified(PW.password !== "" && PW.password === PW.verifyPW);
     }, [PW.password, PW.verifyPW]);
-
-
-    // useEffect(() => {
-    //     if (otp !== "") {
-    //         setComment("");
-    //     }
-    // }, [otp]);
 
     useEffect(() => {
         if (registerStep !== 1) {

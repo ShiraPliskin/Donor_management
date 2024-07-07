@@ -1,13 +1,12 @@
 import { Button, Grid, CircularProgress, IconButton, Typography } from '@mui/material';
 import React, { useState } from 'react';
 import { config } from "../config.jsx";
-import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import FileUploadIcon from '@mui/icons-material/FileUpload';
 
 const FileUpload = ({ updatedGift, setUpdatedGift }) => {
     const [file, setFile] = useState(null);
     const [loading, setLoading] = useState(false);
-
+    
     const handleFile = (e) => {
         setFile(e.target.files[0]);
     };
@@ -40,9 +39,8 @@ const FileUpload = ({ updatedGift, setUpdatedGift }) => {
             };
 
             setUpdatedGift(updatedData);
-            console.log(updatedData.img);
         } catch (error) {
-            console.error('Error handling upload:', error);
+            alert("שגיאה בהוספת התמונה");
         } finally {
             setLoading(false);
         }
