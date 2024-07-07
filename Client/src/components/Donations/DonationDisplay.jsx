@@ -25,8 +25,13 @@ const DonationDisplay = ({ donation, index, setDonationsToDisplay, setTotal}) =>
             });
         }
     }, [updateSuccessful]);
+    
+    useEffect(() => {
+        setOpenDeleteWarning(false);
+    }, [open]);
 
     const handleClickOpen = () => {
+        setCurrentDonation(donation);
         setOpen(true);
     };
 
@@ -95,6 +100,7 @@ const DonationDisplay = ({ donation, index, setDonationsToDisplay, setTotal}) =>
                     objectName="תרומה"
                     objectState={setDonationsToDisplay}
                     setTotal={setTotal}
+                    handleClose={handleClose}
                 />
             }
             {updateSuccessful === "success" && <GenericMessage message={`תרומה מספר ${currentDonation.id} עןדכנה בהצלחה`} type="success" />}

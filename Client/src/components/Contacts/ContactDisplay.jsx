@@ -26,6 +26,10 @@ const ContactDisplay = ({ fields, contact, index, setContactsToDisplay, selected
         }
     }, [updateSuccessful]);
 
+    useEffect(() => {
+        setOpenDeleteWarning(false);
+    }, [open]);
+
     const updateContactRequest = () => {
         setUpdateSuccessful("")
         const updatedContact = filterEmptyValues(currentContact);
@@ -37,6 +41,7 @@ const ContactDisplay = ({ fields, contact, index, setContactsToDisplay, selected
     };
 
     const handleViewContact = () => {
+        setCurrentContact(contact)
         setOpen(true);
     }
 
@@ -111,6 +116,7 @@ const ContactDisplay = ({ fields, contact, index, setContactsToDisplay, selected
                     objectName="איש קשר"
                     objectState={setContactsToDisplay}
                     setTotal={setTotal}
+                    handleClose={handleClose}
                 />
             }
             {updateSuccessful === "success" && <GenericMessage message={`איש קשר מספר ${currentContact.id} עודכן בהצלחה`} type="success" />}

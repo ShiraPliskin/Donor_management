@@ -26,6 +26,10 @@ const GiftDisplay = ({ gift, index, setGiftsToDisplay, setTotal }) => {
         }
     }, [updateSuccessful]);
 
+    useEffect(() => {
+        setOpenDeleteWarning(false);
+    }, [open]);
+
     const getGiftDetails = async () => {
         await getByIdRequest("gifts", gift.id, setCurrentGift, setComment);
     };
@@ -100,6 +104,7 @@ const GiftDisplay = ({ gift, index, setGiftsToDisplay, setTotal }) => {
                     objectName="מתנה"
                     objectState={setGiftsToDisplay}
                     setTotal={setTotal}
+                    handleClose={handleClose}
                 />
             }
             {updateSuccessful === "success" && <GenericMessage message={`מתנה מספר ${currentGift.id} עוכנה בהצלחה`} type="success" />}

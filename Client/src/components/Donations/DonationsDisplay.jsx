@@ -79,7 +79,13 @@ const DonationsDisplay = ({ donationsToDisplay, setDonationsToDisplay, queryStri
                             </TableHead>
                             <TableBody>
                                 {donationsToDisplay.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((donation, index) => (
-                                    <DonationDisplay key={index} donation={donation} index={index} setDonationsToDisplay={setDonationsToDisplay} setTotal={setTotalDonationsCount} />
+                                    <DonationDisplay
+                                        key={index}
+                                        donation={donation}
+                                        index={index}
+                                        setDonationsToDisplay={setDonationsToDisplay}
+                                        setTotal={setTotalDonationsCount}
+                                    />
                                 ))}
                             </TableBody>
                         </Table>
@@ -88,7 +94,7 @@ const DonationsDisplay = ({ donationsToDisplay, setDonationsToDisplay, queryStri
                                 <button onClick={handlePrevPage} disabled={page === 0}>{'<'}</button>
                                 <button onClick={handleNextPage} disabled={disabledShowMore}>{'>'}</button>
                             </div>}
-                            <p>{`${page * rowsPerPage + 1}-${(page + 1) * rowsPerPage <= totalDonationsCount ? (page + 1) * rowsPerPage : totalDonationsCount} מתוך ${totalDonationsCount}`}</p>
+                        <p>{`${page * rowsPerPage + 1}-${(page + 1) * rowsPerPage <= totalDonationsCount ? (page + 1) * rowsPerPage : totalDonationsCount} מתוך ${totalDonationsCount}`}</p>
                     </TableContainer>
                 </Box>
             )}

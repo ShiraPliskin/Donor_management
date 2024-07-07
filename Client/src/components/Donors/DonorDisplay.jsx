@@ -27,6 +27,10 @@ const DonorDisplay = ({ donor, index, setDonorsToDisplay, setTotal, selectedDono
         }
     }, [updateSuccessful]);
 
+    useEffect(() => {
+        setOpenDeleteWarning(false);
+    }, [open]);
+
     const getDonorDetails = async () => {
         await getByIdRequest("donors", donor.id, setCurrentDonor, setComment);
     };
@@ -120,6 +124,7 @@ const DonorDisplay = ({ donor, index, setDonorsToDisplay, setTotal, selectedDono
                     objectName="תורם"
                     objectState={setDonorsToDisplay}
                     setTotal={setTotal}
+                    handleClose={handleClose}
                 />
             }
             {updateSuccessful === "success" && <GenericMessage message={`תורם מספר ${currentDonor.id} עודכן בהצלחה`} type="success" />}

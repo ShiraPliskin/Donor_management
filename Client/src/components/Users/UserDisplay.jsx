@@ -24,7 +24,12 @@ const UserDisplay = ({ user, index, setUsersToDisplay, setTotal }) => {
         }
     }, [updateSuccessful]);
 
+    useEffect(() => {
+        setOpenDeleteWarning(false);
+    }, [open]);
+
     const handleViewUser = () => {
+        setCurrentUser(user);
         setOpen(true);
     }
 
@@ -92,6 +97,7 @@ const UserDisplay = ({ user, index, setUsersToDisplay, setTotal }) => {
                     objectName="משתמש"
                     objectState={setUsersToDisplay}
                     setTotal={setTotal}
+                    handleClose={handleClose}
                 />
             }
             {updateSuccessful === "success" && <GenericMessage message={`משתמש מספר ${currentUser.id} עודכן בהצלחה`} type="success" />}

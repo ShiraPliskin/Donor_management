@@ -4,7 +4,7 @@ import Checkbox from "@mui/material/Checkbox";
 import { deleteRequest } from "./APIRequests";
 import GenericMessage from "./GenericSuccessMessage";
 
-const GenericDeletion = ({ id, warningOpen, setWarningOpen, table, objectName, objectState, setTotal}) => {
+const GenericDeletion = ({ id, warningOpen, setWarningOpen, table, objectState, objectName, setTotal, handleClose}) => {
 
     const [isSucceed, setIsSucceed] = useState('');
     const [isChecked, setIsChecked] = useState('');
@@ -15,6 +15,7 @@ const GenericDeletion = ({ id, warningOpen, setWarningOpen, table, objectName, o
                 return prev.filter(obj => obj.id !== id);
             });
             setTotal((prev) => prev-1 );
+            handleClose();
         }
     }, [isSucceed]);
 
