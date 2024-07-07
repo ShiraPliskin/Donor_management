@@ -115,7 +115,8 @@ const ForgotPassword = () => {
         }
     }, [userDetails]);
 
-    return (
+    return (<>
+        <h2>צילו של היכל - ניהול תורמים</h2>
         <div className={style.wrapper}>
             <h1>{title}</h1>
             {registerStep === 1 && (
@@ -141,6 +142,7 @@ const ForgotPassword = () => {
 
             {comment && <Box marginTop="10px" color={registerStep === 2 && comment !== "הסיסמה הזמנית שגויה." ? "black" : "red"}>{comment}</Box>}
         </div>
+    </>
     );
 };
 

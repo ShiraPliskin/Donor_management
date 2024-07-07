@@ -1,6 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
 
-
 .wrapper body{
     display: flex;
     justify-content: center;
@@ -45,8 +44,6 @@
     margin-top: 20px;
 }
 
-
-
 .input-box input::placeholder{
     color: #fff;
 }
@@ -89,7 +86,7 @@ a {
     color: blue;
     text-decoration: underline;
     cursor: pointer;
-}
+} 
 
 @media (max-width: 600px) {
     .wrapper {

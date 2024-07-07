@@ -53,6 +53,7 @@ const Login = () => {
 
   return (
     <>
+      <h2>צילו של היכל - ניהול תורמים</h2>
       <div className={style.wrapper}>
         <h1>התחברות</h1>
         <form onSubmit={handleFormSubmit} className={style.inputBox}>
