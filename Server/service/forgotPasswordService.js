@@ -26,7 +26,6 @@ export class ForgotPasswordService {
         const resultItem = await registerService.getRegisterById(id);
         if (!resultItem[0]) throw new Error("Error receiving data");
         const otp = otpGenerator.generate(6, {});
-        console.log("otp from update: "+otp);
         sendOTPPasswordByEmail(email,otp);
         const encodedOtp = await encryption(otp);
         const query = updateQuery("register", { otp: encodedOtp }, "user_id");

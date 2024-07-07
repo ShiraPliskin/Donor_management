@@ -2,8 +2,6 @@ import 'dotenv/config'
 const db = process.env.DB_NAME;
 
 function getByInactiveFromDate(queryParams) {
-    console.log("queryParams.filter",queryParams.filter)
-
     let fields = queryParams.fields || '*';
     let filter = queryParams.filter || '';
     let limit = queryParams._limit;
