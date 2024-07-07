@@ -27,12 +27,11 @@ export class ForgotPasswordService {
         if (!resultItem[0]) throw new Error("Error receiving data");
         const otp = otpGenerator.generate(6, {});
         console.log("otp from update: "+otp);
-
         sendOTPPasswordByEmail(email,otp);
         const encodedOtp = await encryption(otp);
         const query = updateQuery("register", { otp: encodedOtp }, "user_id");
         const result =  await executeQuery(query, [encodedOtp,id]);
-        return result;
+        return {result:result, otp:otp};
     }
     
 
@@ -41,8 +40,6 @@ export class ForgotPasswordService {
         if (!resultItem[0]) throw new Error("Error receiving data");
         let encodedOTP = await encryption(updatedPassword.otp);
         if(resultItem[0].otp!==encodedOTP) throw new Error("Incorrect previous password");
-        console.log("aaaaaaaaaaaaaaaaa: "+updatedPassword.otp)
-
         let encodedPassword = await encryption(updatedPassword.password);
         const newPassword = {
             password: encodedPassword

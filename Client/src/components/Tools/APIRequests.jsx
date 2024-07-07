@@ -23,7 +23,10 @@ export const getRequest = async (table, conditions, state, comment, object = "")
                     break;
                 case "כתובת מייל":
                     comment("כתובת מייל או סיסמא שגויים.");
-                    break;
+                    break; 
+                case "שכחתי סיסמה":
+                    comment("כתובת מייל זו אינה מופיעה במערכת.");
+                    break;      
                 default:
                     comment(`לא נמצאה ${object}`);
                     break;

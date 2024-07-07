@@ -32,15 +32,59 @@ function sendOTPPasswordByEmail(userEmail, otp) {
           `
     };
 
+
+    
+
     transporter.sendMail(mailOptions, function (error, info) {
         if (error) {
             console.log(error);
-        } else {
-            console.log('Email sent: ' + info.response);
-        }
+        } 
+        // else {
+        //     console.log('Email sent: ' + info.response);
+        // }
     });
 
+    
 }
-export{ sendOTPPasswordByEmail }
+
+
+function sendUserDetailsByEmail(email, pw) {
+
+    let mailOptions = {
+        from: '"כולל צילו של היכל" <shirap67679@gmail.com>',
+        to: email,
+        subject: 'נוספת לצוות "צילו של היכל"',
+        html: `
+              <div style="font-family: Arial, sans-serif; text-align: right; direction: rtl; color: #0066cc;">
+            <p>שלום רב,</p>
+            <p>מנהל התורמים של כולל "צילו של היכל", </p>
+            <p> צירף אותך לצוות ניהול התורמים של הכולל.</p>
+            <p>על מנת להיכנס לאתר,</p>
+            <p>כתובת המייל והסיסמה שלך הם:</strong></p>
+            <p>מייל: ${email}</p>
+            <p>סיסמתך: ${pw}</p>
+            <p>ניתן לעדכן את הפרטים באתר:</p>
+            <p>http://localhost:5173/login</p>
+            <p>בברכה,</p>
+            <p>צוות האתר</p>
+        </div>
+          `
+    };
+
+
+    
+
+    transporter.sendMail(mailOptions, function (error, info) {
+        if (error) {
+            console.log(error);
+        } 
+        // else {
+        //     console.log('Email sent: ' + info.response);
+        // }
+    });
+
+    
+}
+export{ sendOTPPasswordByEmail, sendUserDetailsByEmail }
 
 
