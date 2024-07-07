@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Typography from '@mui/material/Typography';
-import { useEffect } from "react";
 import video from '../video/video.mp4';
+import { Box } from '@mui/material';
 
 const Home = () => {
     const handleVideoClick = () => {
@@ -19,20 +19,29 @@ const Home = () => {
     return (
         <>
             <Typography variant="h3" align="center">כולל צילו של היכל</Typography>
-            {<div style={{ display: 'flex', justifyContent: 'center' }}>
-                <video
+            <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: 2 }}>
+                <Box
+                    component="video"
                     id="videoElement"
-                    width="800"
-                    height="450"
                     src={video}
                     controls
                     onClick={handleVideoClick}
+                    sx={{
+                        width: {
+                            xs: '100%', 
+                            sm: '80%',  
+                            md: '60%', 
+                            lg: '50%',  
+                            xl: '800px' 
+                        },
+                        height: 'auto'
+                    }}
                 >
                     Your browser does not support the video tag.
-                </video>
-            </div>}
+                </Box>
+            </Box>
         </>
-    )
+    );
 }
 
 export default Home;

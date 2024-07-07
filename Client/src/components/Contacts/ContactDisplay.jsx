@@ -75,9 +75,9 @@ const ContactDisplay = ({ fields, contact, index, setContactsToDisplay, selected
             >
                 <TableCell sx={{ textAlign: 'center' }}>{contact.id}</TableCell>
                 <TableCell sx={{ textAlign: 'center' }}>{contact.name}</TableCell>
-                <TableCell sx={{ textAlign: 'center' }}>{contact.email}</TableCell>
-                <TableCell sx={{ textAlign: 'center' }}>{contact.phone}</TableCell>
-                <TableCell sx={{ textAlign: 'center' }}>{contact.address}</TableCell>
+                <TableCell sx={{ textAlign: 'center', display: { xs: 'none', sm: 'table-cell' } }}>{contact.email}</TableCell>
+                <TableCell sx={{ textAlign: 'center', display: { xs: 'none', sm: 'table-cell' } }}>{contact.phone}</TableCell>
+                <TableCell sx={{ textAlign: 'center', display: { xs: 'none', sm: 'table-cell' } }}>{contact.address}</TableCell>
                 <TableCell sx={{ textAlign: 'center' }}>
                     {type === "contacts" ?
                         <IconButton onClick={handleViewContact}>

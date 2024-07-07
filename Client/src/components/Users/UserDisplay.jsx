@@ -68,8 +68,8 @@ const UserDisplay = ({ user, index, setUsersToDisplay, setTotal }) => {
                 onMouseLeave={handleMouseLeave}
             >                <TableCell sx={{ textAlign: 'center' }}>{user.id}</TableCell>
                 <TableCell sx={{ textAlign: 'center' }}>{user.name}</TableCell>
-                <TableCell sx={{ textAlign: 'center' }}>{user.email}</TableCell>
-                <TableCell sx={{ textAlign: 'center' }}>{user.permission}</TableCell>
+                <TableCell sx={{ textAlign: 'center', display: { xs: 'none', sm: 'table-cell' } }}>{user.email}</TableCell>
+                <TableCell sx={{ textAlign: 'center', display: { xs: 'none', sm: 'table-cell' } }}>{user.permission}</TableCell>
                 <TableCell sx={{ textAlign: 'center' }}>
                     <IconButton onClick={handleViewUser}>
                         <VisibilityIcon />

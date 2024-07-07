@@ -50,7 +50,7 @@ const ContactsDisplay = ({ fields, contactsToDisplay, setContactsToDisplay, sele
     return (
         <>
             {contactsToDisplay.length > 0 && (<>
-                <Box sx={{ minWidth: 650 }} maxWidth={type === "contacts" ? "xl" : "lg"} >
+                <Box sx={{ minWidth: { xs: '100%', sm: 650 }, maxWidth: 'xl' }}>
                     <FormControl sx={{ marginTop: 2, marginLeft: 2, textAlign: 'right' }}>
                         <InputLabel>מיין לפי</InputLabel>
                         <Select
@@ -65,15 +65,15 @@ const ContactsDisplay = ({ fields, contactsToDisplay, setContactsToDisplay, sele
                             <MenuItem value="address">כתובת</MenuItem>
                         </Select>
                     </FormControl>
-                    <TableContainer component={Paper} sx={{ width: '100%', height: '100%', marginTop: 5 }}>
-                        <Table sx={{ width: '100%', height: '100%' }} size='small'>
+                    <TableContainer component={Paper} sx={{ marginTop: 5, width: '100%' }}>
+                        <Table sx={{ minWidth: { xs: '100%', sm: 850 } }} size='small'>
                             <TableHead>
                                 <TableRow>
                                     <TableCell sx={{ fontWeight: 'bold', textAlign: 'center' }}>מס' איש קשר</TableCell>
                                     <TableCell sx={{ fontWeight: 'bold', textAlign: 'center' }}>שם</TableCell>
-                                    <TableCell sx={{ fontWeight: 'bold', textAlign: 'center' }}>כתובת מייל</TableCell>
-                                    <TableCell sx={{ fontWeight: 'bold', textAlign: 'center' }}>טלפון</TableCell>
-                                    <TableCell sx={{ fontWeight: 'bold', textAlign: 'center' }}>כתובת</TableCell>
+                                    <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', display: { xs: 'none', sm: 'table-cell' } }}>כתובת מייל</TableCell>
+                                    <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', display: { xs: 'none', sm: 'table-cell' } }}>טלפון</TableCell>
+                                    <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', display: { xs: 'none', sm: 'table-cell' } }}>כתובת</TableCell>
                                     <TableCell></TableCell>
                                 </TableRow>
                             </TableHead>
@@ -98,7 +98,7 @@ const ContactsDisplay = ({ fields, contactsToDisplay, setContactsToDisplay, sele
                                 <button onClick={handlePrevPage} disabled={page === 0}>{'<'}</button>
                                 <button onClick={handleNextPage} disabled={disabledShowMore}>{'>'}</button>
                             </div>}
-                            <p>{`${page * rowsPerPage + 1}-${(page + 1) * rowsPerPage <= totalCount ? (page + 1) * rowsPerPage : totalCount} מתוך ${totalCount}`}</p>
+                            <div style={{ textAlign: 'center'}}><p>{`${page * rowsPerPage + 1}-${(page + 1) * rowsPerPage <= totalCount ? (page + 1) * rowsPerPage : totalCount} מתוך ${totalCount}`}</p></div>
                     </TableContainer>
                 </Box>
             </>)}

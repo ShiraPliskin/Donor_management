@@ -59,7 +59,7 @@ const DonorsDisplay = ({ donorsToDisplay, setDonorsToDisplay, queryString, rowsP
     return (
         <>
             {donorsToDisplay.length > 0 && (
-                <Box sx={{ minWidth: 650 }} maxWidth={"xl"}>
+                <Box sx={{ minWidth: { xs: '100%', sm: 650 }, maxWidth: 'xl' }}>
                     <FormControl sx={{ marginTop: 2, marginLeft: 2, textAlign: 'right' }}>
                         <InputLabel>מיין לפי</InputLabel>
                         <Select
@@ -75,16 +75,16 @@ const DonorsDisplay = ({ donorsToDisplay, setDonorsToDisplay, queryString, rowsP
                             <MenuItem value="address">כתובת</MenuItem>
                         </Select>
                     </FormControl>
-                    <TableContainer component={Paper} sx={{ marginTop: 2 }}>
-                        <Table sx={{ minWidth: 650 }} size='small'>
+                    <TableContainer component={Paper} sx={{ marginTop: 5, width: '100%' }}>
+                        <Table sx={{ minWidth: { xs: '100%', sm: 850 } }} size='small'>
                             <TableHead>
                                 <TableRow>
                                     <TableCell sx={{ fontWeight: 'bold', textAlign: 'center' }}>מס' תורם</TableCell>
                                     <TableCell sx={{ fontWeight: 'bold', textAlign: 'center' }}>שם משפחה</TableCell>
                                     <TableCell sx={{ fontWeight: 'bold', textAlign: 'center' }}>שם פרטי</TableCell>
-                                    <TableCell sx={{ fontWeight: 'bold', textAlign: 'center' }}>כתובת מייל</TableCell>
-                                    <TableCell sx={{ fontWeight: 'bold', textAlign: 'center' }}>טלפון</TableCell>
-                                    <TableCell sx={{ fontWeight: 'bold', textAlign: 'center' }}>כתובת</TableCell>
+                                    <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', display: { xs: 'none', sm: 'table-cell' } }}>כתובת מייל</TableCell>
+                                    <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', display: { xs: 'none', sm: 'table-cell' } }}>טלפון</TableCell>
+                                    <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', display: { xs: 'none', sm: 'table-cell' } }}>כתובת</TableCell>
                                     <TableCell sx={{ textAlign: 'center' }}>
                                         {type === "gifts" &&
                                             <Box>
@@ -118,8 +118,7 @@ const DonorsDisplay = ({ donorsToDisplay, setDonorsToDisplay, queryString, rowsP
                                 <button onClick={handlePrevPage} disabled={page === 0}>{'<'}</button>
                                 <button onClick={handleNextPage} disabled={disabledShowMore}>{'>'}</button>
                             </div>}
-                            <p>{`${page * rowsPerPage + 1}-${(page + 1) * rowsPerPage <= totalDonorsCount ? (page + 1) * rowsPerPage : totalDonorsCount} מתוך ${totalDonorsCount}`}</p>
-                         
+                            <div style={{ textAlign: 'center'}}><p>{`${page * rowsPerPage + 1}-${(page + 1) * rowsPerPage <= totalDonorsCount ? (page + 1) * rowsPerPage : totalDonorsCount} מתוך ${totalDonorsCount}`}</p></div>
                     </TableContainer>
                 </Box>
             )}

@@ -71,8 +71,8 @@ const DonationDisplay = ({ donation, index, setDonationsToDisplay, setTotal}) =>
             >
                 <TableCell sx={{ textAlign: 'center' }}>{donation.id}</TableCell>
                 <TableCell sx={{ textAlign: 'center' }}>{donation.donor_id}</TableCell>
-                <TableCell sx={{ textAlign: 'center' }}>{Number.isInteger(donation.amount) ? donation.amount : parseFloat(donation.amount).toFixed(2).replace(/\.?0+$/, '')}</TableCell>
-                <TableCell sx={{ textAlign: 'center' }}>{donation.payment_method}</TableCell>
+                <TableCell sx={{ textAlign: 'center', display: { xs: 'none', sm: 'table-cell' } }}>{Number.isInteger(donation.amount) ? donation.amount : parseFloat(donation.amount).toFixed(2).replace(/\.?0+$/, '')}</TableCell>
+                <TableCell sx={{ textAlign: 'center', display: { xs: 'none', sm: 'table-cell' } }}>{donation.payment_method}</TableCell>
                 <TableCell sx={{ textAlign: 'center' }}>{moment(donation.date).format('DD-MM-YYYY')}</TableCell>
                 <TableCell sx={{ textAlign: 'center' }}>
                     <IconButton onClick={handleClickOpen}>

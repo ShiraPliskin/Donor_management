@@ -49,7 +49,7 @@ const UsersDisplay = ({ usersToDisplay, setUsersToDisplay, queryString, rowsPerP
     return (
         <>
             {usersToDisplay.length > 0 && (
-                <Box sx={{ minWidth: 650 }} maxWidth={"xl"} >
+                <Box sx={{ minWidth: { xs: '100%', sm: 650 }, maxWidth: 'xl' }}>
                     <FormControl sx={{ marginTop: 2, marginLeft: 2, textAlign: 'right' }}>
                         <InputLabel>מיין לפי</InputLabel>
                         <Select
@@ -64,14 +64,14 @@ const UsersDisplay = ({ usersToDisplay, setUsersToDisplay, queryString, rowsPerP
                             <MenuItem value="permission">הרשאה</MenuItem>
                         </Select>
                     </FormControl>
-                    <TableContainer component={Paper} sx={{ marginTop: 5 }}>
-                        <Table sx={{ minWidth: 650 }}>
+                    <TableContainer component={Paper} sx={{ marginTop: 5, width: '100%' }}>
+                        <Table sx={{ minWidth: { xs: '100%', sm: 850 } }} size='small'>
                             <TableHead>
                                 <TableRow>
                                     <TableCell sx={{ fontWeight: 'bold', textAlign: 'center' }}>מס' משתמש</TableCell>
                                     <TableCell sx={{ fontWeight: 'bold', textAlign: 'center' }}>שם</TableCell>
-                                    <TableCell sx={{ fontWeight: 'bold', textAlign: 'center' }}>כתובת מייל</TableCell>
-                                    <TableCell sx={{ fontWeight: 'bold', textAlign: 'center' }}>הרשאה</TableCell>
+                                    <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', display: { xs: 'none', sm: 'table-cell' } }}>כתובת מייל</TableCell>
+                                    <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', display: { xs: 'none', sm: 'table-cell' } }}>הרשאה</TableCell>
                                     <TableCell></TableCell>
                                 </TableRow>
                             </TableHead>
@@ -86,7 +86,7 @@ const UsersDisplay = ({ usersToDisplay, setUsersToDisplay, queryString, rowsPerP
                                 <button onClick={handlePrevPage} disabled={page === 0}>{'<'}</button>
                                 <button onClick={handleNextPage} disabled={disabledShowMore}>{'>'}</button>
                             </div>}
-                            <p>{`${page * rowsPerPage + 1}-${(page + 1) * rowsPerPage <= totalCount ? (page + 1) * rowsPerPage : totalCount} מתוך ${totalCount}`}</p>
+                            <div style={{ textAlign: 'center'}}><p>{`${page * rowsPerPage + 1}-${(page + 1) * rowsPerPage <= totalCount ? (page + 1) * rowsPerPage : totalCount} מתוך ${totalCount}`}</p></div>
                     </TableContainer>
                 </Box>
             )}

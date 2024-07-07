@@ -11,11 +11,13 @@ import bodyparser from 'body-parser';
 import {authenticateToken} from './middleware/authenticateToken.js';
 import { forgotPasswordRouter } from './router/forgotPasswordRouter.js';
 import cookieParser from 'cookie-parser';
+
 const app = express();
 app.use(cors({
     origin: process.env.CLIENT_URL,
     credentials: true
 }));
+
 app.use(cookieParser());
 app.use(express.json());
 app.use(bodyparser.json());
@@ -26,7 +28,7 @@ app.use('/donors',authenticateToken,donorsRouter);
 app.use('/donations',authenticateToken, donationsRouter);
 app.use('/register', registerRouter);
 app.use('/users', usersRouter);
-app.use('/gifts',authenticateToken, giftsRouter);
+app.use('/gifts', giftsRouter);
 app.use('/contacts',authenticateToken, contactsRouter);
 app.use('/giftsDelivery',authenticateToken, giftsDeliveryRouter);
 app.use('/register/forgotPassword', forgotPasswordRouter);

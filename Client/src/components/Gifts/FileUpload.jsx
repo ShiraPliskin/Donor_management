@@ -6,33 +6,32 @@ import FileUploadIcon from '@mui/icons-material/FileUpload';
 const FileUpload = ({ updatedGift, setUpdatedGift }) => {
     const [file, setFile] = useState(null);
     const [loading, setLoading] = useState(false);
-    
+    const [comment, setComment] = useState("");
+
     const handleFile = (e) => {
         setFile(e.target.files[0]);
     };
 
     const handleUpload = async () => {
+        setComment("");
         if (!file) {
             return;
         }
-
         setLoading(true);
-
         try {
             const formData = new FormData();
             formData.append('image', file);
-
             const response = await fetch(`http://${config.SERVERPORT}/gifts/upload`, {
                 method: 'POST',
                 body: formData,
             });
+            console.log("111");
 
             if (!response.ok) {
                 throw new Error(`Request failed with status: ${response.status}`);
             }
 
             const data = await response.json();
-
             const updatedData = {
                 ...updatedGift,
                 img: data.filePath,
@@ -40,7 +39,7 @@ const FileUpload = ({ updatedGift, setUpdatedGift }) => {
 
             setUpdatedGift(updatedData);
         } catch (error) {
-            alert("שגיאה בהוספת התמונה");
+            setComment("שגיאה בהוספת התמונה");
         } finally {
             setLoading(false);
         }
@@ -78,6 +77,7 @@ const FileUpload = ({ updatedGift, setUpdatedGift }) => {
                     </Button>
                 </Typography>
             </>}
+            {comment}
         </Grid>
     );
 };

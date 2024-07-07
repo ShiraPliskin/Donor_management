@@ -49,7 +49,7 @@ const DonationsDisplay = ({ donationsToDisplay, setDonationsToDisplay, queryStri
     return (
         <>
             {donationsToDisplay.length > 0 && (
-                <Box sx={{ minWidth: 650 }} maxWidth={"xl"} >
+                <Box sx={{ minWidth: { xs: '100%', sm: 650 }, maxWidth: 'xl' }}>
                     <FormControl sx={{ marginTop: 2, marginLeft: 2, textAlign: 'right' }}>
                         <InputLabel>מיין לפי</InputLabel>
                         <Select
@@ -65,14 +65,14 @@ const DonationsDisplay = ({ donationsToDisplay, setDonationsToDisplay, queryStri
                             <MenuItem value="date">תאריך התרומה</MenuItem>
                         </Select>
                     </FormControl>
-                    <TableContainer component={Paper} sx={{ marginTop: 5 }}>
-                        <Table sx={{ minWidth: 650 }} size='small'>
+                    <TableContainer component={Paper} sx={{ marginTop: 5, width: '100%' }}>
+                        <Table sx={{ minWidth: { xs: '100%', sm: 850 } }} size='small'>
                             <TableHead>
                                 <TableRow>
                                     <TableCell sx={{ fontWeight: 'bold', textAlign: 'center' }}>מס' תרומה</TableCell>
                                     <TableCell sx={{ fontWeight: 'bold', textAlign: 'center' }}>מס' תורם</TableCell>
-                                    <TableCell sx={{ fontWeight: 'bold', textAlign: 'center' }}>סכום התרומה</TableCell>
-                                    <TableCell sx={{ fontWeight: 'bold', textAlign: 'center' }}>שיטת התשלום</TableCell>
+                                    <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', display: { xs: 'none', sm: 'table-cell' } }}>סכום התרומה</TableCell>
+                                    <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', display: { xs: 'none', sm: 'table-cell' } }}>שיטת התשלום</TableCell>
                                     <TableCell sx={{ fontWeight: 'bold', textAlign: 'center' }}>תאריך התרומה</TableCell>
                                     <TableCell></TableCell>
                                 </TableRow>
@@ -94,7 +94,7 @@ const DonationsDisplay = ({ donationsToDisplay, setDonationsToDisplay, queryStri
                                 <button onClick={handlePrevPage} disabled={page === 0}>{'<'}</button>
                                 <button onClick={handleNextPage} disabled={disabledShowMore}>{'>'}</button>
                             </div>}
-                        <p>{`${page * rowsPerPage + 1}-${(page + 1) * rowsPerPage <= totalDonationsCount ? (page + 1) * rowsPerPage : totalDonationsCount} מתוך ${totalDonationsCount}`}</p>
+                            <div style={{ textAlign: 'center'}}><p>{`${page * rowsPerPage + 1}-${(page + 1) * rowsPerPage <= totalDonationsCount ? (page + 1) * rowsPerPage : totalDonationsCount} מתוך ${totalDonationsCount}`}</p></div>
                     </TableContainer>
                 </Box>
             )}

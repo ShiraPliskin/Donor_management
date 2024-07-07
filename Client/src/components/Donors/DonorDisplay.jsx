@@ -84,9 +84,9 @@ const DonorDisplay = ({ donor, index, setDonorsToDisplay, setTotal, selectedDono
                 <TableCell sx={{ textAlign: 'center' }}>{donor.id}</TableCell>
                 <TableCell sx={{ textAlign: 'center' }}>{donor.l_name}</TableCell>
                 <TableCell sx={{ textAlign: 'center' }}>{donor.f_name}</TableCell>
-                <TableCell sx={{ textAlign: 'center' }}>{donor.email}</TableCell>
-                <TableCell sx={{ textAlign: 'center' }}>{donor.phone}</TableCell>
-                <TableCell sx={{ textAlign: 'center' }}>{donor.address}</TableCell>
+                <TableCell sx={{ textAlign: 'center', display: { xs: 'none', sm: 'table-cell' } }}>{donor.email}</TableCell>
+                <TableCell sx={{ textAlign: 'center', display: { xs: 'none', sm: 'table-cell' } }}>{donor.phone}</TableCell>
+                <TableCell sx={{ textAlign: 'center', display: { xs: 'none', sm: 'table-cell' } }}>{donor.address}</TableCell>
                 <TableCell sx={{ textAlign: 'center' }}>
                     {type === "donors" ?
                         <IconButton onClick={handleClickOpen}>
