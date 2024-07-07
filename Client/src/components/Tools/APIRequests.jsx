@@ -2,7 +2,6 @@ import { config } from "../config.jsx";
 
 export const getRequest = async (table, conditions, state, comment, object = "") => {
     const url = `http://${config.SERVERPORT}/${table}${conditions ? `${conditions}` : ''}`;
-    console.log("url: "+url)
     try {
         const response = await fetch(url, {
             headers: {
@@ -39,7 +38,6 @@ export const getRequest = async (table, conditions, state, comment, object = "")
             return total;
         }
     } catch (error) {
-        console.error("Error in GetRequest:", error);
         comment(`שגיאת שרת`);
         return 0;
     }
@@ -67,7 +65,6 @@ export const getByIdRequest = async (table, id, state, comment) => {
             return true;
         }
     } catch (error) {
-        console.error("Error in GetRequest:", error);
         comment(`שגיאת שרת`);
         return false;
     }
@@ -95,7 +92,6 @@ export const getManyItemsByIdRequest = async (table, id, state, comment) => {
             return true;
         }
     } catch (error) {
-        console.error("Error in GetRequest:", error);
         comment(`שגיאת שרת`);
         return false;
     }
@@ -123,7 +119,6 @@ export const putRequest = async (table, updatedObject, id, setIsSucceed) => {
         setIsSucceed("success");
 
     } catch (error) {
-        console.error(error);
         setIsSucceed("error");
         return false;
     }
@@ -149,7 +144,6 @@ export const deleteRequest = async (table, id, setIsSucceed) => {
         setIsSucceed("success");
 
     } catch (error) {
-        console.error("Error creating request:", error);
         setIsSucceed("error");
         return false
     }
@@ -175,7 +169,6 @@ export const postRequest = async (table, newItem, comment, newID = 0) => {
         return true;
 
     } catch (error) {
-        console.error("Error creating request:", error);
         comment("error");
         return false;
     }
@@ -194,12 +187,10 @@ export const getByPostRequest = async (table, newItem, status, commentArea) => {
             status(response.status);
             throw new Error(`Request failed with status: ${response.status}`);
         }
-        console.log(" response.json() : " + response.status);
         status(response.status);
         return true;
 
     } catch (error) {
-        console.error("Error creating request:", error);
         commentArea('שגיאת שרת');
         return false;
     }
@@ -225,7 +216,6 @@ export const checkIfExist = async (table, conditions, comment, id) => {
             return comment("כתובת מייל קיימת במערכת.");
         }
     } catch (error) {
-        console.error("Error in GetRequest:", error);
         comment(`שגיאת שרת`);
         return false;
     }
@@ -250,7 +240,6 @@ export const getDonotGifts = async (id, state, comment) => {
             return true;
         }
     } catch (error) {
-        console.error("Error in GetRequest:", error);
         comment(`שגיאת שרת`);
         return false;
     }

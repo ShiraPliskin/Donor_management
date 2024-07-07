@@ -41,7 +41,6 @@ const FileUpload = ({ updatedGift, setUpdatedGift }) => {
             setUpdatedGift(updatedData);
         } catch (error) {
             alert("שגיאה בהוספת התמונה");
-            console.error('Error handling upload:', error);
         } finally {
             setLoading(false);
         }

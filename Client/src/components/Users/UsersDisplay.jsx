@@ -34,7 +34,6 @@ const UsersDisplay = ({ usersToDisplay, setUsersToDisplay, queryString, rowsPerP
 
     const handleNextPage = async () => {
         if ((page + 1) * rowsPerPage === usersToDisplay.length) {
-            console.log("111")
             await handleFetchData();
         }
         setPage((prevPage) => prevPage + 1);

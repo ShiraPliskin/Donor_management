@@ -20,7 +20,6 @@ const UserProfile = () => {
 
     useEffect(() => {
         if (updateSuccessful === "success") {
-            console.log(currentUser);
             localStorage.setItem("currentUser", JSON.stringify(currentUser));
         }
     }, [updateSuccessful]);
