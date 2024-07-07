@@ -63,8 +63,7 @@ function sendUserDetailsByEmail(email, pw) {
             <p>כתובת המייל והסיסמה שלך הם:</strong></p>
             <p>מייל: ${email}</p>
             <p>סיסמתך: ${pw}</p>
-            <p>ניתן לעדכן את הפרטים באתר:</p>
-            <p>http://localhost:5173/login</p>
+            <p>ניתן לעדכן את הפרטים באתר</p>
             <p>בברכה,</p>
             <p>צוות האתר</p>
         </div>
