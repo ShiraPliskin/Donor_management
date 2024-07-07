@@ -17,11 +17,13 @@ const Donations = () => {
     const [queryString, setQueryString] = useState("");
     const [rowsPerPage, setRowsPerPage] = useState(8);
     const [totalDonatiosCount, setTotalDonationsCount] = useState(0);
+    const [addedAnItem, setAddedAnItem] = useState(false);
 
     return (
         <>
             <DonationAdd
                 fields={fields}
+                setAddedAnItem={setAddedAnItem}
             />
             <DonationSearch
                 fields={fields}
@@ -29,6 +31,7 @@ const Donations = () => {
                 setQueryString={setQueryString}
                 rowsPerPage={rowsPerPage}
                 setTotalDonationsCount={setTotalDonationsCount}
+                addedAnItem={addedAnItem}
             />
             <DonationsDisplay
                 donationsToDisplay={donationsToDisplay}

@@ -4,7 +4,7 @@ import { Accordion, AccordionSummary, AccordionDetails, Typography, Box, TextFie
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import SearchIcon from '@mui/icons-material/Search';
 
-const GiftSearch = ({ fields, setGiftsToDisplay, setQueryString, rowsPerPage, setTotalGiftsCount }) => {
+const GiftSearch = ({ fields, setGiftsToDisplay, setQueryString, rowsPerPage, setTotalGiftsCount, addedAnItem }) => {
     const [giftDetails, setGiftDetails] = useState({});
     const [commentArea, setCommentArea] = useState("");
     const columnsToDisplay = "id, description, gift_cost, amount";
@@ -14,13 +14,17 @@ const GiftSearch = ({ fields, setGiftsToDisplay, setQueryString, rowsPerPage, se
         displayAllGifts();
     }, []);
 
+    useEffect(() => {
+        if (addedAnItem)
+            sendRequest();
+    }, [addedAnItem]);
+
     const displayAllGifts = async () => {
         const total = await getRequest("gifts", `?feilds=${columnsToDisplay}&_limit=${rowsPerPage}`, setGiftsToDisplay, setCommentArea, "מתנה");
         setTotalGiftsCount(total);
     }
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+    const sendRequest = async () => {
         setGiftsToDisplay([]);
         let conditions = [];
         for (const [key, value] of Object.entries(giftDetails)) {
@@ -32,7 +36,12 @@ const GiftSearch = ({ fields, setGiftsToDisplay, setQueryString, rowsPerPage, se
         const total = await getRequest("gifts", `?feilds=${columnsToDisplay}&_limit=${rowsPerPage}${queryConditions}`, setGiftsToDisplay, setCommentArea, "מתנה");
         setTotalGiftsCount(total);
         setQueryString(queryConditions);
-    };
+    }
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        sendRequest();
+    }
 
     const handleChange = (e) => {
         const { name, value } = e.target;

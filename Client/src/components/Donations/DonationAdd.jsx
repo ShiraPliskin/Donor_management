@@ -7,7 +7,7 @@ import GenericMessage from "../Tools/GenericSuccessMessage";
 import AddIcon from '@mui/icons-material/Add';
 import "../style.css";
 
-const DonationAdd = ({ fields }) => {
+const DonationAdd = ({ fields, setAddedAnItem }) => {
     const [donationDetails, setDonationDetails] = useState(fields);
     const [open, setOpen] = useState(false);
     const [isSucceed, setIsSucceed] = useState('');
@@ -30,6 +30,7 @@ const DonationAdd = ({ fields }) => {
         setIsSucceed("");
         const newDonation = filterEmptyValues(donationDetails);
         postRequest("donations", newDonation, setIsSucceed, setNewID);
+        setAddedAnItem(true);
         handleClose();
     };
 

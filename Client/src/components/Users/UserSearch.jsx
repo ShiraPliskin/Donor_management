@@ -4,7 +4,7 @@ import { Accordion, AccordionSummary, AccordionDetails, Typography, Box, TextFie
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import SearchIcon from '@mui/icons-material/Search';
 
-const UserSearch = ({ fields, setUsersToDisplay, setQueryString, rowsPerPage, setTotalCount }) => {
+const UserSearch = ({ fields, setUsersToDisplay, setQueryString, rowsPerPage, setTotalCount, addedAnItem }) => {
     const [userDetails, setUserDetails] = useState({});
     const [commentArea, setCommentArea] = useState("");
 
@@ -13,13 +13,17 @@ const UserSearch = ({ fields, setUsersToDisplay, setQueryString, rowsPerPage, se
         displayAllUsers();
     }, []);
 
+    useEffect(() => {
+        if (addedAnItem)
+            sendRequest();
+    }, [addedAnItem]);
+
     const displayAllUsers = async () => {
         const total = await getRequest("users", `?_limit=${rowsPerPage}`, setUsersToDisplay, setCommentArea, "משתמש");
         setTotalCount(total);
     }
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+    const sendRequest = async () => {
         setUsersToDisplay([]);
         let conditions = [];
         for (const [key, value] of Object.entries(userDetails)) {
@@ -31,7 +35,12 @@ const UserSearch = ({ fields, setUsersToDisplay, setQueryString, rowsPerPage, se
         const total = await getRequest("users", `?_limit=${rowsPerPage}${queryURL}`, setUsersToDisplay, setCommentArea, "משתמש");
         setTotalCount(total);
         setQueryString(queryURL);
-    };
+    }
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        sendRequest();
+    }
 
     const handleChange = (e) => {
         const { name, value } = e.target;

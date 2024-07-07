@@ -5,7 +5,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import SearchIcon from '@mui/icons-material/Search';
 import dayjs from 'dayjs';
 
-const DonorSearch = ({ fields, setDonorsToDisplay, setQueryString, rowsPerPage, setTotalDonorsCount }) => {
+const DonorSearch = ({ fields, setDonorsToDisplay, setQueryString, rowsPerPage, setTotalDonorsCount, addedAnItem }) => {
     const [donorDetails, setDonorDetails] = useState({});
     const [commentArea, setCommentArea] = useState("");
     const [inactiveFromDate, setInactiveFromDate] = useState("");
@@ -16,30 +16,36 @@ const DonorSearch = ({ fields, setDonorsToDisplay, setQueryString, rowsPerPage, 
         displayAllDonors();
     }, []);
 
+    useEffect(() => {
+        if (addedAnItem)
+            sendRequest();
+    }, [addedAnItem]);
+
     const displayAllDonors = async () => {
         const total = await getRequest("donors", `?fields=${columnsToDisplay}&_limit=${rowsPerPage}`, setDonorsToDisplay, setCommentArea, "תורם");
         setTotalDonorsCount(total);
     }
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+    const sendRequest = async () => {
         setDonorsToDisplay([]);
         let conditions = [];
         if (inactiveFromDate) {
             conditions = [`date=${inactiveFromDate}`];
         }
-        else {
-            for (const [key, value] of Object.entries(donorDetails)) {
-                if (value) {
-                    conditions.push(`${key}=${value}`);
-                }
+        for (const [key, value] of Object.entries(donorDetails)) {
+            if (value) {
+                conditions.push(`${key}=${value}`);
             }
         }
-
         const queryConditions = conditions.length > 0 ? `&filter=${conditions.join(',')}` : '';
         const total = await getRequest("donors", `?fields=${columnsToDisplay}&_limit=${rowsPerPage}${queryConditions}`, setDonorsToDisplay, setCommentArea, "תורם");
         setTotalDonorsCount(total);
         setQueryString(queryConditions);
+    }
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        sendRequest();
     };
 
     const handleChange = (e) => {
@@ -57,7 +63,7 @@ const DonorSearch = ({ fields, setDonorsToDisplay, setQueryString, rowsPerPage, 
             <Accordion sx={{ flexGrow: 1 }}>
                 <AccordionSummary expandIcon={<ExpandMoreIcon />} >
                     <Typography variant="h6">חיפוש תורם</Typography>
-                    <SearchIcon style={{ marginTop: '0.3rem',marginRight: 3 }} /> 
+                    <SearchIcon style={{ marginTop: '0.3rem', marginRight: 3 }} />
                 </AccordionSummary>
                 <AccordionDetails>
                     <form onSubmit={handleSubmit}>
@@ -145,8 +151,8 @@ const DonorSearch = ({ fields, setDonorsToDisplay, setQueryString, rowsPerPage, 
                                 size="small"
                                 value={inactiveFromDate ? dayjs(inactiveFromDate).format('YYYY-MM-DD') : ''}
                                 InputProps={{
-                                    inputProps: { 
-                                        max: dayjs().format('YYYY-MM-DD') 
+                                    inputProps: {
+                                        max: dayjs().format('YYYY-MM-DD')
                                     }
                                 }}
                                 InputLabelProps={{
@@ -166,7 +172,7 @@ const DonorSearch = ({ fields, setDonorsToDisplay, setQueryString, rowsPerPage, 
                 </Button>
             </Box>
         </Box>
-        {<p>{commentArea}</p>}</>
+            {<p>{commentArea}</p>}</>
     );
 };
 

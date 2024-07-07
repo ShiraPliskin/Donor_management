@@ -87,8 +87,8 @@ export const getManyItemsByIdRequest = async (table, id, state, comment) => {
         }
 
         const data = await response.json();
-
-        if (Object.keys(data).length === 0) {
+        if (data.data.length === 0) {
+            comment("לא נמצא")
             return false;
         } else {
             state(data["data"]);

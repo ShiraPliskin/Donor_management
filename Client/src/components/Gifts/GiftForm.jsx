@@ -149,7 +149,7 @@ const GiftForm = ({ fields, giftDetails, setGiftDetails, deleteGift, sendRequest
                                     type="number"
                                     required={formType !== "display"}
                                     fullWidth
-                                    value={updatedGift.amount || ""}
+                                    value={updatedGift.amount}
                                     error={error.amount}
                                     helperText={helperText.amount}
                                     onChange={handleChange}

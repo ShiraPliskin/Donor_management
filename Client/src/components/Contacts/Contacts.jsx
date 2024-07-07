@@ -17,16 +17,22 @@ const Contacts = ({ selectedContactId, setSelectedContactId, type }) => {
     const [queryString, setQueryString] = useState("");
     const [rowsPerPage, setRowsPerPage] = useState(8);
     const [totalCount, setTotalCount] = useState(0);
+    const [addedAnItem, setAddedAnItem] = useState(false);
 
     return (
         <>
-            {type === "contacts" && <ContactAdd fields={fields} type="contacts"/>}
+            {type === "contacts" && <ContactAdd
+                fields={fields}
+                type="contacts"
+                setAddedAnItem={setAddedAnItem}
+            />}
             <ContactSearch
                 fields={fields}
                 setContactsToDisplay={setContactsToDisplay}
                 setQueryString={setQueryString}
                 rowsPerPage={rowsPerPage}
                 setTotalCount={setTotalCount}
+                addedAnItem={addedAnItem}
             />
             <ContactsDisplay
                 contactsToDisplay={contactsToDisplay}

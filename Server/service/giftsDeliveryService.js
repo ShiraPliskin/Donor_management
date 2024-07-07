@@ -32,9 +32,11 @@ export class GiftsDeliveryService {
     }
 
     async addGiftDelivery(newItem) {
+        console.log("newItem", newItem)
         const donorIds = newItem.donor_id;
         const giftId = newItem.gift_id;
         const date = newItem.date;
+        console.log("date", date)
         const query = addGiftDeliveryQuery(donorIds.length);
                 const values = donorIds.reduce((acc, donorId) => {
             acc.push(donorId, giftId, date);

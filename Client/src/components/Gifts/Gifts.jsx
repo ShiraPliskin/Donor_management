@@ -22,11 +22,13 @@ const Gifts = () => {
     const [queryString, setQueryString] = useState("");
     const [rowsPerPage, setRowsPerPage] = useState(8);
     const [totalGiftsCount, setTotalGiftsCount] = useState(0);
+    const [addedAnItem, setAddedAnItem] = useState(false);
 
     return (
         <>
             <GiftAdd
                 fields={fields}
+                setAddedAnItem={setAddedAnItem}
             />
             <GiftSearch 
                 fields={fields}
@@ -34,6 +36,7 @@ const Gifts = () => {
                 setQueryString={setQueryString}
                 rowsPerPage={rowsPerPage}
                 setTotalGiftsCount={setTotalGiftsCount}
+                addedAnItem={addedAnItem}
             />
             <GiftsDisplay
                 giftsToDisplay={giftsToDisplay}

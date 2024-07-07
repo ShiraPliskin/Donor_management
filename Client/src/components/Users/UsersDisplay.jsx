@@ -22,7 +22,7 @@ const UsersDisplay = ({ usersToDisplay, setUsersToDisplay, queryString, rowsPerP
     }, [page, totalCount]);
 
     const handleFetchData = async () => {
-        const queryConditions = `${queryString}&page=${page + 2}&sortby=${sortKey}`;
+        const queryConditions = `?_limit=${rowsPerPage}${queryString}&page=${page + 2}&sortby=${sortKey}`;
         const total = await getRequest("users", queryConditions, setMoreUsers, setCommentArea, "משתמש");
         setTotalCount(total);
     };
@@ -34,6 +34,7 @@ const UsersDisplay = ({ usersToDisplay, setUsersToDisplay, queryString, rowsPerP
 
     const handleNextPage = async () => {
         if ((page + 1) * rowsPerPage === usersToDisplay.length) {
+            console.log("111")
             await handleFetchData();
         }
         setPage((prevPage) => prevPage + 1);
@@ -42,7 +43,7 @@ const UsersDisplay = ({ usersToDisplay, setUsersToDisplay, queryString, rowsPerP
     const handleChangeSortKey = async (e) => {
         setSortKey(e.target.value);
         setPage(0);
-        const total = await getRequest("users", `${queryString}&page=${1}&sortby=${e.target.value}`, setUsersToDisplay, setCommentArea, "משתמש")
+        const total = await getRequest("users", `?_limit=${rowsPerPage}${queryString}&page=${1}&sortby=${e.target.value}`, setUsersToDisplay, setCommentArea, "משתמש")
         setTotalCount(total);
     };
 
@@ -85,8 +86,8 @@ const UsersDisplay = ({ usersToDisplay, setUsersToDisplay, queryString, rowsPerP
                             <div style={{ textAlign: 'center', marginTop: '10px' }}>
                                 <button onClick={handlePrevPage} disabled={page === 0}>{'<'}</button>
                                 <button onClick={handleNextPage} disabled={disabledShowMore}>{'>'}</button>
-                                <p>{`${page * rowsPerPage + 1}-${(page + 1) * rowsPerPage <= totalCount ? (page + 1) * rowsPerPage : totalCount} מתוך ${totalCount}`}</p>
                             </div>}
+                            <p>{`${page * rowsPerPage + 1}-${(page + 1) * rowsPerPage <= totalCount ? (page + 1) * rowsPerPage : totalCount} מתוך ${totalCount}`}</p>
                     </TableContainer>
                 </Box>
             )}

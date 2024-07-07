@@ -6,6 +6,7 @@ import dayjs from 'dayjs';
 
 const DonorDonations = ({ donorDetails }) => {
     const [openDonations, setOpenDonations] = useState(null);
+    const [openWarning, setOpenWarning] = useState(false);
     const [donorDonations, setDonorDonations] = useState([]);
     const [commentArea, setCommentArea] = useState(null);
     const [totalDonation, setTotalDonation] = useState(null);
@@ -18,7 +19,10 @@ const DonorDonations = ({ donorDetails }) => {
             });
             setTotalDonation(total);
         }
-    }, [donorDonations]);
+        else if (commentArea === "לא נמצאה תרומה") {
+            setOpenWarning(true);
+        }
+    }, [donorDonations, commentArea]);
 
     useEffect(() => {
         if (totalDonation) {
@@ -35,9 +39,10 @@ const DonorDonations = ({ donorDetails }) => {
     };
 
     const getDonorDonations = async () => {
+        setCommentArea("");
         const columnsToDisplay = "amount, date";
         const queryConditions = `?fields=${columnsToDisplay}&filter=donor_id=${donorDetails.id}`;
-        await getRequest("donations", queryConditions, setDonorDonations, setCommentArea);
+        await getRequest("donations", queryConditions, setDonorDonations, setCommentArea, "תרומה");
     }
 
     return (<>
@@ -98,6 +103,25 @@ const DonorDonations = ({ donorDetails }) => {
             {commentArea}
         </>
         )}
+        <Dialog
+            open={openWarning}
+            onClose={(event, reason) => {
+                if (reason !== 'backdropClick' && reason !== 'escapeKeyDown') {
+                    setOpenWarning(false);
+                }
+            }}
+            disableEscapeKeyDown
+            maxWidth="sm"
+        >
+            <DialogTitle sx={{ bgcolor: 'warning.main', color: 'black' }}>
+                תורם זה לא תרם עדיין כל תרומה.            </DialogTitle>
+            <DialogContent sx={{ marginTop: '20px' }}>
+                על מנת להוסיף תרומה של תורם זה לחץ על "הוספת תרומה"
+                <Box sx={{ display: 'flex', justifyContent: 'flex-end', marginTop: 2 }}>
+                    <Button onClick={() => { setOpenWarning(false) }}>סגור</Button>
+                </Box>
+            </DialogContent>
+        </Dialog>
     </>)
 }
 export default DonorDonations;
