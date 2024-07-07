@@ -4,7 +4,6 @@ import { donorsRouter } from './router/donorsRouter.js'
 import { registerRouter } from './router/registerRouter.js'
 import { usersRouter } from './router/usersRouter.js';
 import { giftsRouter } from './router/giftsRouter.js';
-import { importersRouter } from './router/importersRouter.js';
 import { contactsRouter } from './router/contactsRouter.js';
 import { giftsDeliveryRouter } from './router/giftsDeliveryRouter.js';
 import { donationsRouter } from './router/donationsRouter.js';
@@ -28,7 +27,6 @@ app.use('/donations',authenticateToken, donationsRouter);
 app.use('/register', registerRouter);
 app.use('/users', usersRouter);
 app.use('/gifts',authenticateToken, giftsRouter);
-app.use('/importers',authenticateToken, importersRouter);
 app.use('/contacts',authenticateToken, contactsRouter);
 app.use('/giftsDelivery',authenticateToken, giftsDeliveryRouter);
 app.use('/register/forgotPassword', forgotPasswordRouter);

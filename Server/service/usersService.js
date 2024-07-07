@@ -1,6 +1,7 @@
 import { executeQuery } from './db.js'
 import { addQuery, updateQuery, getByIdQuery, getByConditionQuery, deleteQuery } from '../queries/genericQueries.js'
 import { RegisterService } from './registerService.js';
+import {sendUserDetailsByEmail} from '../mail.js'
 import 'dotenv/config'
 import jwt from 'jsonwebtoken';
 
@@ -49,12 +50,14 @@ export class UsersService {
             user_id: "",
             password: newUser.password
         }
+        const pw = newUser.password;
         delete newUser.password;
         const values = Object.values(newUser);
         const queryUser = addQuery("users", newUser);
         const result = await executeQuery(queryUser, values);
         register.user_id = result.insertId;
         await registerService.addRegister(register);
+        sendUserDetailsByEmail(newUser.email,pw);
         return result;
     }
 }
