@@ -11,8 +11,6 @@ const GiftDonors = ({ giftDetails }) => {
     const [commentArea, setCommentArea] = useState(null);
 
     useEffect(() => {
-        console.log("commentArea", commentArea);
-        console.log("giftDonors", giftDonors)
         if (giftDonors.length !== 0) {
             handleOpen();
         }
